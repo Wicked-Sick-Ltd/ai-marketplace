@@ -9,7 +9,7 @@
   ],
   "ports": [
     {
-      "name": "web",
+      "name": "web server",
       "port": 3000
     }
   ]
