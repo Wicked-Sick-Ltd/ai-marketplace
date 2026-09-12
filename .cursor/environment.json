@@ -1,0 +1,11 @@
+{
+  "name": "ai-marketplace",
+  "install": "npm install && npx prisma generate && npx prisma migrate deploy && npm run db:seed",
+  "terminals": [
+    {
+      "name": "dev",
+      "command": "npm run dev"
+    }
+  ],
+  "ports": [3000]
+}
