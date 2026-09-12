@@ -1,0 +1,30 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "wickedsick",
+  "description": "Wicked Sick plugins for the agents we actually use",
+  "owner": {
+    "name": "Wicked Sick Ltd",
+    "email": "craig@wickedsick.com"
+  },
+  "plugins": [
+    {
+      "name": "token-usage",
+      "description": "Attribute Claude Code and Cowork token usage to the work that consumed it — per-command, per-skill, per-agent and per-model breakdowns, cross-session history, live session ledger, cost estimates, and a bundled MCP server",
+      "version": "0.6.1",
+      "author": {
+        "name": "Craig Fletcher",
+        "email": "craigfletcheruk@gmail.com"
+      },
+      "category": "monitoring",
+      "homepage": "https://discovery.wickedsick.com/token-usage-claude-code-plugin-documentation",
+      "repository": "https://github.com/Wicked-Sick-Ltd/token-usage",
+      "license": "MIT",
+      "keywords": ["tokens", "usage", "cost", "observability", "analytics", "cowork"],
+      "source": {
+        "source": "github",
+        "repo": "Wicked-Sick-Ltd/token-usage",
+        "sha": "67164452fb51eff2e76df65b937dd3e725b75103"
+      }
+    }
+  ]
+}
