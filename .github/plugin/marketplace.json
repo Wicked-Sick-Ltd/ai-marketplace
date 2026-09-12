@@ -1,0 +1,12 @@
+{
+  "name": "wickedsick",
+  "metadata": {
+    "description": "Wicked Sick plugins for the agents we actually use",
+    "version": "0.1.0"
+  },
+  "owner": {
+    "name": "Wicked Sick Ltd",
+    "email": "craig@wickedsick.com"
+  },
+  "plugins": []
+}
