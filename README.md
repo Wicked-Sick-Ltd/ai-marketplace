@@ -14,10 +14,10 @@ claude plugin marketplace add Wicked-Sick-Ltd/ai-marketplace
 codex plugin marketplace add Wicked-Sick-Ltd/ai-marketplace --sparse .agents/plugins
 ```
 
-- Cursor: Teams or Enterprise → marketplace → connect this GitHub repository.
-- Copilot: `"chat.plugins.marketplaces": ["Wicked-Sick-Ltd/ai-marketplace"]`
-- Gemini CLI: no catalog file. Install from the plugin repo: see `gemini/README.md`.
-- Grok: add the Claude marketplace above. A Grok-native index is omitted on purpose.
+- **Cursor:** Teams or Enterprise → marketplace → connect this GitHub repository.
+- **Copilot:** `"chat.plugins.marketplaces": ["Wicked-Sick-Ltd/ai-marketplace"]`
+- **Gemini CLI:** no catalog file. Install from the plugin repo: see [`gemini/README.md`](gemini/README.md).
+- **Grok:** add the Claude marketplace above. A Grok-native index is omitted on purpose.
 
 Then install individual plugins (Claude):
 
@@ -29,13 +29,13 @@ claude plugin install token-usage@wickedsick
 
 | Client | File | Plugins listed today |
 | --- | --- | --- |
-| Claude Code / Grok | `.claude-plugin/marketplace.json` | token-usage (pinned) |
+| Claude Code / Grok | `.claude-plugin/marketplace.json` | `token-usage` (pinned) |
 | Cursor | `.cursor-plugin/marketplace.json` | none yet |
 | ChatGPT / Codex | `.agents/plugins/marketplace.json` | none yet |
 | Copilot | `.github/plugin/marketplace.json` | none yet |
-| Gemini | `gemini/README.md` | none yet |
+| Gemini | [`gemini/README.md`](gemini/README.md) | none yet |
 
-token-usage is Claude-only until it can parse that host's session logs (or the listing is explicitly "Claude transcripts only"). Workflow skills can be added to every Agent Skills catalog.
+`token-usage` is Claude-only until it can parse that host's session logs (or the listing is explicitly "Claude transcripts only"). Workflow skills can be added to every Agent Skills catalog.
 
 ## Horses for courses
 
@@ -50,9 +50,9 @@ token-usage is Claude-only until it can parse that host's session logs (or the l
 
 ## Add a plugin
 
-- Keep the plugin in its own repository.
-- Pin a full 40-character commit SHA (and a tag ref when one exists). Do not float on main.
-- List it only on marketplaces where it has a real runtime.
-- Run `python3 scripts/validate.py`.
+1. Keep the plugin in its own repository.
+2. Pin a **full 40-character commit SHA** (and a tag `ref` when one exists). Do not float on `main`.
+3. List it only on marketplaces where it has a real runtime.
+4. Run `python3 scripts/validate.py`.
 
-Owner: Wicked Sick Ltd (craig@wickedsick.com).
+Owner: Wicked Sick Ltd (`craig@wickedsick.com`).
