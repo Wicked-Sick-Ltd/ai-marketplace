@@ -28,11 +28,15 @@ HTTP 403 Resource not accessible by personal access token
 
 1. Create or edit a **fine-grained PAT** for a user who can see security alerts on this repo.
 2. Repository permissions → **Dependabot alerts** → **Read-only** (use Read and write only if agents must dismiss alerts).
+   - Permission API name: `vulnerability_alerts`.
+   - **Not** “Dependabot secrets” (`dependabot_secrets`) and **not** “Code scanning alerts” (`security_events`) — those are different and will still 403 the Dependabot alerts API.
 3. Resource owner / repository access must include `Wicked-Sick-Ltd/ai-marketplace` (or all repos).
 4. Add the token to the Cloud Agent environment secrets as **`GH_TOKEN`** (preferred) or `GITHUB_TOKEN`.
 5. Do **not** rely on `GITHUB_PAT` for `gh`; rename/copy the secret to `GH_TOKEN`.
 
 Classic PATs need the `security_events` scope (or broader `repo`) instead of the fine-grained Dependabot alerts permission.
+
+If `scripts/dependabot_alerts.py --check` still exits `3` after you add `GH_TOKEN`, the token almost always lacks **Dependabot alerts** specifically — recreate/edit the PAT and replace the secret value.
 
 ## Verify
 
