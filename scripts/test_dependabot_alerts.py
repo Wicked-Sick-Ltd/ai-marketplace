@@ -7,7 +7,6 @@ import importlib.util
 import os
 import subprocess
 import sys
-import tempfile
 import unittest
 import unittest.mock as mock
 from pathlib import Path
