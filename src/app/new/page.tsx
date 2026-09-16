@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { CATEGORIES } from "@/lib/listings";
@@ -121,9 +122,9 @@ export default function NewListingPage() {
           >
             {submitting ? "Publishing…" : "Publish tool"}
           </button>
-          <a href="/" className="text-sm font-medium text-slate-500 hover:text-slate-700">
+          <Link href="/" className="text-sm font-medium text-slate-500 hover:text-slate-700">
             Cancel
-          </a>
+          </Link>
         </div>
       </form>
 

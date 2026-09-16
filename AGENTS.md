@@ -10,3 +10,7 @@ This repository is an **index**. It lists plugins; it does not contain plugin co
 - After catalog edits, run `python3 scripts/validate.py`.
 
 Product-repo agent rules (Forge, Yaegi, Traefik) live in those repos, not here.
+
+## Cursor Cloud: Dependabot API access
+
+The built-in Cloud Agent GitHub App token cannot call the Dependabot alerts API. For triage, inject a fine-grained PAT as `GH_TOKEN` with **Dependabot alerts: Read**, then run `python3 scripts/dependabot_alerts.py --check`. Details: [`docs/github-security-api-access.md`](docs/github-security-api-access.md).

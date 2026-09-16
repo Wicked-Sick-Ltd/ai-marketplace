@@ -67,7 +67,7 @@ services.
 
 ## Tech stack
 
-- **Next.js 14** (App Router) + **React 18** + **TypeScript**
+- **Next.js 15** (App Router) + **React 18** + **TypeScript**
 - **Tailwind CSS** for styling
 - **Prisma ORM** backed by **SQLite** (file-based, zero external dependencies)
 - **Zod** for request validation
