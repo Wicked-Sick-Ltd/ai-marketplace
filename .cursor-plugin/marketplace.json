@@ -5,7 +5,7 @@
     "email": "craig@wickedsick.com"
   },
   "metadata": {
-    "description": "Wicked Sick plugins for the agents we actually use",
+    "description": "Wicked Sick plugins for Cursor. This file is the org catalog stub: Cursor resolves plugin source as a path inside the imported git repo, so we do not SHA-pin remote GitHub sources here. Import Wicked-Sick-Ltd/claude-repo as the Team Marketplace once those plugins have .cursor-plugin/plugin.json. See docs/cursor-integration.md.",
     "version": "0.1.0"
   },
   "plugins": []

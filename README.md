@@ -1,6 +1,6 @@
 # Wicked Sick AI marketplace
 
-GitHub catalogs for the agent plugins we actually install. Plugins are **not** vendored here; each index points at a source repo, pinned by commit SHA.
+GitHub catalogs for the agent plugins we actually install. Plugins are **not** vendored here. Claude / Codex / Copilot indexes pin a source repo by commit SHA. Cursor indexes use in-repo paths; the Team Marketplace imports the git repo that actually contains the plugin directories.
 
 This is not a Traefik module and not a substitute for `CLAUDE.md` / `AGENTS.md` in product repos. See the plan in [traefik-laravel-forge](https://github.com/Wicked-Sick-Ltd/traefik-laravel-forge/blob/master/docs/cross-ai-marketplace-plan.md).
 
@@ -14,7 +14,7 @@ claude plugin marketplace add Wicked-Sick-Ltd/ai-marketplace
 codex plugin marketplace add Wicked-Sick-Ltd/ai-marketplace --sparse .agents/plugins
 ```
 
-- **Cursor:** Teams or Enterprise → marketplace → connect this GitHub repository.
+- **Cursor:** do **not** expect Claude-style GitHub SHA pins in `.cursor-plugin/marketplace.json`. Cursor Team Marketplaces import a git repo and resolve each plugin as a **path inside that repo**. Import [`claude-repo`](https://github.com/Wicked-Sick-Ltd/claude-repo) once those plugins have Cursor/Agent Plugins manifests. This catalog's Cursor index stays empty until we host a Cursor pack here. Details: [`docs/cursor-integration.md`](docs/cursor-integration.md).
 - **Copilot:** `"chat.plugins.marketplaces": ["Wicked-Sick-Ltd/ai-marketplace"]`
 - **Gemini CLI:** no catalog file. Install from the plugin repo: see [`gemini/README.md`](gemini/README.md).
 - **Grok:** add the Claude marketplace above. A Grok-native index is omitted on purpose.
@@ -30,12 +30,14 @@ claude plugin install token-usage@wickedsick
 | Client | File | Plugins listed today |
 | --- | --- | --- |
 | Claude Code / Grok | `.claude-plugin/marketplace.json` | `token-usage` (pinned) |
-| Cursor | `.cursor-plugin/marketplace.json` | none yet |
+| Cursor | `.cursor-plugin/marketplace.json` | none here (path-based catalog; live plugins stay in `claude-repo`) |
 | ChatGPT / Codex | `.agents/plugins/marketplace.json` | none yet |
 | Copilot | `.github/plugin/marketplace.json` | none yet |
 | Gemini | [`gemini/README.md`](gemini/README.md) | none yet |
 
-`token-usage` is Claude-only until it can parse that host's session logs (or the listing is explicitly "Claude transcripts only"). Workflow skills can be added to every Agent Skills catalog.
+`token-usage` is Claude-only until it can parse that host's session logs (or the listing is explicitly "Claude transcripts only"). `.cursor/environment.json` on a plugin repo is Cloud Agent setup, not a Cursor plugin.
+
+Workflow skills (`session-lifecycle`, `estate-maintenance`, `product-lifecycle`, `wizzo-twin`) live in [`claude-repo`](https://github.com/Wicked-Sick-Ltd/claude-repo) today with Claude manifests only. Port them with Agent Skills + `.cursor-plugin/plugin.json` (and root `mcp.json` where needed), then list them on a Cursor Team Marketplace — see [`docs/cursor-integration.md`](docs/cursor-integration.md). After that, the same portable floor can go on every Agent Skills catalog (Codex, Copilot, Gemini).
 
 ## Horses for courses
 
@@ -51,7 +53,7 @@ claude plugin install token-usage@wickedsick
 ## Add a plugin
 
 1. Keep the plugin in its own repository.
-2. Pin a **full 40-character commit SHA** (and a tag `ref` when one exists). Do not float on `main`.
+2. Pin a **full 40-character commit SHA** (and a tag `ref` when one exists) on Claude / Codex / Copilot remotes. Do not float on `main`. Cursor entries use in-repo paths, not SHA pins — [`docs/cursor-integration.md`](docs/cursor-integration.md).
 3. List it only on marketplaces where it has a real runtime.
 4. Run `python3 scripts/validate.py`.
 
