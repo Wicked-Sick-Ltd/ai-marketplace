@@ -14,3 +14,5 @@ jobs:
           python-version: "3.12"
       - name: Validate marketplace JSON
         run: python3 scripts/validate.py
+      - name: Catalog validator smoke tests
+        run: python3 scripts/test_validate.py
