@@ -63,6 +63,21 @@ def api_get(url: str, token: str) -> tuple[int, dict[str, str], Any]:
         return exc.code, headers, payload
 
 
+def next_link(link_header: str) -> str | None:
+    """Parse RFC 5988 Link header for rel=\"next\"."""
+    if not link_header:
+        return None
+    for part in link_header.split(","):
+        section = part.strip()
+        if not section.startswith("<") or ">" not in section:
+            continue
+        url, _, params = section.partition(">")
+        url = url[1:].strip()
+        if 'rel="next"' in params or "rel=next" in params:
+            return url
+    return None
+
+
 def permission_hint(headers: dict[str, str], payload: Any) -> str:
     needed = headers.get("x-accepted-github-permissions", "")
     message = ""
@@ -98,13 +113,18 @@ def list_alerts(owner_repo: str, state: str, token: str) -> list[dict[str, Any]]
     if not owner or not repo:
         fail(f"Invalid repo {owner_repo!r}; expected owner/name")
 
+    # Dependabot alerts reject `page=` pagination; use per_page + Link rel=next.
+    # `state=all` is not a GitHub enum — omit the filter to return every state.
+    params: dict[str, str] = {"per_page": "100"}
+    if state != "all":
+        params["state"] = state
+    url = (
+        f"https://api.github.com/repos/{owner}/{repo}/dependabot/alerts?"
+        f"{urllib.parse.urlencode(params)}"
+    )
+
     alerts: list[dict[str, Any]] = []
-    page = 1
-    while True:
-        query = urllib.parse.urlencode(
-            {"state": state, "per_page": "100", "page": str(page)}
-        )
-        url = f"https://api.github.com/repos/{owner}/{repo}/dependabot/alerts?{query}"
+    while url:
         status, headers, payload = api_get(url, token)
         if status == 403:
             fail(permission_hint(headers, payload), code=3)
@@ -118,9 +138,7 @@ def list_alerts(owner_repo: str, state: str, token: str) -> list[dict[str, Any]]
         if not isinstance(payload, list):
             fail(f"Unexpected API payload type: {type(payload).__name__}")
         alerts.extend(payload)
-        if len(payload) < 100:
-            break
-        page += 1
+        url = next_link(headers.get("link", ""))
     return alerts
 
 

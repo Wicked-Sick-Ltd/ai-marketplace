@@ -66,6 +66,19 @@ class DependabotAlertsScriptTests(unittest.TestCase):
                     mod.main(["--check"])
         self.assertEqual(raised.exception.code, 3)
 
+    def test_next_link_parses_rel_next(self) -> None:
+        mod = load_module()
+        header = (
+            '<https://api.github.com/repos/o/r/dependabot/alerts?after=abc>; rel="next", '
+            '<https://api.github.com/repos/o/r/dependabot/alerts?before=xyz>; rel="prev"'
+        )
+        self.assertEqual(
+            mod.next_link(header),
+            "https://api.github.com/repos/o/r/dependabot/alerts?after=abc",
+        )
+        self.assertIsNone(mod.next_link(""))
+        self.assertIsNone(mod.next_link('<https://example.com>; rel="prev"'))
+
     def test_cli_missing_token_exits_nonzero(self) -> None:
         env = os.environ.copy()
         for key in ("GH_TOKEN", "GITHUB_TOKEN", "GITHUB_PAT"):
