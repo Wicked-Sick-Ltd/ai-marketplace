@@ -147,7 +147,6 @@ Live Claude plugins today: `claude-repo` marketplace + `token-usage`.
 | `estate-maintenance` | **Yes** | Cursor Plugin (skills + commands) | Skills call scripts in `wicked-repo-inventory`. Confirm those scripts run from Cursor Cloud Agents (inventory access, `gh`, dry-run defaults). |
 | `product-lifecycle` | **Yes** | Cursor Plugin (`commands/product-*.md` + any skills) | Prompt library; Notion writes. No Claude-only parser. |
 | `onboarding` | **Partial** | Skill yes; bootstrap later | `/onboard` + `CONVENTIONS.md` check ports. `scripts/bootstrap.sh` is Claude-marketplace (`/plugin marketplace add claude-repo`). Cursor equivalent is Team Marketplace import + Default On, not that script. |
-| `wizzo-twin` | **Yes (owner)** | Cursor Plugin + HTTP `mcp.json` | Servers already at `https://mcp-public.wickedsick.com/mcp` and `https://mcp-work.wickedsick.com/mcp`. Map Cloudflare Access to Cursor MCP auth / variables. Keep **owner** profile only. Skills `consult-twin` and `mesh` are Agent Skills. |
 | `token-usage` | **Not yet** | — | Skill + MCP + Stop hook are Claude/Cowork transcript-shaped (`~/.claude/projects`, `${CLAUDE_PLUGIN_ROOT}`). Listing it on Cursor without a Cursor log parser is a lie. Cloud `environment.json` does not fix that. Revisit when a Cursor parser exists, or with an explicit "Claude transcripts only" listing. |
 
 Workflow skills belong on every Agent Skills catalog **after** the shims above.
@@ -171,7 +170,7 @@ Pin remotes on those JSON catalogs with a full SHA, same as Claude.
 1. Admin: Dashboard → Plugins → import `claude-repo` (after Cursor manifests exist).
 2. Set access (whole team or Organisation Groups).
 3. Per plugin: Default Off / Default On / Required. Suggest Default On for
-   `session-lifecycle`; Required only for policy plugins; `wizzo-twin` Default
+   `session-lifecycle`; Required only for policy plugins
    Off and owner-group restricted.
 4. Developers: Customize → team marketplace → install. Skills also via
    `/skill-name`.
@@ -185,7 +184,7 @@ Pin remotes on those JSON catalogs with a full SHA, same as Claude.
       `session-lifecycle` in `claude-repo`; local-load test.
 - [ ] Add `.cursor-plugin/marketplace.json` to `claude-repo` with `pluginRoot: plugins` and only plugins that have a real Cursor runtime.
 - [ ] Import that repo as the Cursor Team Marketplace; Auto Refresh on.
-- [ ] Repeat for `estate-maintenance`, `product-lifecycle`, `wizzo-twin` (owner).
+- [ ] Repeat for `estate-maintenance`, `product-lifecycle`.
 - [ ] Decide Cursor story for `onboarding` (skill vs skip bootstrap).
 - [ ] Leave `token-usage` off Cursor until logs or an honest Claude-only label.
 - [ ] Add Agent Plugins `plugin.json` on plugins we also list on Codex/Copilot.

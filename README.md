@@ -37,7 +37,7 @@ claude plugin install token-usage@wickedsick
 
 `token-usage` is Claude-only until it can parse that host's session logs (or the listing is explicitly "Claude transcripts only"). `.cursor/environment.json` on a plugin repo is Cloud Agent setup, not a Cursor plugin.
 
-Workflow skills (`session-lifecycle`, `estate-maintenance`, `product-lifecycle`, `wizzo-twin`) live in [`claude-repo`](https://github.com/Wicked-Sick-Ltd/claude-repo) today with Claude manifests only. Port them with Agent Skills + `.cursor-plugin/plugin.json` (and root `mcp.json` where needed), then list them on a Cursor Team Marketplace — see [`docs/cursor-integration.md`](docs/cursor-integration.md). After that, the same portable floor can go on every Agent Skills catalog (Codex, Copilot, Gemini).
+Workflow skills (`session-lifecycle`, `estate-maintenance`, `product-lifecycle`) live in [`claude-repo`](https://github.com/Wicked-Sick-Ltd/claude-repo) today with Claude manifests only. Port them with Agent Skills + `.cursor-plugin/plugin.json` (and root `mcp.json` where needed), then list them on a Cursor Team Marketplace — see [`docs/cursor-integration.md`](docs/cursor-integration.md). After that, the same portable floor can go on every Agent Skills catalog (Codex, Copilot, Gemini).
 
 ## Horses for courses
 
@@ -128,3 +128,5 @@ src/
 `.cursor/environment.json` configures the Cloud Agent environment: `install`
 installs dependencies, generates the Prisma client, applies migrations, and
 seeds sample data; the `dev` terminal runs `npm run dev` on port 3000.
+Local config comes from `.env`, which is git-ignored — copy `.env.example`
+(a SQLite `DATABASE_URL`) to get started; the Cloud Agent install does this.

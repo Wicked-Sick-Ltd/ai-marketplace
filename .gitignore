@@ -28,3 +28,8 @@ next-env.d.ts
 /prisma/dev.db-journal
 *.db
 *.db-journal
+
+# local env (copy .env.example to .env)
+.env
+.env.*
+!.env.example
