@@ -4,7 +4,7 @@
 
 Audit of every shareable Wicked Sick agent plugin against the six vendors this marketplace serves (Claude Code, Codex, Cursor, Copilot, Gemini, Grok). Read-only snapshot taken 2026-09-17; file:line citations refer to the repos at that date. Produced for the expansion plan workstream A ("Codex, Cursor and Claude all working in Jarvis").
 
-## A. Inventory (6 plugins)
+## A. Inventory (7 plugins)
 
 | Plugin | Source repo | Version | Components | Claude-specific parts | Portable parts |
 |---|---|---|---|---|---|
@@ -14,12 +14,13 @@ Audit of every shareable Wicked Sick agent plugin against the six vendors this m
 | **estate-maintenance** | `claude-repo`, `plugins/estate-maintenance/` | 0.1.0 (`plugin.json:3`) | 3 skills (`deepsec-rollout`, `findings-sync`, `autonomous-maintenance`), 1 slash command (`commands/maintain.md`). No bundled hooks/MCP; heavy lifting is delegated to Python scripts in the separate `wicked-repo-inventory` repo (`skills/deepsec-rollout/SKILL.md:11,16`, `skills/findings-sync/SKILL.md:11,15`). | None hard-coded (no `CLAUDE_PLUGIN_ROOT`, no `allowed-tools`, no `mcp__` tool names anywhere in this plugin's files). Practically depends on the org's mesh coordination MCP server (Project Jarvis hub) and `gh`, described only in prose. | Skills/commands are plain Markdown; the actual scripts (`wicked-repo-inventory/deepsec-rollout.py`, `findings-sync.py`) are host-neutral Python + `gh`. |
 | **onboarding** | `claude-repo`, `plugins/onboarding/` | 0.1.0 (`plugin.json:3`) | 1 skill (`verify-setup`), 1 slash command (`commands/onboard.md`), 1 shell script at repo root (`scripts/bootstrap.sh`, shared install entry point). | `scripts/bootstrap.sh:112-118` (`ensure_marketplace`, `install_plugin session-lifecycle/pr-flow/estate-maintenance/token-usage/wizzo-twin`) wraps the **Claude Code CLI's** `claude plugin marketplace add` / `claude plugin install` — this is the plugin's actual reason for existing, and it is entirely Claude-CLI-shaped. `scripts/bootstrap.sh:60` also checks `have claude`. | The `verify-setup` skill's checks (repo clone present, `.remember/` exists, 1Password access) are host-neutral prose and would still make sense elsewhere, just without the marketplace-install half. |
 | **product-lifecycle** | `claude-repo`, `plugins/product-lifecycle/` | 0.1.0 (`plugin.json:3`) | 3 skills (`lifecycle-navigator`, `opportunity-scoring`, `register-hygiene`), **15 slash commands** (`commands/product-*.md`), 1 reference doc (`reference/research-rules.md`). No hooks, no bundled MCP, no agents. | None hard-coded — no `mcp__` tool names or `CLAUDE_PLUGIN_ROOT` found anywhere in this plugin (`grep -rl 'mcp__' plugins/product-lifecycle/` → no hits). Its usefulness on any host still depends on that host having Notion/HubSpot/Asana/Apollo MCP connectors wired in (10 of 16 command files reference Notion by name), but the plugin itself doesn't name a vendor-specific tool. | The prompt bodies are plain Markdown/English describing the Wicked Sick Product Lifecycle Framework — genuinely portable at the manifest level. |
+| **wizzo-fleet-presence** | Claude half: `Wicked-Sick-Ltd/claude-repo`, `plugins/wizzo-fleet-presence/` (catalogued in `ai-marketplace/.claude-plugin/marketplace.json` as a `git-subdir` pin). Codex half: `Wicked-Sick-Ltd/codex-repo`, `config/hooks/` + `scripts/` (catalogued in `.agents/plugins/marketplace.json` as a repo-root SHA pin). Cursor half: `Wicked-Sick-Ltd/acsendr`, `mcp/hooks/cursor/` (template, not catalogued — see §B note). | 0.1.0 | Claude: `.claude-plugin/plugin.json`, `hooks/hooks.json` (4 events), `hooks/presence.py` launcher, README. Codex: `config/hooks/wizzo-fleet-presence.toml` (4 `[[hooks.*]]` blocks), `scripts/install-presence-hooks.py` (idempotent marker merge, `--check`), `tests/test_presence_hooks.py`. No skills, no commands, no MCP, no agents. | Only the **binding surface** is vendor-specific — Claude Code's `hooks.json` event names and `${CLAUDE_PLUGIN_ROOT}`; Codex's `[[hooks.*]]` TOML and its `--dangerously-bypass-hook-trust` invocation requirement; Cursor's project-level `.cursor/hooks.json`. Nothing else. | The payload is identical across all three: `coordctl <verb> --vendor <enum>` with the hook JSON inherited on stdin. Each wrapper is ~15 lines. Porting to a fourth vendor is writing that vendor's binding file, not writing a pack. |
 
-Inventory count: **6 plugins** (plus the owner-only `wizzo-twin`, out of scope).
+Inventory count: **7 plugins** (plus the owner-only `wizzo-twin`, out of scope).
 
 ---
 
-## B. Support matrix (6 plugins × 6 vendors = 36 cells)
+## B. Support matrix (7 plugins × 6 vendors = 42 cells)
 
 Legend: **LISTED** = on a real, working marketplace index today · **CLAUDE-ONLY** = fundamentally depends on Claude/Cowork-only mechanics · **PORTABLE-WITH-WORK** = skill/MCP body could carry over, manifest work required.
 
@@ -31,16 +32,17 @@ Legend: **LISTED** = on a real, working marketplace index today · **CLAUDE-ONLY
 | estate-maintenance | **LISTED** — `marketplace.json:93-114` | PORTABLE-WITH-WORK | PORTABLE-WITH-WORK — `docs/cursor-integration.md:147` | PORTABLE-WITH-WORK | PORTABLE-WITH-WORK | **LISTED** |
 | onboarding | **LISTED** — `marketplace.json:115-133` | PORTABLE-WITH-WORK (partial — see notes) | PORTABLE-WITH-WORK — docs label it "Partial" (`docs/cursor-integration.md:149`) | PORTABLE-WITH-WORK (partial) | PORTABLE-WITH-WORK (partial) | **LISTED** |
 | product-lifecycle | **LISTED** — `marketplace.json:134-155` | PORTABLE-WITH-WORK | PORTABLE-WITH-WORK — `docs/cursor-integration.md:148` | PORTABLE-WITH-WORK | PORTABLE-WITH-WORK | **LISTED** |
+| wizzo-fleet-presence | **LISTED** — `ai-marketplace/.claude-plugin/marketplace.json` (`git-subdir` pin into `claude-repo/plugins/wizzo-fleet-presence`) | **LISTED** — `.agents/plugins/marketplace.json`, repo-root SHA pin on `codex-repo`; install is `python3 scripts/install-presence-hooks.py`, so the repo-root-only schema limitation in §C does not bite | **INSTALLABLE-BUT-UNLISTED** — template in `acsendr/mcp/hooks/cursor/`; Cursor hooks are not marketplace-installable, and `scripts/validate.py:70-74` requires an in-repo path while `AGENTS.md` forbids vendoring, so it is recorded in `.cursor-plugin/marketplace.json` metadata + `docs/cursor-integration.md` instead | **N/A this tranche** — deferred with Gemini; the vendor enum leaves room | **N/A** — Gemini CLI has no session-lifecycle hook to bind to (`gemini/README.md`) | **LISTED** (via the Claude catalog, as every Claude-listed plugin is) |
 
 **Cell counts:**
-- LISTED: **12** (6 × Claude, 6 × Grok)
+- LISTED: **15** (7 × Claude, 7 × Grok, 1 × Codex)
 - CLAUDE-ONLY: **4** (token-usage × Codex/Cursor/Copilot/Gemini)
 - PORTABLE-WITH-WORK: **20** (5 plugins × Codex/Cursor/Copilot/Gemini)
-- INSTALLABLE-BUT-UNLISTED: **0**
-- N/A: **0**
+- INSTALLABLE-BUT-UNLISTED: **1** (wizzo-fleet-presence × Cursor)
+- N/A: **2** (wizzo-fleet-presence × Copilot/Gemini)
 - Total: 42 ✓
 
-Important qualifier on the Claude column: `ai-marketplace`'s own `.claude-plugin/marketplace.json` today lists **only `token-usage`** (`ai-marketplace/.claude-plugin/marketplace.json:9-28`); the other 5 plugins are "LISTED" via `claude-repo`'s own working marketplace (`claude-repo/.claude-plugin/marketplace.json`), not via the org catalog repo. This is called out as deliberate/current-state in `ai-marketplace/README.md:40`: "Workflow skills … live in claude-repo today with Claude manifests only." It is a real, cited fact, not an inconsistency I'm introducing.
+Important qualifier on the Claude column: `ai-marketplace`'s own `.claude-plugin/marketplace.json` today lists `token-usage` (`ai-marketplace/.claude-plugin/marketplace.json:10-28`) and, as of this update, `wizzo-fleet-presence` (`:29-48`, the first entry here to use a `git-subdir` source rather than a whole-repo pin); the other 5 plugins are "LISTED" via `claude-repo`'s own working marketplace (`claude-repo/.claude-plugin/marketplace.json`), not via the org catalog repo. This is called out as deliberate/current-state in `ai-marketplace/README.md:40`: "Workflow skills … live in claude-repo today with Claude manifests only." It is a real, cited fact, not an inconsistency I'm introducing.
 
 Important qualifier on the Grok column: there is no `.grok-plugin/marketplace.json` anywhere (omitted "on purpose", `ai-marketplace/README.md:20`); Grok's "LISTED" status is Grok reading the Claude catalog natively, not a separate index.
 
@@ -79,7 +81,24 @@ Important qualifier on the Grok column: there is no `.grok-plugin/marketplace.js
 
 ## E. Open questions for Craig
 
-1. **Should `ai-marketplace` or `codex-repo` host the Codex plugin packs?** `codex-repo` today contains zero plugin/skill content — it's pure Codex CLI approval/permission config (`approval_policy`, `sandbox_mode`, `rules/portable.rules`) and never references `claude-repo`, Agent Skills, or `SKILL.md`. The `.agents/plugins/marketplace.json` catalog file already lives in `ai-marketplace` per the existing plan (`cross-ai-marketplace-plan.md:60-64`), which argues for keeping Codex *packs* there too and leaving `codex-repo` as pure machine/approval config — but that's a call worth confirming explicitly before building it out, since `codex-repo`'s `README.md`/`AGENTS.md` give no signal either way.
+1. ~~**Should `ai-marketplace` or `codex-repo` host the Codex plugin packs?**~~
+   **ANSWERED 2026-09-18 (Craig, spec §7 decision 1): `codex-repo` hosts the
+   packs; `ai-marketplace/.agents/plugins/marketplace.json` is the catalogue
+   entry only.** First pack shipped under that rule is `wizzo-fleet-presence`
+   (`codex-repo/config/hooks/` + `scripts/install-presence-hooks.py`). The note
+   below is retained as the reasoning that framed the decision. Question 2
+   (extraction vs schema change for `claude-repo`'s six monorepo plugins) is
+   **still open** — `wizzo-fleet-presence` sidesteps it on Claude with a
+   `git-subdir` source and on Codex by living at its host repo's root.
+
+   *(Original framing, retained for context:)* `codex-repo` today contains
+   zero plugin/skill content — it's pure Codex CLI approval/permission config
+   (`approval_policy`, `sandbox_mode`, `rules/portable.rules`) and never
+   references `claude-repo`, Agent Skills, or `SKILL.md`. The
+   `.agents/plugins/marketplace.json` catalog file already lives in
+   `ai-marketplace` per the existing plan (`cross-ai-marketplace-plan.md:60-64`),
+   which argues for keeping Codex *packs* there too and leaving `codex-repo` as
+   pure machine/approval config.
 2. **Extraction vs. schema change for Codex/Copilot.** Given the repo-root-only limitation in §C, do you want to (a) split some/all of the 5 `claude-repo` plugins into their own repos (mirrors `token-usage`'s shape, costs repo sprawl), or (b) extend `ai-marketplace/scripts/validate.py` + the catalog schema with a subdirectory field for Codex/Copilot entries (keeps them in `claude-repo`, but diverges from Claude's own marketplace schema, which also doesn't support it)?
 3. **Cursor Team Marketplace import target.** `docs/cursor-integration.md` recommends importing `claude-repo` directly as the Team Marketplace (`docs/cursor-integration.md:70-77`) rather than vendoring anything into `ai-marketplace`. Confirm that's still the intended target before anyone connects it in the Cursor dashboard, and confirm who gets **Default On** vs **Default Off/Required** per plugin (`docs/cursor-integration.md:172-175` proposes Default On for `session-lifecycle`, owner-only for `wizzo-twin`).
 4. **Gemini subdirectory support is unverified.** Neither sourced doc says whether `gemini extensions install <url>` accepts a subpath into a monorepo, or requires the repo root to *be* the plugin. Worth a 10-minute manual test against `claude-repo` before assuming extraction is required.
