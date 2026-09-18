@@ -22,7 +22,7 @@ Inventory count: **7 plugins** (plus the owner-only `wizzo-twin`, out of scope).
 
 ## B. Support matrix (7 plugins × 6 vendors = 42 cells)
 
-Legend: **LISTED** = on a real, working marketplace index today · **CLAUDE-ONLY** = fundamentally depends on Claude/Cowork-only mechanics · **PORTABLE-WITH-WORK** = skill/MCP body could carry over, manifest work required.
+Legend: **LISTED** = on a real, working marketplace index today · **CLAUDE-ONLY** = fundamentally depends on Claude/Cowork-only mechanics · **PORTABLE-WITH-WORK** = skill/MCP body could carry over, manifest work required · **INSTALLABLE-BUT-UNLISTED** = works today but isn't on that vendor's marketplace index · **N/A** = no applicable mechanism exists on that vendor yet.
 
 | Plugin | Claude Code | Codex | Cursor | Copilot | Gemini | Grok |
 |---|---|---|---|---|---|---|
@@ -50,7 +50,7 @@ Important qualifier on the Grok column: there is no `.grok-plugin/marketplace.js
 
 ## C. Per-vendor gaps — what a plugin needs to appear on that index
 
-**Claude Code** — satisfied for all 7 today (each has `.claude-plugin/plugin.json` under `claude-repo/plugins/<name>/`, and a `claude-repo/.claude-plugin/marketplace.json` entry). Gap: cross-listing the 6 workflow plugins into `ai-marketplace`'s own Claude index hasn't happened yet — not required for them to work, but it is the stated end state (`ai-marketplace/AGENTS.md:2-3`: "This repository is an index… it does not contain plugin code").
+**Claude Code** — satisfied for all 8 today (each has `.claude-plugin/plugin.json` under `claude-repo/plugins/<name>/`, and a `claude-repo/.claude-plugin/marketplace.json` entry — count updated from 7 now that `wizzo-fleet-presence`'s Claude half also lives at `claude-repo/plugins/wizzo-fleet-presence/`). Gap: cross-listing the 6 workflow plugins into `ai-marketplace`'s own Claude index hasn't happened yet — not required for them to work, but it is the stated end state (`ai-marketplace/AGENTS.md:2-3`: "This repository is an index… it does not contain plugin code"). `wizzo-fleet-presence` is not part of that gap — it's already cross-listed there (§B).
 
 **Codex** (`.agents/plugins/marketplace.json`) — currently `{"name":"wickedsick","interface":{"displayName":"Wicked Sick"},"plugins":[]}` (`ai-marketplace/.agents/plugins/marketplace.json:1-7`). `scripts/validate.py:138-142` treats Codex identically to Claude: `plugin_names(..., require_sha=True)` — a full 40-char lowercase-hex `sha` plus a GitHub `repo`, same shape as Claude (`scripts/validate.py:41-62`). **Critically, that schema has no subdirectory/path field** — it assumes the pinned repo *is* the plugin root (exactly how `token-usage` works). None of `session-lifecycle`, `pr-flow`, `estate-maintenance`, `onboarding`, `product-lifecycle`, or `wizzo-twin` live in their own repo — they're all `claude-repo/plugins/<name>/`. So listing any of them on Codex today would require either (a) extracting each into its own repo, or (b) extending the catalog schema with a subdirectory field (not present, and `validate.py` would need a matching change). Each plugin also needs a root Agent Plugins `plugin.json` (`$schema` from agent-plugins.org) — none exist anywhere in `claude-repo` (`find . -name plugin.json` only finds the nested `.claude-plugin/plugin.json` files). `codex-repo` itself carries **no plugin/skill content at all** — it is Codex CLI approval/permission configuration only (`config/permissions.toml`, `config/permissions.md`, `rules/portable.rules`) and never mentions `claude-repo`, `ai-marketplace`, `SKILL.md`, or Agent Skills.
 
@@ -91,7 +91,7 @@ Important qualifier on the Grok column: there is no `.grok-plugin/marketplace.js
    **still open** — `wizzo-fleet-presence` sidesteps it on Claude with a
    `git-subdir` source and on Codex by living at its host repo's root.
 
-   *(Original framing, retained for context:)* `codex-repo` today contains
+   Craig's decision went the other way (`codex-repo` hosts the pack, not `ai-marketplace`) — the paragraph below argues the pre-decision view it superseded, kept only for the reasoning trail. *(Original framing, retained for context:)* `codex-repo` today contains
    zero plugin/skill content — it's pure Codex CLI approval/permission config
    (`approval_policy`, `sandbox_mode`, `rules/portable.rules`) and never
    references `claude-repo`, Agent Skills, or `SKILL.md`. The
