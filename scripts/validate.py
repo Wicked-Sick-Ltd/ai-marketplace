@@ -62,6 +62,50 @@ def plugin_names(data: dict, *, require_sha: bool) -> list[str]:
     return names
 
 
+CODEX_SOURCE_TYPES = {"url", "local", "git-subdir"}
+
+
+def codex_plugin_names(data: dict) -> list[str]:
+    """Codex's Agent Plugins schema has no ref/sha field: an entry names a
+    repo URL (or an in-repo/local path) and Codex resolves it directly —
+    there is nothing to pin to. Validate that shape instead of requiring
+    a Claude-style sha.
+    """
+    plugins = data.get("plugins")
+    if not isinstance(plugins, list):
+        fail("plugins must be an array")
+    names = []
+    for i, plugin in enumerate(plugins):
+        if not isinstance(plugin, dict):
+            fail(f"plugins[{i}] must be an object")
+        name = plugin.get("name")
+        if not name:
+            fail(f"plugins[{i}] missing name")
+        names.append(name)
+        source = plugin.get("source")
+        if not isinstance(source, dict):
+            fail(f"Codex plugin {name!r} missing source")
+        if "sha" in source:
+            fail(f"Codex plugin {name!r} source must not carry a sha (Codex has no ref/sha field)")
+        source_type = source.get("source")
+        if source_type not in CODEX_SOURCE_TYPES:
+            fail(f"Codex plugin {name!r} source.source must be one of {sorted(CODEX_SOURCE_TYPES)}")
+        if source_type in ("url", "git-subdir") and not source.get("url"):
+            fail(f"Codex plugin {name!r} source is missing url")
+        if source_type == "local" and not source.get("path"):
+            fail(f"Codex plugin {name!r} local source is missing path")
+        policy = plugin.get("policy")
+        if (
+            not isinstance(policy, dict)
+            or not policy.get("installation")
+            or not policy.get("authentication")
+        ):
+            fail(f"Codex plugin {name!r} missing policy.installation/policy.authentication")
+        if not plugin.get("category"):
+            fail(f"Codex plugin {name!r} missing category")
+    return names
+
+
 def _cursor_source_path(name: str, source: object) -> Path:
     """Cursor catalogs resolve source as a directory inside this git repo."""
     if isinstance(source, str):
@@ -135,11 +179,15 @@ def main() -> None:
     if leaked:
         fail(f"cursor catalog must not list Claude-only plugins: {sorted(leaked)}")
 
-    for label in ("codex", "copilot"):
-        listed = plugin_names(load(INDEXES[label]), require_sha=True)
-        leaked = CLAUDE_ONLY.intersection(listed)
-        if leaked:
-            fail(f"{label} catalog must not list Claude-only plugins: {sorted(leaked)}")
+    codex_names = codex_plugin_names(load(INDEXES["codex"]))
+    leaked = CLAUDE_ONLY.intersection(codex_names)
+    if leaked:
+        fail(f"codex catalog must not list Claude-only plugins: {sorted(leaked)}")
+
+    copilot_names = plugin_names(load(INDEXES["copilot"]), require_sha=True)
+    leaked = CLAUDE_ONLY.intersection(copilot_names)
+    if leaked:
+        fail(f"copilot catalog must not list Claude-only plugins: {sorted(leaked)}")
 
     gemini = ROOT / "gemini" / "README.md"
     if not gemini.is_file():
