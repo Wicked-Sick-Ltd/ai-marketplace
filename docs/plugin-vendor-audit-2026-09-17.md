@@ -40,7 +40,7 @@ Legend: **LISTED** = on a real, working marketplace index today · **CLAUDE-ONLY
 - N/A: **0**
 - Total: 42 ✓
 
-Important qualifier on the Claude column: `ai-marketplace`'s own `.claude-plugin/marketplace.json` today lists **only `token-usage`** (`ai-marketplace/.claude-plugin/marketplace.json:9-28`); the other 6 plugins are "LISTED" via `claude-repo`'s own working marketplace (`claude-repo/.claude-plugin/marketplace.json`), not via the org catalog repo. This is called out as deliberate/current-state in `ai-marketplace/README.md:40`: "Workflow skills … live in claude-repo today with Claude manifests only." It is a real, cited fact, not an inconsistency I'm introducing.
+Important qualifier on the Claude column: `ai-marketplace`'s own `.claude-plugin/marketplace.json` today lists **only `token-usage`** (`ai-marketplace/.claude-plugin/marketplace.json:9-28`); the other 5 plugins are "LISTED" via `claude-repo`'s own working marketplace (`claude-repo/.claude-plugin/marketplace.json`), not via the org catalog repo. This is called out as deliberate/current-state in `ai-marketplace/README.md:40`: "Workflow skills … live in claude-repo today with Claude manifests only." It is a real, cited fact, not an inconsistency I'm introducing.
 
 Important qualifier on the Grok column: there is no `.grok-plugin/marketplace.json` anywhere (omitted "on purpose", `ai-marketplace/README.md:20`); Grok's "LISTED" status is Grok reading the Claude catalog natively, not a separate index.
 
@@ -73,7 +73,7 @@ Important qualifier on the Grok column: there is no `.grok-plugin/marketplace.js
 | 5 | **onboarding** | **M** | Split personality: `verify-setup` skill ports cheaply; the plugin's actual purpose (`scripts/bootstrap.sh:112-118` wrapping `claude plugin marketplace add`/`install`) is Claude-CLI-only. Porting means either shipping a diminished skill-only listing on other hosts, or writing a second bootstrap script per host — real duplicate engineering, which is why the docs call it "Partial" (`docs/cursor-integration.md:149`). |
 | 6 | **token-usage** | **L — and arguably shouldn't be "ported" at all** | Hooks (`Stop`/`SubagentStop`) and the whole ledger model are Claude Code/Cowork session-shaped (`~/.claude/projects/*.jsonl`, Cowork sandbox mounts). This isn't a manifest exercise — it needs a from-scratch transcript parser per host, and if a host has no Stop-equivalent hook, the "always up to date" behaviour can't be reproduced at all. **Recommended honest listing text for every non-Claude/Grok vendor:** *"Claude Code & Cowork transcripts only — not available on this platform until a \[Cursor/Codex/Copilot/Gemini\] session-log parser exists."* This matches the plan's own stance (`ai-marketplace/README.md:38`, `cross-ai-marketplace-plan.md:104,163`) and `scripts/validate.py`'s `CLAUDE_ONLY` guard (`scripts/validate.py:21,134-142`), which already hard-blocks it from appearing on Codex/Copilot and would need the same fix applied to Cursor/Gemini indexes if they ever grow beyond stubs.
 
-**Inherently Claude-only:** `token-usage` (hooks + transcript format). Everything else in the inventory is portable in principle; the blockers are missing manifests (all 6) and, for Codex/Copilot/possibly Gemini, the monorepo-subdirectory limitation in §C.
+**Inherently Claude-only:** `token-usage` (hooks + transcript format). Everything else in the inventory is portable in principle; the blockers are missing manifests (all 5) and, for Codex/Copilot/possibly Gemini, the monorepo-subdirectory limitation in §C.
 
 ---
 
