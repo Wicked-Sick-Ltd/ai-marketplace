@@ -5,8 +5,8 @@
     "email": "craig@wickedsick.com"
   },
   "metadata": {
-    "description": "Wicked Sick plugins for Cursor. This file is the org catalog stub: Cursor resolves plugin source as a path inside the imported git repo, so we do not SHA-pin remote GitHub sources here. Import Wicked-Sick-Ltd/claude-repo as the Team Marketplace once those plugins have .cursor-plugin/plugin.json. See docs/cursor-integration.md.",
-    "version": "0.1.0"
+    "description": "Wicked Sick plugins for Cursor. This file is the org catalog stub: Cursor resolves plugin source as a path inside the imported git repo, so we do not SHA-pin remote GitHub sources here. Import Wicked-Sick-Ltd/claude-repo as the Team Marketplace once those plugins have .cursor-plugin/plugin.json. See docs/cursor-integration.md. The wizzo-fleet-presence Cursor pack is deliberately NOT listed here: it is a .cursor/hooks.json + hook-script template, not a Cursor plugin, and Cursor hooks are not marketplace-installable. It lives in Wicked-Sick-Ltd/acsendr at mcp/hooks/cursor/ — see docs/cursor-integration.md for its two install modes.",
+    "version": "0.2.0"
   },
   "plugins": []
 }

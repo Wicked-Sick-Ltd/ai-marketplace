@@ -3,5 +3,22 @@
   "interface": {
     "displayName": "Wicked Sick"
   },
-  "plugins": []
+  "plugins": [
+    {
+      "name": "wizzo-fleet-presence",
+      "description": "Fleet presence for Codex sessions: merges four [[hooks.*]] blocks into <CODEX_HOME>/config.toml that call acsendr's coordctl with --vendor codex, so Codex sessions appear on the Agent Mesh and in Jarvis beside Claude Code ones. Install with `python3 scripts/install-presence-hooks.py` from the pinned repo (idempotent; --check is a dry run). Codex must be invoked with --dangerously-bypass-hook-trust or no hook runs. No secrets: env-var names and op:// references only.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Craig Fletcher",
+        "email": "craigfletcheruk@gmail.com"
+      },
+      "repository": "https://github.com/Wicked-Sick-Ltd/codex-repo",
+      "keywords": ["fleet", "presence", "coordination", "mesh", "hooks", "coordctl", "codex"],
+      "source": {
+        "source": "github",
+        "repo": "Wicked-Sick-Ltd/codex-repo",
+        "sha": "5b2f1fbf5bedb564c8db4b5fc18a8118a8ba9633"
+      }
+    }
+  ]
 }

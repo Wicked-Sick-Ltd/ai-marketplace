@@ -104,6 +104,36 @@ catalog file exists at the path Cursor documents. List a plugin here only if we
 later choose to host a Cursor-native pack *in this repo* (still no vendored
 upstream). Until then the array stays empty on purpose.
 
+### `wizzo-fleet-presence` — hooks, not a plugin
+
+Fleet presence for Cursor is a **hooks template**, not a Cursor plugin, so it
+does not appear in any `plugins[]` array. Source of truth:
+`Wicked-Sick-Ltd/acsendr` at `mcp/hooks/cursor/` — a `.cursor/hooks.json`
+binding `sessionStart` / `preToolUse` / `postToolUse` / `sessionEnd`, plus
+`.cursor/hooks/coordctl-hook.sh`, which calls `coordctl <verb> --vendor cursor`.
+
+Two install modes, and there is no third: a `CURSOR_CONFIG_DIR`-rooted
+`hooks.json` silently does not fire, so Cursor hook discovery is project-level
+or user-level only.
+
+1. **Interactive, on a human's box** — copy the template to `~/.cursor/hooks.json`
+   (and its script to `~/.cursor/hooks/`), then restart Cursor.
+2. **Headless, in a sidecar worktree** — nothing to install by hand. The sidecar
+   writes the template into each worktree at spawn, adds it to the worktree's
+   `.git/info/exclude` so it never reaches the agent's diff or its PR, and
+   removes it with the worktree.
+
+Two Cursor-specific notes carried from the executor spike: `beforeSubmitPrompt`
+and `stop` do not fire in headless `-p` runs, so the liveness signal is
+`postToolUse` cadence, rate-limited client-side to at most one call per 60 s.
+And headless Cursor workers get **no hub MCP** this tranche — the sidecar
+performs claim/verify/complete/escalate on the worker's behalf, so no bearer
+token needs to touch a worktree. Interactive users manage their own
+`~/.cursor/mcp.json`.
+
+Verify either mode the same way: `coordctl status` shows the box with the
+`cursor` vendor tag.
+
 ### Public Cursor Marketplace
 
 `cursor.com/marketplace/publish` is last, after the team catalog works. Same

@@ -29,11 +29,11 @@ claude plugin install token-usage@wickedsick
 
 | Client | File | Plugins listed today |
 | --- | --- | --- |
-| Claude Code / Grok | `.claude-plugin/marketplace.json` | `token-usage` (pinned) |
-| Cursor | `.cursor-plugin/marketplace.json` | none here (path-based catalog; live plugins stay in `claude-repo`) |
-| ChatGPT / Codex | `.agents/plugins/marketplace.json` | none yet |
+| Claude Code / Grok | `.claude-plugin/marketplace.json` | `token-usage`, `wizzo-fleet-presence` (pinned) |
+| Cursor | `.cursor-plugin/marketplace.json` | none here (path-based catalog; live plugins stay in `claude-repo`; the `wizzo-fleet-presence` Cursor pack is a hooks template in `acsendr`, not a plugin) |
+| ChatGPT / Codex | `.agents/plugins/marketplace.json` | `wizzo-fleet-presence` (pinned to `codex-repo`) |
 | Copilot | `.github/plugin/marketplace.json` | none yet |
-| Gemini | [`gemini/README.md`](gemini/README.md) | none yet |
+| Gemini | [`gemini/README.md`](gemini/README.md) | none — no session-lifecycle hooks to bind to |
 
 `token-usage` is Claude-only until it can parse that host's session logs (or the listing is explicitly "Claude transcripts only"). `.cursor/environment.json` on a plugin repo is Cloud Agent setup, not a Cursor plugin.
 
