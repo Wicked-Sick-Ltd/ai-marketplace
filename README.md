@@ -103,7 +103,6 @@ Then open http://localhost:3000.
 
 ## API
 
-- `GET /api/listings` — list all listings (featured first).
 - `POST /api/listings` — create a listing. JSON body validated with Zod:
   `{ name, tagline, description, category, pricing, author }`.
 

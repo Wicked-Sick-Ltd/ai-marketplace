@@ -4,13 +4,6 @@ import { listingInputSchema, slugify } from "@/lib/listings";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
-  const listings = await prisma.listing.findMany({
-    orderBy: [{ featured: "desc" }, { createdAt: "desc" }]
-  });
-  return NextResponse.json({ listings });
-}
-
 export async function POST(request: Request) {
   let payload: unknown;
   try {
