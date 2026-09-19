@@ -51,14 +51,17 @@ def plugin_names(data: dict, *, require_sha: bool) -> list[str]:
             fail(f"plugins[{i}] missing name")
         names.append(name)
         source = plugin.get("source")
-        if require_sha and isinstance(source, dict):
+        if require_sha:
+            if not isinstance(source, dict):
+                fail(f"plugin {name!r} needs a source object pinned to a sha")
             sha = source.get("sha")
-            if not sha:
-                fail(f"plugin {name!r} source is missing sha")
-            if not SHA_RE.match(sha):
+            if not isinstance(sha, str) or not SHA_RE.match(sha):
                 fail(f"plugin {name!r} sha must be 40 lowercase hex chars")
-            if source.get("source") == "github" and not source.get("repo"):
+            source_type = source.get("source")
+            if source_type == "github" and not source.get("repo"):
                 fail(f"plugin {name!r} github source missing repo")
+            if source_type == "git-subdir" and not source.get("url"):
+                fail(f"plugin {name!r} git-subdir source missing url")
     return names
 
 
@@ -158,40 +161,46 @@ def cursor_plugin_names(data: dict) -> list[str]:
     return names
 
 
-def main() -> None:
-    for path in INDEXES.values():
-        load(path)
+def check_names(label: str, names: list[str], *, allow_claude_only: bool = False) -> None:
+    dupes = sorted({name for name in names if names.count(name) > 1})
+    if dupes:
+        fail(f"duplicate plugin names in {label} catalog: {dupes}")
+    if allow_claude_only:
+        return
+    leaked = sorted(CLAUDE_ONLY.intersection(names))
+    if leaked:
+        fail(f"{label} catalog must not list Claude-only plugins: {leaked}")
 
-    claude = load(INDEXES["claude"])
+
+def check_gemini_readme() -> None:
+    path = ROOT / "gemini" / "README.md"
+    if not path.is_file():
+        fail("missing gemini/README.md")
+    text = path.read_text()
+    for name in sorted(CLAUDE_ONLY):
+        if name not in text:
+            fail(f"gemini/README.md must say why {name!r} is not listed for Gemini")
+
+
+def main() -> None:
+    catalogs = {key: load(path) for key, path in INDEXES.items()}
+
+    claude = catalogs["claude"]
     if claude.get("name") != "wickedsick":
         fail("Claude marketplace name must be wickedsick")
-    names = plugin_names(claude, require_sha=True)
-    if "token-usage" not in names:
+    claude_names = plugin_names(claude, require_sha=True)
+    if "token-usage" not in claude_names:
         fail("Claude catalog must list token-usage")
-    if len(names) != len(set(names)):
-        fail("duplicate plugin names in Claude catalog")
+    check_names("Claude", claude_names, allow_claude_only=True)
 
-    cursor = load(INDEXES["cursor"])
+    cursor = catalogs["cursor"]
     if cursor.get("name") != "wickedsick":
         fail("Cursor marketplace name must be wickedsick")
-    cursor_names = cursor_plugin_names(cursor)
-    leaked = CLAUDE_ONLY.intersection(cursor_names)
-    if leaked:
-        fail(f"cursor catalog must not list Claude-only plugins: {sorted(leaked)}")
+    check_names("Cursor", cursor_plugin_names(cursor))
+    check_names("Codex", codex_plugin_names(catalogs["codex"]))
+    check_names("Copilot", plugin_names(catalogs["copilot"], require_sha=True))
 
-    codex_names = codex_plugin_names(load(INDEXES["codex"]))
-    leaked = CLAUDE_ONLY.intersection(codex_names)
-    if leaked:
-        fail(f"codex catalog must not list Claude-only plugins: {sorted(leaked)}")
-
-    copilot_names = plugin_names(load(INDEXES["copilot"]), require_sha=True)
-    leaked = CLAUDE_ONLY.intersection(copilot_names)
-    if leaked:
-        fail(f"copilot catalog must not list Claude-only plugins: {sorted(leaked)}")
-
-    gemini = ROOT / "gemini" / "README.md"
-    if not gemini.is_file():
-        fail("missing gemini/README.md")
+    check_gemini_readme()
 
     print("ok: marketplace catalogs are valid")
 
