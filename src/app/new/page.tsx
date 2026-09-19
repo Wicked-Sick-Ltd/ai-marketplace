@@ -57,7 +57,7 @@ export default function NewListingPage() {
       )}
 
       <form onSubmit={handleSubmit} className="mt-8 space-y-6">
-        <Field label="Name" name="name" errors={fieldErrors.name}>
+        <Field label="Name" errors={fieldErrors.name}>
           <input
             name="name"
             required
@@ -66,7 +66,7 @@ export default function NewListingPage() {
           />
         </Field>
 
-        <Field label="Tagline" name="tagline" errors={fieldErrors.tagline}>
+        <Field label="Tagline" errors={fieldErrors.tagline}>
           <input
             name="tagline"
             required
@@ -75,11 +75,7 @@ export default function NewListingPage() {
           />
         </Field>
 
-        <Field
-          label="Description"
-          name="description"
-          errors={fieldErrors.description}
-        >
+        <Field label="Description" errors={fieldErrors.description}>
           <textarea
             name="description"
             required
@@ -90,7 +86,7 @@ export default function NewListingPage() {
         </Field>
 
         <div className="grid gap-6 sm:grid-cols-2">
-          <Field label="Category" name="category" errors={fieldErrors.category}>
+          <Field label="Category" errors={fieldErrors.category}>
             <select name="category" className="input" defaultValue={CATEGORIES[0]}>
               {CATEGORIES.map((category) => (
                 <option key={category} value={category}>
@@ -100,12 +96,12 @@ export default function NewListingPage() {
             </select>
           </Field>
 
-          <Field label="Pricing" name="pricing" errors={fieldErrors.pricing}>
+          <Field label="Pricing" errors={fieldErrors.pricing}>
             <input name="pricing" required placeholder="$29/mo" className="input" />
           </Field>
         </div>
 
-        <Field label="Author" name="author" errors={fieldErrors.author}>
+        <Field label="Author" errors={fieldErrors.author}>
           <input
             name="author"
             required
@@ -127,39 +123,21 @@ export default function NewListingPage() {
           </Link>
         </div>
       </form>
-
-      <style jsx global>{`
-        .input {
-          width: 100%;
-          border-radius: 0.5rem;
-          border: 1px solid rgb(203 213 225);
-          background: white;
-          padding: 0.625rem 0.75rem;
-          font-size: 0.875rem;
-          outline: none;
-        }
-        .input:focus {
-          border-color: rgb(99 102 241);
-          box-shadow: 0 0 0 3px rgb(99 102 241 / 0.15);
-        }
-      `}</style>
     </div>
   );
 }
 
 function Field({
   label,
-  name,
   errors,
   children
 }: {
   label: string;
-  name: string;
   errors?: string[];
   children: React.ReactNode;
 }) {
   return (
-    <label className="block" htmlFor={name}>
+    <label className="block">
       <span className="mb-1.5 block text-sm font-medium text-slate-700">
         {label}
       </span>
