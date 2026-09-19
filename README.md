@@ -4,6 +4,8 @@ GitHub catalogs for the agent plugins we actually install. Plugins are **not** v
 
 This is not a Traefik module and not a substitute for `CLAUDE.md` / `AGENTS.md` in product repos. See the plan in [traefik-laravel-forge](https://github.com/Wicked-Sick-Ltd/traefik-laravel-forge/blob/master/docs/cross-ai-marketplace-plan.md).
 
+The tree also holds a small Next.js + Prisma **demo app**, in-tree so the Cursor Cloud Agent environment has something to install and run. It is not plugin source, and its listings UI is not a catalog — the catalogs are the JSON indexes below. CI validates those catalogs only, so the demo app is unenforced there. Setup and commands: [`docs/demo-app.md`](docs/demo-app.md).
+
 ## Add the marketplace
 
 ```bash
@@ -56,7 +58,7 @@ Workflow skills (`session-lifecycle`, `estate-maintenance`, `product-lifecycle`)
 ## Add a plugin
 
 1. Keep the plugin in its own repository.
-2. Pin a **full 40-character commit SHA** (and a tag `ref` when one exists) on Claude / Copilot remotes. Do not float on `main`. Codex's Agent Plugins schema has no ref/sha field — its entries name the repo URL and resolve the default branch instead; record the SHA of record in the audit doc / the source repo's merge commit. Cursor entries use in-repo paths, not SHA pins — [`docs/cursor-integration.md`](docs/cursor-integration.md).
+2. Pin a **full 40-character commit SHA** (and a tag `ref` when one exists) on Claude / Copilot remotes. Do not float on `main`. Codex's Agent Plugins schema has no ref/sha field — its entries name the repo URL and resolve the default branch instead; the SHA of record is the source repo's merge commit. Cursor entries use in-repo paths, not SHA pins — [`docs/cursor-integration.md`](docs/cursor-integration.md).
 3. List it only on marketplaces where it has a real runtime.
 4. Run `python3 scripts/validate.py`.
 

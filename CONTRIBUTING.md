@@ -16,3 +16,7 @@ This repo is a catalog. Plugin behaviour changes belong in the plugin's own repo
 5. Run `python3 scripts/validate.py`.
 
 Do not copy plugin files into this repository.
+
+## The in-tree demo app
+
+The Next.js + Prisma demo app in this tree exists so the Cursor Cloud Agent environment has something to install and run ([`docs/demo-app.md`](docs/demo-app.md)). Its listings UI is not a catalog and editing it never changes what a host installs; catalog changes are edits to the index files above plus `python3 scripts/validate.py`. CI validates the catalogs only, so demo-app changes are unenforced there — run `npm run lint` / `npm run typecheck` yourself.
