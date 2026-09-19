@@ -49,9 +49,59 @@ def cursor_rejects_github_source() -> None:
     raise SystemExit("Cursor validator accepted a GitHub SHA source")
 
 
+def codex_shape_validates() -> None:
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import validate  # noqa: E402
+
+    names = validate.codex_plugin_names(
+        {
+            "plugins": [
+                {
+                    "name": "wizzo-fleet-presence",
+                    "source": {
+                        "source": "url",
+                        "url": "https://github.com/Wicked-Sick-Ltd/codex-repo.git",
+                    },
+                    "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"},
+                    "category": "Developer Tools",
+                }
+            ]
+        }
+    )
+    if names != ["wizzo-fleet-presence"]:
+        raise SystemExit(f"unexpected codex_plugin_names result: {names}")
+
+
+def claude_entry_without_sha_fails() -> None:
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import validate  # noqa: E402
+
+    try:
+        validate.plugin_names(
+            {
+                "plugins": [
+                    {
+                        "name": "wizzo-fleet-presence",
+                        "source": {
+                            "source": "git-subdir",
+                            "url": "https://github.com/Wicked-Sick-Ltd/claude-repo.git",
+                            "path": "plugins/wizzo-fleet-presence",
+                        },
+                    }
+                ]
+            },
+            require_sha=True,
+        )
+    except SystemExit:
+        return
+    raise SystemExit("Claude validator accepted a plugin source with no sha")
+
+
 def main() -> None:
     run_validate()
     cursor_rejects_github_source()
+    codex_shape_validates()
+    claude_entry_without_sha_fails()
     print("ok: validate tests passed")
 
 

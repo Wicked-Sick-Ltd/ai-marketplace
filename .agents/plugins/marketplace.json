@@ -3,5 +3,19 @@
   "interface": {
     "displayName": "Wicked Sick"
   },
-  "plugins": []
+  "plugins": [
+    {
+      "name": "wizzo-fleet-presence",
+      "description": "Fleet presence for Codex sessions: merges [[hooks.*]] blocks into config.toml that call acsendr's coordctl with --vendor codex so Codex sessions appear on the Agent Mesh and in Jarvis beside Claude Code ones — presence is self-reported and spoofable, like every mesh signal.",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/Wicked-Sick-Ltd/codex-repo.git"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
 }

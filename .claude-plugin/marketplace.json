@@ -25,6 +25,26 @@
         "repo": "Wicked-Sick-Ltd/token-usage",
         "sha": "67164452fb51eff2e76df65b937dd3e725b75103"
       }
+    },
+    {
+      "name": "wizzo-fleet-presence",
+      "description": "Fleet presence for Claude Code: four hooks (SessionStart/UserPromptSubmit/Stop/SessionEnd) call acsendr's coordctl with --vendor claude-code, so every session on a box appears on the Agent Mesh and in Jarvis. Supersedes per-repo .claude/settings.json wiring. Fail-open; no secrets — the hub bearer stays in ~/.config/wizzo-coordination/.env as an op:// reference.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Craig Fletcher",
+        "email": "craig@wickedsick.com"
+      },
+      "category": "integration",
+      "repository": "https://github.com/Wicked-Sick-Ltd/claude-repo",
+      "license": "MIT",
+      "keywords": ["fleet", "presence", "coordination", "mesh", "hooks", "coordctl", "acsendr", "jarvis"],
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/Wicked-Sick-Ltd/claude-repo.git",
+        "path": "plugins/wizzo-fleet-presence",
+        "ref": "main",
+        "sha": "0cb15af9a28adac61f0c7e9ffc709f96b5d92576"
+      }
     }
   ]
 }
