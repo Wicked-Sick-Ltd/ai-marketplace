@@ -1,19 +1,13 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { CATEGORY_COLORS } from "@/lib/listings";
 
 export const dynamic = "force-dynamic";
 
-const categoryColors: Record<string, string> = {
-  Writing: "bg-amber-100 text-amber-700",
-  Image: "bg-pink-100 text-pink-700",
-  Support: "bg-emerald-100 text-emerald-700",
-  Analytics: "bg-sky-100 text-sky-700",
-  Productivity: "bg-violet-100 text-violet-700",
-  "Developer Tools": "bg-slate-200 text-slate-700"
-};
-
 function CategoryBadge({ category }: { category: string }) {
-  const classes = categoryColors[category] ?? "bg-slate-100 text-slate-600";
+  const classes =
+    CATEGORY_COLORS[category as keyof typeof CATEGORY_COLORS] ??
+    "bg-slate-100 text-slate-600";
   return (
     <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${classes}`}>
       {category}

@@ -10,3 +10,9 @@
 body {
   @apply bg-slate-50 text-slate-900 antialiased;
 }
+
+@layer components {
+  .input {
+    @apply w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm outline-none focus:border-indigo-500 focus:ring-[3px] focus:ring-indigo-500/15;
+  }
+}
