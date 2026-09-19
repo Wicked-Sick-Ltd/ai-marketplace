@@ -1,46 +1,39 @@
-"use client";
-
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { CATEGORIES } from "@/lib/listings";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { prisma } from "@/lib/prisma";
+import { CATEGORIES, listingInputSchema, slugify } from "@/lib/listings";
 
-type FieldErrors = Record<string, string[] | undefined>;
+async function createListing(formData: FormData) {
+  "use server";
 
-export default function NewListingPage() {
-  const router = useRouter();
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
-
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setSubmitting(true);
-    setError(null);
-    setFieldErrors({});
-
-    const formData = new FormData(event.currentTarget);
-    const body = Object.fromEntries(formData.entries());
-
-    const response = await fetch("/api/listings", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body)
-    });
-
-    if (response.status === 201) {
-      router.push("/");
-      router.refresh();
-      return;
-    }
-
-    const data = await response.json().catch(() => ({}));
-    if (response.status === 422 && data?.details?.fieldErrors) {
-      setFieldErrors(data.details.fieldErrors);
-    }
-    setError(data?.error ?? "Something went wrong. Please try again.");
-    setSubmitting(false);
+  const parsed = listingInputSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) {
+    const [issue] = parsed.error.issues;
+    redirect(`/new?error=${encodeURIComponent(issue.message)}`);
   }
+
+  const data = parsed.data;
+  const baseSlug = slugify(data.name) || "listing";
+  let slug = baseSlug;
+  let attempt = 1;
+  while (await prisma.listing.findUnique({ where: { slug } })) {
+    attempt += 1;
+    slug = `${baseSlug}-${attempt}`;
+  }
+
+  await prisma.listing.create({ data: { ...data, slug } });
+
+  revalidatePath("/");
+  redirect("/");
+}
+
+export default async function NewListingPage({
+  searchParams
+}: {
+  searchParams: Promise<{ error?: string }>;
+}) {
+  const { error } = await searchParams;
 
   return (
     <div className="mx-auto max-w-2xl">
@@ -56,8 +49,8 @@ export default function NewListingPage() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="mt-8 space-y-6">
-        <Field label="Name" errors={fieldErrors.name}>
+      <form action={createListing} className="mt-8 space-y-6">
+        <Field label="Name">
           <input
             name="name"
             required
@@ -66,7 +59,7 @@ export default function NewListingPage() {
           />
         </Field>
 
-        <Field label="Tagline" errors={fieldErrors.tagline}>
+        <Field label="Tagline">
           <input
             name="tagline"
             required
@@ -75,7 +68,7 @@ export default function NewListingPage() {
           />
         </Field>
 
-        <Field label="Description" errors={fieldErrors.description}>
+        <Field label="Description">
           <textarea
             name="description"
             required
@@ -86,7 +79,7 @@ export default function NewListingPage() {
         </Field>
 
         <div className="grid gap-6 sm:grid-cols-2">
-          <Field label="Category" errors={fieldErrors.category}>
+          <Field label="Category">
             <select name="category" className="input" defaultValue={CATEGORIES[0]}>
               {CATEGORIES.map((category) => (
                 <option key={category} value={category}>
@@ -96,12 +89,12 @@ export default function NewListingPage() {
             </select>
           </Field>
 
-          <Field label="Pricing" errors={fieldErrors.pricing}>
+          <Field label="Pricing">
             <input name="pricing" required placeholder="$29/mo" className="input" />
           </Field>
         </div>
 
-        <Field label="Author" errors={fieldErrors.author}>
+        <Field label="Author">
           <input
             name="author"
             required
@@ -113,10 +106,9 @@ export default function NewListingPage() {
         <div className="flex items-center gap-4 pt-2">
           <button
             type="submit"
-            disabled={submitting}
-            className="rounded-lg bg-brand-600 px-6 py-2.5 font-semibold text-white shadow-sm transition hover:bg-brand-700 disabled:opacity-60"
+            className="rounded-lg bg-brand-600 px-6 py-2.5 font-semibold text-white shadow-sm transition hover:bg-brand-700"
           >
-            {submitting ? "Publishing…" : "Publish tool"}
+            Publish tool
           </button>
           <Link href="/" className="text-sm font-medium text-slate-500 hover:text-slate-700">
             Cancel
@@ -129,11 +121,9 @@ export default function NewListingPage() {
 
 function Field({
   label,
-  errors,
   children
 }: {
   label: string;
-  errors?: string[];
   children: React.ReactNode;
 }) {
   return (
@@ -142,9 +132,6 @@ function Field({
         {label}
       </span>
       {children}
-      {errors && errors.length > 0 && (
-        <span className="mt-1 block text-xs text-red-600">{errors[0]}</span>
-      )}
     </label>
   );
 }

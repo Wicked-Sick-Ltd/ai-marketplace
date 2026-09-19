@@ -42,11 +42,8 @@ Then open http://localhost:3000.
 | `npm run db:migrate` | Apply pending migrations (`prisma migrate deploy`) |
 | `npm run db:seed` | Seed sample listings (safe to re-run) |
 
-## API
-
-- `GET /api/listings` — list all listings (featured first).
-- `POST /api/listings` — create a listing. JSON body validated with Zod:
-  `{ name, tagline, description, category, pricing, author }`.
+Publishing goes through the server action on `/new`, not an HTTP endpoint; it
+validates with the same Zod schema in `src/lib/listings.ts`.
 
 ## Project layout
 
@@ -58,8 +55,7 @@ prisma/
 src/
   app/
     page.tsx         # catalog (browse listings)
-    new/page.tsx     # publish-a-tool form
-    api/listings/    # REST endpoints (GET, POST)
+    new/page.tsx     # publish-a-tool form (server action)
     layout.tsx
     globals.css
   lib/
