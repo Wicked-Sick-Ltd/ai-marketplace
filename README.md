@@ -134,3 +134,15 @@ installs dependencies, generates the Prisma client, applies migrations, and
 seeds sample data; the `dev` terminal runs `npm run dev` on port 3000.
 Local config comes from `.env`, which is git-ignored — copy `.env.example`
 (a SQLite `DATABASE_URL`) to get started; the Cloud Agent install does this.
+
+<!-- repository-guidance:begin -->
+## Contributing and agent guidance
+
+- [Contributor guide](CONTRIBUTING.md): development workflow and validation.
+- [Agent instructions](AGENTS.md): shared guidance for Codex and other coding agents.
+- [Security policy](SECURITY.md): private vulnerability reporting.
+
+## Repository license
+
+MIT licensed; see [LICENSE](LICENSE). Preserve third-party notices.
+<!-- repository-guidance:end -->
