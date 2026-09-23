@@ -1,5 +1,7 @@
 # Wicked Sick AI marketplace
 
+Repository planning: [AI vendor repository migration](docs/ai-vendor-repository-migration.md) (planned; no rename or deployment performed).
+
 GitHub catalogs for the agent plugins we actually install. Plugins are **not** vendored here. Claude / Copilot indexes pin a source repo by commit SHA; Codex's Agent Plugins schema has no ref/sha field, so its entries name a repo URL and Codex resolves the default branch. Cursor indexes use in-repo paths; the Team Marketplace imports the git repo that actually contains the plugin directories.
 
 This is not a Traefik module and not a substitute for `CLAUDE.md` / `AGENTS.md` in product repos. See the plan in [traefik-laravel-forge](https://github.com/Wicked-Sick-Ltd/traefik-laravel-forge/blob/master/docs/cross-ai-marketplace-plan.md).
