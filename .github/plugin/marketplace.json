@@ -8,5 +8,27 @@
     "name": "Wicked Sick Ltd",
     "email": "craig@wickedsick.com"
   },
-  "plugins": []
+  "plugins": [
+    {
+      "name": "ponytail",
+      "description": "Prefer existing code, the standard library and native platform features; keep the smallest correct implementation without dropping validation, security or accessibility.",
+      "version": "4.10.0",
+      "author": {
+        "name": "Dietrich Gebert",
+        "url": "https://github.com/DietrichGebert"
+      },
+      "homepage": "https://github.com/DietrichGebert/ponytail",
+      "repository": "https://github.com/DietrichGebert/ponytail",
+      "license": "MIT",
+      "category": "productivity",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/DietrichGebert/ponytail.git",
+        "sha": "e3ba2aa6f1e6f0bc4d69eb09c9f0d0a93af56156"
+      },
+      "commands": "commands/",
+      "skills": "skills/",
+      "hooks": "hooks/copilot-hooks.json"
+    }
+  ]
 }
