@@ -6,7 +6,22 @@ Gemini CLI has no marketplace catalog file. Extensions must have `gemini-extensi
 gemini extensions install https://github.com/Wicked-Sick-Ltd/<plugin>
 ```
 
-No Wicked Sick plugins are listed here yet. `token-usage` is Claude-transcript-shaped and is not a Gemini extension until that repo ships `gemini-extension.json` and a Gemini-relevant runtime.
+## Ponytail
+
+[Ponytail](https://github.com/DietrichGebert/ponytail) ships a real Gemini
+extension: `gemini-extension.json` loads its context, commands and skills.
+Install the reviewed 4.10.0 revision:
+
+```bash
+gemini extensions install https://github.com/DietrichGebert/ponytail --ref e3ba2aa6f1e6f0bc4d69eb09c9f0d0a93af56156
+gemini extensions list
+```
+
+Start a new session and use `/ponytail-help` or `/ponytail-review`. It does not
+reuse Claude/Codex lifecycle hooks. The CLI supports a commit as `--ref`;
+see the [extension reference](https://geminicli.com/docs/extensions/reference/).
+
+`token-usage` is Claude-transcript-shaped and is not a Gemini extension until that repo ships `gemini-extension.json` and a Gemini-relevant runtime.
 
 Gallery (public, later): https://geminicli.com/extensions/
 

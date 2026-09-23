@@ -30,6 +30,21 @@ not.
 
 ## Two Cursor formats (pick one per plugin)
 
+### Ponytail (2026-09-23)
+
+Ponytail's native Cursor hook adapter is held as a pinned upstream submodule at
+`Wicked-Sick-Ltd/cursor-repo/integrations/ponytail`. That repo's
+`docs/ponytail.md` covers initialization, user/project installation, verification,
+Cloud Agent rules and uninstall. Its source is not copied into this index, and
+the hook adapter is not listed as a Cursor marketplace plugin here.
+
+The adapter preserves existing hooks. It needs Node.js on Cursor's PATH and a
+stable checkout path. Cloud Agents do not run `sessionStart`, so use the
+documented project rule alternative or explicitly activate a mode through
+project hooks. Subagents do not receive the injected context.
+
+### Plugin formats
+
 Cursor loads both. Team marketplaces can distribute either.
 
 | Format | Manifest | Ships | Use when |

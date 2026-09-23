@@ -28,17 +28,21 @@ Then install individual plugins (Claude):
 ```bash
 claude plugin install token-usage@wickedsick
 claude plugin install wizzo-fleet-presence@wickedsick
+claude plugin install ponytail@wickedsick
 ```
 
 ## Indexes
 
 | Client | File | Plugins listed today |
 | --- | --- | --- |
-| Claude Code / Grok | `.claude-plugin/marketplace.json` | `token-usage`, `wizzo-fleet-presence` (pinned) |
+| Claude Code / Grok | `.claude-plugin/marketplace.json` | `token-usage`, `wizzo-fleet-presence`, `ponytail` (pinned; Ponytail's Grok runtime is skills-only) |
 | Cursor | `.cursor-plugin/marketplace.json` | none here (path-based catalog; live plugins stay in `claude-repo`; the `wizzo-fleet-presence` Cursor pack is a hooks template in `acsendr`, not a plugin) |
-| ChatGPT / Codex | `.agents/plugins/marketplace.json` | `wizzo-fleet-presence` (repo URL into `codex-repo`; Codex has no sha field, so this isn't a pin — see `AGENTS.md`) |
-| Copilot | `.github/plugin/marketplace.json` | none yet |
-| Gemini | [`gemini/README.md`](gemini/README.md) | none — no session-lifecycle hooks to bind to |
+| ChatGPT / Codex | `.agents/plugins/marketplace.json` | `wizzo-fleet-presence`, `ponytail` (repo URLs; Codex has no sha field, so these aren't pins — see `AGENTS.md`) |
+| Copilot CLI | `.github/plugin/marketplace.json` | `ponytail` (pinned; Copilot-specific commands, skills and hooks) |
+| Gemini | [`gemini/README.md`](gemini/README.md) | `ponytail` (upstream extension) |
+
+Ponytail setup, vendor ownership, revision tracking and runtime limitations:
+[`docs/ponytail.md`](docs/ponytail.md).
 
 `token-usage` is Claude-only until it can parse that host's session logs (or the listing is explicitly "Claude transcripts only"). `.cursor/environment.json` on a plugin repo is Cloud Agent setup, not a Cursor plugin.
 
