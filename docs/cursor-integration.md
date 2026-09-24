@@ -5,7 +5,7 @@ and skills we already run on Claude Code — without copying plugin source into
 this catalog repo.
 
 Convention for *how we work* stays in
-[`claude-repo/CONVENTIONS.md`](https://github.com/Wicked-Sick-Ltd/claude-repo/blob/main/CONVENTIONS.md)
+[`ai-claude-repo/CONVENTIONS.md`](https://github.com/Wicked-Sick-Ltd/ai-claude-repo/blob/main/CONVENTIONS.md)
 (session bookends, PRs, Risk Tier, `.remember/`, estate plugins). Product-repo
 rules stay in each product's `AGENTS.md` / `CLAUDE.md`. This repo only **lists**
 installable plugins.
@@ -18,7 +18,7 @@ Cursor's public docs: [Plugins](https://cursor.com/docs/plugins) and
 | Surface | State |
 | --- | --- |
 | Org catalog repo | `Wicked-Sick-Ltd/ai-marketplace` exists. Claude index lists `token-usage` pinned to SHA `67164452…`. Cursor / Codex / Copilot indexes are **empty**. |
-| Working Claude marketplace | [`claude-repo`](https://github.com/Wicked-Sick-Ltd/claude-repo) still ships the plugins people actually install (`onboarding`, `session-lifecycle`, `estate-maintenance`, `product-lifecycle`, `wizzo-twin`, plus remote `token-usage`). |
+| Working Claude marketplace | [`ai-claude-repo`](https://github.com/Wicked-Sick-Ltd/ai-claude-repo) still ships the plugins people actually install (`onboarding`, `session-lifecycle`, `estate-maintenance`, `product-lifecycle`, `wizzo-twin`, plus remote `token-usage`). |
 | Cloud Agent compatibility | Several plugin repos have `.cursor/environment.json`. That is **Cloud Agent VM setup**, not a Cursor plugin. It does not put skills on Customize → Plugins. |
 | Cursor plugin shims | None. No repo has `.cursor-plugin/plugin.json` or a root Agent Plugins `plugin.json` / `mcp.json`. |
 | This catalog's Cursor file | `.cursor-plugin/marketplace.json` is a valid empty Team Marketplace stub (`name: wickedsick`). Connecting it in the dashboard today would install **zero** plugins. |
@@ -33,7 +33,7 @@ not.
 ### Ponytail (2026-09-23)
 
 Ponytail's native Cursor hook adapter is held as a pinned upstream submodule at
-`Wicked-Sick-Ltd/cursor-repo/integrations/ponytail`. That repo's
+`Wicked-Sick-Ltd/ai-cursor-repo/integrations/ponytail`. That repo's
 `docs/ponytail.md` covers initialization, user/project installation, verification,
 Cloud Agent rules and uninstall. Its source is not copied into this index, and
 the hook adapter is not listed as a Cursor marketplace plugin here.
@@ -76,20 +76,20 @@ So:
 - **Do not** copy Claude `{"source":"github","repo":"…","sha":"…"}` into the
   Cursor index. `scripts/validate.py` rejects that.
 - **Do not** vendor plugin trees here to satisfy Cursor. Plugin behaviour stays
-  in `claude-repo` / `token-usage`.
+  in `ai-claude-repo` / `token-usage`.
 - **Do** import the repo that *contains* the plugin directories as the Cursor
   Team Marketplace.
 
 ## Recommended org wiring
 
-### Daily driver: import `claude-repo`
+### Daily driver: import `ai-claude-repo`
 
 Dashboard → Plugins → Team Marketplaces → **Import from Repo** →
-`Wicked-Sick-Ltd/claude-repo` (Teams: one marketplace; Enterprise: unlimited).
+`Wicked-Sick-Ltd/ai-claude-repo` (Teams: one marketplace; Enterprise: unlimited).
 
 That repo already uses `plugins/<name>/` plus skills and `commands/` — the same
 layout Cursor discovers. After each plugin gets a Cursor/Agent Plugins manifest,
-add a Cursor catalog **in `claude-repo`**:
+add a Cursor catalog **in `ai-claude-repo`**:
 
 ```json
 {
@@ -156,7 +156,7 @@ rule as Claude's official directory.
 
 ## Conversion recipe (in the plugin source repo)
 
-Do this in `claude-repo` / `token-usage`, then bump the pin in this catalog's
+Do this in `ai-claude-repo` / `token-usage`, then bump the pin in this catalog's
 Claude index if the Claude listing changes.
 
 1. **Keep** `skills/<name>/SKILL.md`. Strip or omit Claude-only `allowed-tools`
@@ -179,19 +179,19 @@ Claude index if the Claude listing changes.
 7. Test locally: copy the plugin dir to `~/.cursor/plugins/local/<name>/`,
    reload, confirm Customize shows skills/commands/MCP.
    Enterprise: **Allow Local Plugin Imports** may be off.
-8. Only then list it on a Cursor catalog (in `claude-repo`, or Add to
+8. Only then list it on a Cursor catalog (in `ai-claude-repo`, or Add to
    Marketplace from the plugin repo).
 
 ## Plugin matrix (what to ship on Cursor)
 
-Live Claude plugins today: `claude-repo` marketplace + `token-usage`.
+Live Claude plugins today: `ai-claude-repo` marketplace + `token-usage`.
 
 | Plugin | Cursor? | Shape | Notes |
 | --- | --- | --- | --- |
 | `session-lifecycle` | **Yes — first portable skill** | Cursor Plugin: existing `skills/` + `commands/startup.md` + `commands/shutdown.md` | Portfolio `.remember/` workflow from CONVENTIONS.md. Host-neutral git/shell. Best first Team Marketplace listing. |
 | `estate-maintenance` | **Yes** | Cursor Plugin (skills + commands) | Skills call scripts in `wicked-repo-inventory`. Confirm those scripts run from Cursor Cloud Agents (inventory access, `gh`, dry-run defaults). |
 | `product-lifecycle` | **Yes** | Cursor Plugin (`commands/product-*.md` + any skills) | Prompt library; Notion writes. No Claude-only parser. |
-| `onboarding` | **Partial** | Skill yes; bootstrap later | `/onboard` + `CONVENTIONS.md` check ports. `scripts/bootstrap.sh` is Claude-marketplace (`/plugin marketplace add claude-repo`). Cursor equivalent is Team Marketplace import + Default On, not that script. |
+| `onboarding` | **Partial** | Skill yes; bootstrap later | `/onboard` + `CONVENTIONS.md` check ports. `scripts/bootstrap.sh` is Claude-marketplace (`/plugin marketplace add ai-claude-repo`). Cursor equivalent is Team Marketplace import + Default On, not that script. |
 | `token-usage` | **Not yet** | — | Skill + MCP + Stop hook are Claude/Cowork transcript-shaped (`~/.claude/projects`, `${CLAUDE_PLUGIN_ROOT}`). Listing it on Cursor without a Cursor log parser is a lie. Cloud `environment.json` does not fix that. Revisit when a Cursor parser exists, or with an explicit "Claude transcripts only" listing. |
 
 Workflow skills belong on every Agent Skills catalog **after** the shims above.
@@ -212,7 +212,7 @@ Pin remotes on those JSON catalogs with a full SHA, same as Claude.
 
 ## Team Marketplace install (humans)
 
-1. Admin: Dashboard → Plugins → import `claude-repo` (after Cursor manifests exist).
+1. Admin: Dashboard → Plugins → import `ai-claude-repo` (after Cursor manifests exist).
 2. Set access (whole team or Organisation Groups).
 3. Per plugin: Default Off / Default On / Required. Suggest Default On for
    `session-lifecycle`; Required only for policy plugins
@@ -220,14 +220,14 @@ Pin remotes on those JSON catalogs with a full SHA, same as Claude.
 4. Developers: Customize → team marketplace → install. Skills also via
    `/skill-name`.
 5. Optional: members can Publish a personal `~/.cursor/skills/` skill to the
-   **Default** marketplace. That is *not* a substitute for `claude-repo` PRs.
+   **Default** marketplace. That is *not* a substitute for `ai-claude-repo` PRs.
    Canonical skills still land in git.
 
 ## Checklist (when we implement)
 
 - [ ] Add `.cursor-plugin/plugin.json` (and root `mcp.json` where needed) to
-      `session-lifecycle` in `claude-repo`; local-load test.
-- [ ] Add `.cursor-plugin/marketplace.json` to `claude-repo` with `pluginRoot: plugins` and only plugins that have a real Cursor runtime.
+      `session-lifecycle` in `ai-claude-repo`; local-load test.
+- [ ] Add `.cursor-plugin/marketplace.json` to `ai-claude-repo` with `pluginRoot: plugins` and only plugins that have a real Cursor runtime.
 - [ ] Import that repo as the Cursor Team Marketplace; Auto Refresh on.
 - [ ] Repeat for `estate-maintenance`, `product-lifecycle`.
 - [ ] Decide Cursor story for `onboarding` (skill vs skip bootstrap).

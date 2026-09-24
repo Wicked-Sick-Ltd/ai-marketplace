@@ -11,12 +11,12 @@ branch; this review records a revision, but does not pin Codex installs.
 
 | Host | Configuration home | Runtime |
 | --- | --- | --- |
-| Claude Code | `claude-repo` marketplace, bootstrap and fleet policy; also this index | Upstream `.claude-plugin/plugin.json`, skills and Node lifecycle hooks |
-| Codex | `codex-repo/.agents/plugins/marketplace.json`; also this index | Upstream `.codex-plugin/plugin.json`, skills and Node lifecycle hooks |
+| Claude Code | `ai-claude-repo` marketplace, bootstrap and fleet policy; also this index | Upstream `.claude-plugin/plugin.json`, skills and Node lifecycle hooks |
+| Codex | `ai-codex-repo/.agents/plugins/marketplace.json`; also this index | Upstream `.codex-plugin/plugin.json`, skills and Node lifecycle hooks |
 | Copilot CLI | This index's `.github/plugin/marketplace.json` | Copilot commands, skills and `hooks/copilot-hooks.json` |
-| Cursor | `cursor-repo/integrations/ponytail` (pinned upstream submodule) | Native hooks installer; project rule alternative for Cloud Agents |
+| Cursor | `ai-cursor-repo/integrations/ponytail` (pinned upstream submodule) | Native hooks installer; project rule alternative for Cloud Agents |
 | Gemini CLI | [Gemini install guide](../gemini/README.md) | Upstream `gemini-extension.json`, context, commands and skills |
-| Grok Build | Upstream native plugin; setup documented in `cursor-repo/docs/ponytail.md` | Skills only; no lifecycle context injection |
+| Grok Build | Upstream native plugin; setup documented in [ai-grok-repo](https://github.com/Wicked-Sick-Ltd/ai-grok-repo) | Skills only; no lifecycle context injection |
 
 ## Claude Code
 
@@ -25,7 +25,7 @@ claude plugin marketplace add Wicked-Sick-Ltd/ai-marketplace
 claude plugin install ponytail@wickedsick
 ```
 
-Machines using `claude-repo` should instead update `wicked-sick` and install
+Machines using `ai-claude-repo` should instead update `wicked-sick` and install
 `ponytail@wicked-sick`; both onboarding profiles include it. Choose one
 marketplace per host to avoid duplicate skills or hooks. Fleet reconciliation
 remains controlled by the existing `auto_reconcile` policy.
@@ -37,7 +37,7 @@ codex plugin marketplace add Wicked-Sick-Ltd/ai-marketplace --sparse .agents/plu
 codex plugin add ponytail@wickedsick
 ```
 
-Alternatively use `ponytail@wicked-sick-codex` from `codex-repo` as documented
+Alternatively use `ponytail@wicked-sick-codex` from `ai-codex-repo` as documented
 there. Review and trust the hooks through `/hooks`, then start a new thread;
 restart the desktop app after installing. Plugin installation and hook trust
 are per machine; the portable permissions installer does not grant hook trust.
@@ -60,7 +60,7 @@ Copilot editor integration.
 
 ## Cursor, Gemini and Grok
 
-Cursor setup belongs in `cursor-repo`; see [Cursor integration](cursor-integration.md).
+Cursor setup belongs in `ai-cursor-repo`; see [Cursor integration](cursor-integration.md).
 There is no Cursor entry here because native hook installation is not an
 in-repo marketplace plugin. Cursor Cloud Agents need the project rule
 alternative or explicit mode activation through project hooks; they do not
@@ -84,3 +84,11 @@ the Gemini install reference and the revision recorded here. Update Claude's
 marketplace and fleet minimum version together. Codex follows upstream's
 default branch independently. Run `python3 scripts/validate.py` after index
 edits and each vendor repo's checks before landing its changes.
+
+## Host setup ownership
+
+The private [Gemini](https://github.com/Wicked-Sick-Ltd/ai-gemini-repo),
+[Copilot](https://github.com/Wicked-Sick-Ltd/ai-copilot-repo) and
+[Grok](https://github.com/Wicked-Sick-Ltd/ai-grok-repo) repositories maintain
+host-specific setup, update, rollback and validation records. Repository
+creation or a guide alone does not establish that a live profile was tested.

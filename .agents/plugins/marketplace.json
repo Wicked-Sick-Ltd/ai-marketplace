@@ -9,7 +9,7 @@
       "description": "Fleet presence for Codex sessions: merges [[hooks.*]] blocks into config.toml that call acsendr's coordctl with --vendor codex so Codex sessions appear on the Agent Mesh and in Jarvis beside Claude Code ones \u2014 presence is self-reported and spoofable, like every mesh signal.",
       "source": {
         "source": "url",
-        "url": "https://github.com/Wicked-Sick-Ltd/codex-repo.git"
+        "url": "https://github.com/Wicked-Sick-Ltd/ai-codex-repo.git"
       },
       "policy": {
         "installation": "AVAILABLE",

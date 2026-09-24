@@ -10,7 +10,7 @@
 
 **Spec:** [AI vendor repositories — migration and documentation plan](https://app.notion.com/p/3e44ce0f445181bb8c7dc1ac5eb6ac22).
 
-**Status:** Planned, 2026-09-23. This document records future work. Merging this documentation does not perform a rename, installation, migration or deployment.
+**Status:** Cutover PR prepared, 2026-09-24. All nine planning PRs and four Ponytail baseline PRs are merged. Keep this PR in draft until all three existing vendor repositories have been renamed and verified, and the prerequisite implementation PRs have landed.
 
 ## Global constraints
 
@@ -37,7 +37,7 @@ Acsendr and wicked-repo-inventory have companion plans in their own docs directo
 
 ## Repository planning PRs
 
-Each PR adds docs/ai-vendor-repository-migration.md and links it from the repository README. The plans remain pending execution.
+Each PR adds docs/ai-vendor-repository-migration.md and links it from the repository README. The planning PRs are merged. Implementation and cutover evidence follows below.
 
 | Repository | Planning PR |
 | --- | --- |
@@ -52,7 +52,7 @@ Each PR adds docs/ai-vendor-repository-migration.md and links it from the reposi
 
 ## Task 1: Establish the migration baseline
 
-- [ ] Review and land the Ponytail baseline PRs: [marketplace #14](https://github.com/Wicked-Sick-Ltd/ai-marketplace/pull/14), [Claude #35](https://github.com/Wicked-Sick-Ltd/claude-repo/pull/35), [Codex #7](https://github.com/Wicked-Sick-Ltd/codex-repo/pull/7), [Cursor #2](https://github.com/Wicked-Sick-Ltd/cursor-repo/pull/2). Recheck their current status and checks; they were separate, unmerged changes when this plan was written.
+- [x] Review and land the Ponytail baseline PRs: [marketplace #14](https://github.com/Wicked-Sick-Ltd/ai-marketplace/pull/14), [Claude #35](https://github.com/Wicked-Sick-Ltd/claude-repo/pull/35), [Codex #7](https://github.com/Wicked-Sick-Ltd/codex-repo/pull/7), [Cursor #2](https://github.com/Wicked-Sick-Ltd/cursor-repo/pull/2). Recheck their current status and checks; they were separate, unmerged changes when this plan was written.
 - [ ] Record the resulting default-branch commits and resolve any conflicts with this documentation.
 - [ ] Verify access and protections for the three owner-created private repositories. Each has a separate documentation PR; creation is complete, runtime integration remains pending.
 - [ ] Coordinate inventory page-ID mappings and dependent bootstrap/sidecar changes before the first rename.
@@ -88,3 +88,20 @@ Revert a failing catalog/reference cutover through a normal PR, retaining prior 
 ## Completion record
 
 During execution, record the responsible operator, date, source and destination repository IDs, baseline and landed commit SHAs, companion PRs, checks with results, pilot outcome, inventory page IDs and rollback evidence here and in the Notion plan. Until that evidence exists, leave the execution checkboxes open.
+
+### Preparation evidence — 24 September 2026
+
+The baseline merge commits are:
+
+| Repository | Ponytail merge |
+| --- | --- |
+| ai-marketplace | `5c0d89c7de31f96c2b896106b6fd934bcde04a67` |
+| claude-repo | `16d7217e779eb607c2f77d2765593ddc896ef5b3` |
+| codex-repo | `f6e169d03e3262df8fd761c71d33c157db2bbb8d` |
+| cursor-repo | `d12b19d4fdde2fbdbec071cf5ea494518c94beb2` |
+
+This branch changes first-party source URLs and active documentation only. Marketplace IDs, plugin versions, all SHA pins, Codex source shapes and the empty in-repo-path Cursor catalog are preserved. Historical PR URLs above remain dated evidence.
+
+Merge gate: inventory rename support landed; Codex, Cursor and Claude destinations reachable under their recorded repository IDs; Claude/Acsendr companions coordinated; vendor-home guides landed. Until then, the default branch retains operational old-name links. This draft is the combined final index cutover; during earlier individual rename batches, verify GitHub redirects for unchanged catalog URLs.
+
+No live machine configuration, GitHub repository names or Notion inventory properties were changed while preparing this PR. Run the catalog validator again against the final cutover head and verify remote pins after the renames.
