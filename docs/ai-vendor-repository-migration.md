@@ -10,7 +10,7 @@
 
 **Spec:** [AI vendor repositories — migration and documentation plan](https://app.notion.com/p/3e44ce0f445181bb8c7dc1ac5eb6ac22).
 
-**Status:** Cutover PR prepared, 2026-09-24. All nine planning PRs and four Ponytail baseline PRs are merged. Keep this PR in draft until all three existing vendor repositories have been renamed and verified, and the prerequisite implementation PRs have landed.
+**Status:** Repository renames verified, 2026-09-24. All nine implementation PRs are merged. Per-machine rollout, central inventory reconciliation and the Claude patch-release follow-up remain pending.
 
 ## Global constraints
 
@@ -105,3 +105,29 @@ This branch changes first-party source URLs and active documentation only. Marke
 Merge gate: inventory rename support landed; Codex, Cursor and Claude destinations reachable under their recorded repository IDs; Claude/Acsendr companions coordinated; vendor-home guides landed. Until then, the default branch retains operational old-name links. This draft is the combined final index cutover; during earlier individual rename batches, verify GitHub redirects for unchanged catalog URLs.
 
 No live machine configuration, GitHub repository names or Notion inventory properties were changed while preparing this PR. Run the catalog validator again against the final cutover head and verify remote pins after the renames.
+
+### Rename verification — 24 September 2026
+
+Craig renamed the existing repositories in place. Authenticated GitHub API checks
+confirmed the canonical names, private visibility and unchanged repository IDs:
+
+| Repository | GitHub ID |
+| --- | --- |
+| ai-codex-repo | 1373289160 |
+| ai-cursor-repo | 1379739987 |
+| ai-claude-repo | 1263939071 |
+
+The shared index's Claude fleet-presence pin
+`0cb15af9a28adac61f0c7e9ffc709f96b5d92576` resolves in ai-claude-repo, and the
+Codex destination's main branch resolves. Grok import PR #2 retained the extracted
+history through a merge commit. The nine phase-2 PRs, including all cutover
+companions, are merged.
+
+[Claude PR #38](https://github.com/Wicked-Sick-Ltd/ai-claude-repo/pull/38)
+corrects the missed plugin version increments from the source-reference change.
+It must land before machines can obtain those versioned cached plugin updates.
+
+Use the [per-machine broadcast prompt](local-ai-repository-migration-prompt.md)
+for remote changes and eligible local folder moves. This record does not claim
+live fleet pilots, service-path moves, central Notion inventory reconciliation
+or Cursor source removal are complete.
