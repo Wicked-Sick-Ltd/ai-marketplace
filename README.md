@@ -1,12 +1,27 @@
 # Wicked Sick AI marketplace
 
-Repository planning: [AI vendor repository migration](docs/ai-vendor-repository-migration.md) (planned; no rename or deployment performed).
+Repository migration: [plan and execution record](docs/ai-vendor-repository-migration.md).
 
 GitHub catalogs for the agent plugins we actually install. Plugins are **not** vendored here. Claude / Copilot indexes pin a source repo by commit SHA; Codex's Agent Plugins schema has no ref/sha field, so its entries name a repo URL and Codex resolves the default branch. Cursor indexes use in-repo paths; the Team Marketplace imports the git repo that actually contains the plugin directories.
 
 This is not a Traefik module and not a substitute for `CLAUDE.md` / `AGENTS.md` in product repos. See the plan in [traefik-laravel-forge](https://github.com/Wicked-Sick-Ltd/traefik-laravel-forge/blob/master/docs/cross-ai-marketplace-plan.md).
 
 The tree also holds a small Next.js + Prisma **demo app**, in-tree so the Cursor Cloud Agent environment has something to install and run. It is not plugin source, and its listings UI is not a catalog — the catalogs are the JSON indexes below. CI validates those catalogs only, so the demo app is unenforced there. Setup and commands: [`docs/demo-app.md`](docs/demo-app.md).
+
+## Vendor ownership
+
+| Host | Private repository |
+| --- | --- |
+| Claude | [ai-claude-repo](https://github.com/Wicked-Sick-Ltd/ai-claude-repo) |
+| Codex | [ai-codex-repo](https://github.com/Wicked-Sick-Ltd/ai-codex-repo) |
+| Cursor | [ai-cursor-repo](https://github.com/Wicked-Sick-Ltd/ai-cursor-repo) |
+| Gemini | [ai-gemini-repo](https://github.com/Wicked-Sick-Ltd/ai-gemini-repo) |
+| Copilot | [ai-copilot-repo](https://github.com/Wicked-Sick-Ltd/ai-copilot-repo) |
+| Grok | [ai-grok-repo](https://github.com/Wicked-Sick-Ltd/ai-grok-repo) |
+
+These repositories own host setup and first-party workflow material. Third-party
+Ponytail runtime source remains upstream; the indexes below remain the discovery
+surface. Private guides require organisation access.
 
 ## Add the marketplace
 
@@ -18,7 +33,7 @@ claude plugin marketplace add Wicked-Sick-Ltd/ai-marketplace
 codex plugin marketplace add Wicked-Sick-Ltd/ai-marketplace --sparse .agents/plugins
 ```
 
-- **Cursor:** do **not** expect Claude-style GitHub SHA pins in `.cursor-plugin/marketplace.json`. Cursor Team Marketplaces import a git repo and resolve each plugin as a **path inside that repo**. Import [`claude-repo`](https://github.com/Wicked-Sick-Ltd/claude-repo) once those plugins have Cursor/Agent Plugins manifests. This catalog's Cursor index stays empty until we host a Cursor pack here. Details: [`docs/cursor-integration.md`](docs/cursor-integration.md).
+- **Cursor:** do **not** expect Claude-style GitHub SHA pins in `.cursor-plugin/marketplace.json`. Cursor Team Marketplaces import a git repo and resolve each plugin as a **path inside that repo**. Import [`ai-claude-repo`](https://github.com/Wicked-Sick-Ltd/ai-claude-repo) once those plugins have Cursor/Agent Plugins manifests. This catalog's Cursor index stays empty until we host a Cursor pack here. Details: [`docs/cursor-integration.md`](docs/cursor-integration.md).
 - **Copilot:** `"chat.plugins.marketplaces": ["Wicked-Sick-Ltd/ai-marketplace"]`
 - **Gemini CLI:** no catalog file. Install from the plugin repo: see [`gemini/README.md`](gemini/README.md).
 - **Grok:** add the Claude marketplace above. A Grok-native index is omitted on purpose.
@@ -36,7 +51,7 @@ claude plugin install ponytail@wickedsick
 | Client | File | Plugins listed today |
 | --- | --- | --- |
 | Claude Code / Grok | `.claude-plugin/marketplace.json` | `token-usage`, `wizzo-fleet-presence`, `ponytail` (pinned; Ponytail's Grok runtime is skills-only) |
-| Cursor | `.cursor-plugin/marketplace.json` | none here (path-based catalog; live plugins stay in `claude-repo`; the `wizzo-fleet-presence` Cursor pack is a hooks template in `acsendr`, not a plugin) |
+| Cursor | `.cursor-plugin/marketplace.json` | none here (path-based catalog; live plugins stay in `ai-claude-repo`; the `wizzo-fleet-presence` Cursor pack is a hooks template in `acsendr`, not a plugin) |
 | ChatGPT / Codex | `.agents/plugins/marketplace.json` | `wizzo-fleet-presence`, `ponytail` (repo URLs; Codex has no sha field, so these aren't pins — see `AGENTS.md`) |
 | Copilot CLI | `.github/plugin/marketplace.json` | `ponytail` (pinned; Copilot-specific commands, skills and hooks) |
 | Gemini | [`gemini/README.md`](gemini/README.md) | `ponytail` (upstream extension) |
@@ -46,9 +61,9 @@ Ponytail setup, vendor ownership, revision tracking and runtime limitations:
 
 `token-usage` is Claude-only until it can parse that host's session logs (or the listing is explicitly "Claude transcripts only"). `.cursor/environment.json` on a plugin repo is Cloud Agent setup, not a Cursor plugin.
 
-The Codex `wizzo-fleet-presence` installer (`codex-repo/scripts/install-presence-hooks.py`) also takes `--home <codex-home>` and `--coordctl <path>` when acsendr isn't at one of its two default locations.
+The Codex `wizzo-fleet-presence` installer (`ai-codex-repo/scripts/install-presence-hooks.py`) also takes `--home <codex-home>` and `--coordctl <path>` when acsendr isn't at one of its two default locations.
 
-Workflow skills (`session-lifecycle`, `estate-maintenance`, `product-lifecycle`) live in [`claude-repo`](https://github.com/Wicked-Sick-Ltd/claude-repo) today with Claude manifests only. Port them with Agent Skills + `.cursor-plugin/plugin.json` (and root `mcp.json` where needed), then list them on a Cursor Team Marketplace — see [`docs/cursor-integration.md`](docs/cursor-integration.md). After that, the same portable floor can go on every Agent Skills catalog (Codex, Copilot, Gemini).
+Workflow skills (`session-lifecycle`, `estate-maintenance`, `product-lifecycle`) live in [`ai-claude-repo`](https://github.com/Wicked-Sick-Ltd/ai-claude-repo) today with Claude manifests only. Port them with Agent Skills + `.cursor-plugin/plugin.json` (and root `mcp.json` where needed), then list them on a Cursor Team Marketplace — see [`docs/cursor-integration.md`](docs/cursor-integration.md). After that, the same portable floor can go on every Agent Skills catalog (Codex, Copilot, Gemini).
 
 ## Horses for courses
 

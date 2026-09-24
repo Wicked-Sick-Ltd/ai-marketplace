@@ -30,3 +30,7 @@ lifecycle hook equivalent to Claude Code's `SessionStart`/`Stop` or Codex's
 `[[hooks.*]]`, so there is nothing for a presence pack to bind to. Deferred with
 Copilot to a later tranche — the vendor enum (`claude-code · codex · cursor ·
 copilot · gemini · custom`) and the pack layout already leave room.
+
+The private [ai-gemini-repo](https://github.com/Wicked-Sick-Ltd/ai-gemini-repo)
+owns the team setup and validation record. The extension runtime remains in
+upstream Ponytail; this repository does not provide a Gemini JSON catalog.

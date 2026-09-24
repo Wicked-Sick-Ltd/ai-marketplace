@@ -12,7 +12,7 @@ This repo is a catalog. Plugin behaviour changes belong in the plugin's own repo
    - Copilot: `.github/plugin/marketplace.json`
    - Gemini: a row in `gemini/README.md` (no JSON catalog)
 3. For Claude / Copilot remotes: set `source.sha` to a full 40-character commit. Prefer a release tag as `ref` when one exists; SHA still wins. Codex entries use a repo URL without `ref` or `sha`; record the reviewed upstream revision in the integration documentation.
-4. For Cursor: `source` must be a relative directory in this repository (string, or `{ "path": "…" }`). Cursor does not clone a GitHub SHA from this file. Plugin shims (`.cursor-plugin/plugin.json`, root `mcp.json`) belong in the plugin's own repo. Team Marketplace import of `claude-repo` is documented in `docs/cursor-integration.md`.
+4. For Cursor: `source` must be a relative directory in this repository (string, or `{ "path": "…" }`). Cursor does not clone a GitHub SHA from this file. Plugin shims (`.cursor-plugin/plugin.json`, root `mcp.json`) belong in the plugin's own repo. Team Marketplace import of `ai-claude-repo` is documented in `docs/cursor-integration.md`.
 5. Run `python3 scripts/validate.py`.
 
 Do not copy plugin files into this repository.

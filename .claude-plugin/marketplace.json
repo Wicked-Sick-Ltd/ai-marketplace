@@ -35,12 +35,12 @@
         "email": "craig@wickedsick.com"
       },
       "category": "integration",
-      "repository": "https://github.com/Wicked-Sick-Ltd/claude-repo",
+      "repository": "https://github.com/Wicked-Sick-Ltd/ai-claude-repo",
       "license": "MIT",
       "keywords": ["fleet", "presence", "coordination", "mesh", "hooks", "coordctl", "acsendr", "jarvis"],
       "source": {
         "source": "git-subdir",
-        "url": "https://github.com/Wicked-Sick-Ltd/claude-repo.git",
+        "url": "https://github.com/Wicked-Sick-Ltd/ai-claude-repo.git",
         "path": "plugins/wizzo-fleet-presence",
         "ref": "main",
         "sha": "0cb15af9a28adac61f0c7e9ffc709f96b5d92576"
