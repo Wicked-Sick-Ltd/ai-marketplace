@@ -8,6 +8,12 @@ GitHub catalogs for the agent plugins we actually install. Plugins are **not** v
 
 This is not a Traefik module and not a substitute for `CLAUDE.md` / `AGENTS.md` in product repos. See the plan in [traefik-laravel-forge](https://github.com/Wicked-Sick-Ltd/traefik-laravel-forge/blob/master/docs/cross-ai-marketplace-plan.md).
 
+## Repository custom properties
+
+`Wicked-Sick-Ltd` and `wizmediagg` share one **repository** custom-property schema (live 2026-09-28). Plugins and sessions use those property names and allowed values — automation membership, stack, lifecycle, service tier, sweep priority, and branch workflow — instead of a private tag list.
+
+Repository custom properties, issue labels, and organization-object properties are three different GitHub objects. Vocabulary, the values API, and the split: [`docs/repository-custom-properties.md`](docs/repository-custom-properties.md). Sessions also load it from [`AGENTS.md`](AGENTS.md) and [`CLAUDE.md`](CLAUDE.md).
+
 The tree also holds a small Next.js + Prisma **demo app**, in-tree so the Cursor Cloud Agent environment has something to install and run. It is not plugin source, and its listings UI is not a catalog — the catalogs are the JSON indexes below. CI validates those catalogs only, so the demo app is unenforced there. Setup and commands: [`docs/demo-app.md`](docs/demo-app.md).
 
 ## Vendor ownership
