@@ -1,0 +1,25 @@
+{
+  "status": "live_2026-09-28",
+  "defined_on_orgs": ["Wicked-Sick-Ltd", "wizmediagg"],
+  "notion_docs": {
+    "custom_properties": "https://app.notion.com/p/3d84ce0f44518161afedf5ed02383eb4",
+    "standards": "https://app.notion.com/p/3d24ce0f445181ecaffee111caeb67af"
+  },
+  "intent": "Single control plane for Cursor/Grok/Claude/Actions/Copilot — do not invent parallel tags or hard-coded repo allowlists when a property can gate the behavior.",
+  "properties": [
+    {"property_name":"automation_groups","value_type":"multi_select","allowed_values":["daily-issue-pr-automation","weekly-general-improvements","weekly-performance-improvements","weekly-reporting","deployment","release","security-scanning","dependency-updates"],"readers":"Copilot/Actions/shared automation"},
+    {"property_name":"automation_groups_cursor","value_type":"multi_select","allowed_values":["cursor-issue-pr-triage","cursor-performance","cursor-security","cursor-add-environment","cursor-bugbot"],"readers":"Cursor + Grok Bot"},
+    {"property_name":"automation_groups_claude","value_type":"string","allowed_values":null,"note":"freeform until enum named; then multi_select","readers":"Claude"},
+    {"property_name":"git-rules","value_type":"multi_select","allowed_values":["main-only","dev-main","dev-staging-main"],"readers":"rulesets/branch automation"},
+    {"property_name":"lifecycle","value_type":"single_select","allowed_values":["archived","maintenance","experimental","pre-launch","production","ramp-up"]},
+    {"property_name":"service_tier","value_type":"single_select","allowed_values":["best-efforts","internal","standard","critical"]},
+    {"property_name":"priority","value_type":"single_select","allowed_values":["P0","P1","P2","P3"],"readers":"daily sweep / Grok hygiene"},
+    {"property_name":"stack","value_type":"multi_select","allowed_values":["laravel-fluxui","laravel-forge","laravel","typescript","node","python","nextjs","react","php","go","static"]}
+  ],
+  "api": {
+    "read_schema": "GET /orgs/{org}/properties/schema",
+    "read_values": "GET /repos/{owner}/{repo}/properties/values",
+    "set_values": "PATCH /repos/{owner}/{repo}/properties/values"
+  },
+  "not_issue_labels": true
+}
