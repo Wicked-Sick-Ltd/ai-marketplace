@@ -18,7 +18,7 @@ INDEXES = {
     "copilot": ROOT / ".github" / "plugin" / "marketplace.json",
 }
 
-CLAUDE_ONLY = {"token-usage"}
+TOKEN_USAGE_HOSTS = {"Claude", "Codex", "Cursor"}
 
 
 def fail(msg: str) -> None:
@@ -69,11 +69,7 @@ CODEX_SOURCE_TYPES = {"url", "local", "git-subdir"}
 
 
 def codex_plugin_names(data: dict) -> list[str]:
-    """Codex's Agent Plugins schema has no ref/sha field: an entry names a
-    repo URL (or an in-repo/local path) and Codex resolves it directly —
-    there is nothing to pin to. Validate that shape instead of requiring
-    a Claude-style sha.
-    """
+    """Validate native Codex sources, including revision pins and subdirectories."""
     plugins = data.get("plugins")
     if not isinstance(plugins, list):
         fail("plugins must be an array")
@@ -88,15 +84,25 @@ def codex_plugin_names(data: dict) -> list[str]:
         source = plugin.get("source")
         if not isinstance(source, dict):
             fail(f"Codex plugin {name!r} missing source")
-        if "sha" in source:
-            fail(f"Codex plugin {name!r} source must not carry a sha (Codex has no ref/sha field)")
+        if "sha" in source and (not isinstance(source["sha"], str) or not SHA_RE.fullmatch(source["sha"])):
+            fail(f"Codex plugin {name!r} sha must be 40 lowercase hex chars")
+        if "ref" in source and (not isinstance(source["ref"], str) or not source["ref"].strip()):
+            fail(f"Codex plugin {name!r} ref must be a non-empty string")
         source_type = source.get("source")
         if source_type not in CODEX_SOURCE_TYPES:
             fail(f"Codex plugin {name!r} source.source must be one of {sorted(CODEX_SOURCE_TYPES)}")
+        if source_type in ("url", "git-subdir") and "sha" not in source:
+            fail(f"Codex plugin {name!r} needs a source pinned to a sha (40 lowercase hex chars)")
         if source_type in ("url", "git-subdir") and not source.get("url"):
             fail(f"Codex plugin {name!r} source is missing url")
         if source_type == "local" and not source.get("path"):
             fail(f"Codex plugin {name!r} local source is missing path")
+        if source_type == "git-subdir":
+            path = source.get("path")
+            if not isinstance(path, str) or not path.strip():
+                fail(f"Codex plugin {name!r} git-subdir source is missing path")
+            if path.startswith(("/", "\\", "~")) or ":" in path or ".." in path.replace("\\", "/").split("/"):
+                fail(f"Codex plugin {name!r} path must stay inside the source repository")
         policy = plugin.get("policy")
         if (
             not isinstance(policy, dict)
@@ -167,9 +173,9 @@ def check_names(label: str, names: list[str], *, allow_claude_only: bool = False
         fail(f"duplicate plugin names in {label} catalog: {dupes}")
     if allow_claude_only:
         return
-    leaked = sorted(CLAUDE_ONLY.intersection(names))
+    leaked = ["token-usage"] if "token-usage" in names and label not in TOKEN_USAGE_HOSTS else []
     if leaked:
-        fail(f"{label} catalog must not list Claude-only plugins: {leaked}")
+        fail(f"{label} catalog must not list plugins without a supported runtime: {leaked}")
 
 
 def check_gemini_readme() -> None:
@@ -177,7 +183,7 @@ def check_gemini_readme() -> None:
     if not path.is_file():
         fail("missing gemini/README.md")
     text = path.read_text()
-    for name in sorted(CLAUDE_ONLY):
+    for name in ("token-usage",):
         if name not in text:
             fail(f"gemini/README.md must say why {name!r} is not listed for Gemini")
 

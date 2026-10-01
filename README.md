@@ -4,7 +4,7 @@ Repository migration: [plan and execution record](docs/ai-vendor-repository-migr
 
 For each machine: [local migration broadcast prompt](docs/local-ai-repository-migration-prompt.md).
 
-GitHub catalogs for the agent plugins we actually install. Plugins are **not** vendored here. Claude / Copilot indexes pin a source repo by commit SHA; Codex's Agent Plugins schema has no ref/sha field, so its entries name a repo URL and Codex resolves the default branch. Cursor indexes use in-repo paths; the Team Marketplace imports the git repo that actually contains the plugin directories.
+GitHub catalogs for the agent plugins we actually install. Plugins are **not** vendored here. Claude, Codex and Copilot indexes pin source repositories by commit SHA. Codex selects native packages with `url` or `git-subdir` sources. Cursor indexes use in-repo paths; the Team Marketplace imports the git repo that actually contains the plugin directories.
 
 This is not a Traefik module and not a substitute for `CLAUDE.md` / `AGENTS.md` in product repos. See the plan in [traefik-laravel-forge](https://github.com/Wicked-Sick-Ltd/traefik-laravel-forge/blob/master/docs/cross-ai-marketplace-plan.md).
 
@@ -54,24 +54,52 @@ claude plugin install wizzo-fleet-presence@wickedsick
 claude plugin install ponytail@wickedsick
 ```
 
+Then install the Codex workflows:
+
+```bash
+codex plugin add onboarding@wickedsick
+codex plugin add session-lifecycle@wickedsick
+codex plugin add pr-flow@wickedsick
+codex plugin add estate-maintenance@wickedsick
+codex plugin add product-lifecycle@wickedsick
+codex plugin add token-usage@wickedsick
+codex plugin add ponytail@wickedsick
+# Optional, on machines participating in the fleet:
+codex plugin add wizzo-fleet-presence@wickedsick
+```
+
+First-party workflows require access to the private `ai-codex-repo`; token-usage
+and Ponytail use their public upstream repositories. Review hooks with `/hooks`,
+then start a new session. Each machine needs its own authentication and hook
+trust. Install each plugin from one marketplace to avoid duplicate hooks.
+The vendor repository owns [setup, prerequisites and migration](https://github.com/Wicked-Sick-Ltd/ai-codex-repo/blob/main/docs/codex-plugin-parity.md).
+
+Installation troubleshooting and tested package behavior: [Codex integration](docs/codex-integration.md).
+
 ## Indexes
 
 | Client | File | Plugins listed today |
 | --- | --- | --- |
 | Claude Code / Grok | `.claude-plugin/marketplace.json` | `token-usage`, `wizzo-fleet-presence`, `ponytail` (pinned; Ponytail's Grok runtime is skills-only) |
 | Cursor | `.cursor-plugin/marketplace.json` | none here (path-based catalog; live plugins stay in `ai-claude-repo`; the `wizzo-fleet-presence` Cursor pack is a hooks template in `acsendr`, not a plugin) |
-| ChatGPT / Codex | `.agents/plugins/marketplace.json` | `wizzo-fleet-presence`, `ponytail` (repo URLs; Codex has no sha field, so these aren't pins — see `AGENTS.md`) |
+| ChatGPT / Codex | `.agents/plugins/marketplace.json` | `onboarding`, `session-lifecycle`, `pr-flow`, `estate-maintenance`, `product-lifecycle`, `token-usage`, `ponytail`, `wizzo-fleet-presence` (native packages, pinned) |
 | Copilot CLI | `.github/plugin/marketplace.json` | `ponytail` (pinned; Copilot-specific commands, skills and hooks) |
 | Gemini | [`gemini/README.md`](gemini/README.md) | `ponytail` (upstream extension) |
 
 Ponytail setup, vendor ownership, revision tracking and runtime limitations:
 [`docs/ponytail.md`](docs/ponytail.md).
 
-`token-usage` is Claude-only until it can parse that host's session logs (or the listing is explicitly "Claude transcripts only"). `.cursor/environment.json` on a plugin repo is Cloud Agent setup, not a Cursor plugin.
+`token-usage` now has native Claude and Codex transcript adapters. Codex token
+counts use recorded usage; costs are labelled API estimates, not subscription
+charges. It is not listed for hosts without a supported runtime.
 
-The Codex `wizzo-fleet-presence` installer (`ai-codex-repo/scripts/install-presence-hooks.py`) also takes `--home <codex-home>` and `--coordctl <path>` when acsendr isn't at one of its two default locations.
-
-Workflow skills (`session-lifecycle`, `estate-maintenance`, `product-lifecycle`) live in [`ai-claude-repo`](https://github.com/Wicked-Sick-Ltd/ai-claude-repo) today with Claude manifests only. Port them with Agent Skills + `.cursor-plugin/plugin.json` (and root `mcp.json` where needed), then list them on a Cursor Team Marketplace — see [`docs/cursor-integration.md`](docs/cursor-integration.md). After that, the same portable floor can go on every Agent Skills catalog (Codex, Copilot, Gemini).
+Codex workflow skills are maintained in
+[`ai-codex-repo`](https://github.com/Wicked-Sick-Ltd/ai-codex-repo), using
+`ai-claude-repo` as their reference. This index only selects those packages.
+The fleet plugin replaces the older config-hook installer: remove its managed
+presence block before trusting the native plugin, so events are not sent twice.
+Other host ports retain their vendor-specific requirements; see
+[`docs/cursor-integration.md`](docs/cursor-integration.md).
 
 ## Horses for courses
 
@@ -87,82 +115,11 @@ Workflow skills (`session-lifecycle`, `estate-maintenance`, `product-lifecycle`)
 ## Add a plugin
 
 1. Keep the plugin in its own repository.
-2. Pin a **full 40-character commit SHA** (and a tag `ref` when one exists) on Claude / Copilot remotes. Do not float on `main`. Codex's Agent Plugins schema has no ref/sha field — its entries name the repo URL and resolve the default branch instead; the SHA of record is the source repo's merge commit. Cursor entries use in-repo paths, not SHA pins — [`docs/cursor-integration.md`](docs/cursor-integration.md).
+2. Pin a **full 40-character commit SHA** on Claude, Codex and Copilot remotes. A release tag `ref` may accompany it; SHA wins. Codex supports both repository-root and `git-subdir` packages. Cursor entries use in-repo paths; see [`docs/cursor-integration.md`](docs/cursor-integration.md).
 3. List it only on marketplaces where it has a real runtime.
 4. Run `python3 scripts/validate.py`.
 
 Owner: Wicked Sick Ltd (`craig@wickedsick.com`).
-# ai-marketplace
-
-A marketplace for AI tools and agents. Browse a curated catalog of AI products
-and publish your own. Built with Next.js (App Router), TypeScript, Tailwind CSS,
-and Prisma with SQLite so the whole stack runs locally with no external
-services.
-
-## Tech stack
-
-- **Next.js 15** (App Router) + **React 18** + **TypeScript**
-- **Tailwind CSS** for styling
-- **Prisma ORM** backed by **SQLite** (file-based, zero external dependencies)
-- **Zod** for request validation
-
-## Getting started
-
-Requires Node.js 20+ (this repo is developed on Node 22).
-
-```bash
-npm install
-npx prisma generate          # generate the Prisma client
-npx prisma migrate deploy    # apply migrations (creates prisma/dev.db)
-npm run db:seed              # load sample listings (idempotent)
-npm run dev                  # start the dev server on http://localhost:3000
-```
-
-Then open http://localhost:3000.
-
-## Common commands
-
-| Command | Description |
-| --- | --- |
-| `npm run dev` | Start the Next.js dev server on port 3000 |
-| `npm run build` | Create a production build |
-| `npm run start` | Serve the production build |
-| `npm run lint` | Run ESLint (`next lint`) |
-| `npm run typecheck` | Type-check with `tsc --noEmit` |
-| `npm run db:migrate` | Apply pending migrations (`prisma migrate deploy`) |
-| `npm run db:seed` | Seed sample listings (safe to re-run) |
-
-## API
-
-- `POST /api/listings` — create a listing. JSON body validated with Zod:
-  `{ name, tagline, description, category, pricing, author }`.
-
-## Project layout
-
-```
-prisma/
-  schema.prisma      # Listing model (SQLite)
-  seed.ts            # idempotent sample data
-  migrations/        # committed migration history
-src/
-  app/
-    page.tsx         # catalog (browse listings)
-    new/page.tsx     # publish-a-tool form
-    api/listings/    # REST endpoints (GET, POST)
-    layout.tsx
-    globals.css
-  lib/
-    prisma.ts        # Prisma client singleton
-    listings.ts      # shared validation + helpers
-```
-
-## Cloud Agent environment
-
-`.cursor/environment.json` configures the Cloud Agent environment: `install`
-installs dependencies, generates the Prisma client, applies migrations, and
-seeds sample data; the `dev` terminal runs `npm run dev` on port 3000.
-Local config comes from `.env`, which is git-ignored — copy `.env.example`
-(a SQLite `DATABASE_URL`) to get started; the Cloud Agent install does this.
 
 <!-- repository-guidance:begin -->
 ## Contributing and agent guidance

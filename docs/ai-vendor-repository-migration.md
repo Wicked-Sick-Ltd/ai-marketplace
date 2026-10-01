@@ -63,11 +63,11 @@ Files: .claude-plugin/marketplace.json, .agents/plugins/marketplace.json, .githu
 
 - [ ] Change references to renamed first-party source repositories without changing plugin names or marketplace IDs.
 - [ ] Keep Claude and Copilot remote entries pinned to full 40-character commits. Verify each pinned commit remains reachable at the new URL.
-- [ ] Keep Codex entries as repository URLs: its Agent Plugins schema has no ref/sha field. Record source merge commits in the migration evidence.
+- [x] Codex schema correction (2026-10-01): native `url` and `git-subdir` sources accept `sha` and `ref`. Pin the reviewed packages in the index; verify with the installed CLI.
 - [ ] Keep Cursor entries as in-repo paths only. Point Team Marketplace setup at the repository actually containing the plugin directories; a repository rename does not relocate those directories.
 - [ ] Keep Gemini installation instructions in gemini/README.md; do not invent a Gemini JSON catalog.
 - [ ] Preserve upstream Ponytail source references unless an independently reviewed upstream update is intended. Do not vendor plugin source here.
-- [ ] Align CONTRIBUTING.md's older blanket SHA instruction with the Codex exception already documented in AGENTS.md.
+- [x] Align CONTRIBUTING.md and AGENTS.md with current Codex revision support.
 - [ ] Commit the catalog cutover separately from runtime implementation changes.
 
 ## Task 3: Verify and publish documentation

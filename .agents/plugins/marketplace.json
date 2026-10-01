@@ -5,11 +5,13 @@
   },
   "plugins": [
     {
-      "name": "wizzo-fleet-presence",
-      "description": "Fleet presence for Codex sessions: merges [[hooks.*]] blocks into config.toml that call acsendr's coordctl with --vendor codex so Codex sessions appear on the Agent Mesh and in Jarvis beside Claude Code ones \u2014 presence is self-reported and spoofable, like every mesh signal.",
+      "name": "estate-maintenance",
+      "description": "Codex skills for repository maintenance, findings triage and scanning setup using the existing inventory tooling. Dry-run by default.",
       "source": {
-        "source": "url",
-        "url": "https://github.com/Wicked-Sick-Ltd/ai-codex-repo.git"
+        "source": "git-subdir",
+        "url": "https://github.com/Wicked-Sick-Ltd/ai-codex-repo.git",
+        "path": "plugins/estate-maintenance",
+        "sha": "1c0244a4f6392fe1a59b31256d53893cb0e72344"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -18,17 +20,107 @@
       "category": "Developer Tools"
     },
     {
-      "name": "ponytail",
-      "description": "Prefer existing code, the standard library and native platform features; keep the smallest correct implementation without dropping validation, security or accessibility.",
+      "name": "onboarding",
+      "description": "Check prerequisites, installed Codex plugins and portfolio setup; guide installation through the vendor repository bootstrap.",
       "source": {
-        "source": "url",
-        "url": "https://github.com/DietrichGebert/ponytail.git"
+        "source": "git-subdir",
+        "url": "https://github.com/Wicked-Sick-Ltd/ai-codex-repo.git",
+        "path": "plugins/onboarding",
+        "sha": "1c0244a4f6392fe1a59b31256d53893cb0e72344"
       },
       "policy": {
         "installation": "AVAILABLE",
         "authentication": "ON_INSTALL"
       },
-      "category": "Productivity"
+      "category": "Developer Tools"
+    },
+    {
+      "name": "pr-flow",
+      "description": "Codex skills and a Bash/gh/jq helper for creating pull requests, waiting for checks, addressing reviews and landing changes.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/Wicked-Sick-Ltd/ai-codex-repo.git",
+        "path": "plugins/pr-flow",
+        "sha": "1c0244a4f6392fe1a59b31256d53893cb0e72344"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
+      "name": "product-lifecycle",
+      "description": "Codex skills for product scope, research, opportunity scoring, pricing, go-to-market and ongoing inventory updates.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/Wicked-Sick-Ltd/ai-codex-repo.git",
+        "path": "plugins/product-lifecycle",
+        "sha": "1c0244a4f6392fe1a59b31256d53893cb0e72344"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
+      "name": "session-lifecycle",
+      "description": "Codex startup and shutdown skills, a portable handoff log and native lifecycle hooks for resuming work across sessions.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/Wicked-Sick-Ltd/ai-codex-repo.git",
+        "path": "plugins/session-lifecycle",
+        "sha": "1c0244a4f6392fe1a59b31256d53893cb0e72344"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
+      "name": "wizzo-fleet-presence",
+      "description": "Native Codex lifecycle hooks for optional fleet presence through coordctl. Presence is self-reported; install and trust on each participating machine.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/Wicked-Sick-Ltd/ai-codex-repo.git",
+        "path": "plugins/wizzo-fleet-presence",
+        "sha": "1c0244a4f6392fe1a59b31256d53893cb0e72344"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
+      "name": "token-usage",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/Wicked-Sick-Ltd/token-usage.git",
+        "sha": "1cc6ba14c4928edfc098d975c8d1be15579e9fae"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools",
+      "description": "Native Codex token reports, model and session breakdowns, budget hooks and MCP tools. Uses recorded usage and labelled API cost estimates."
+    },
+    {
+      "name": "ponytail",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/DietrichGebert/ponytail.git",
+        "sha": "e3ba2aa6f1e6f0bc4d69eb09c9f0d0a93af56156"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools",
+      "description": "Prefer existing code, the standard library and native platform features; retain validation, security and accessibility."
     }
   ]
 }
