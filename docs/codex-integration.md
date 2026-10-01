@@ -50,7 +50,8 @@ Tested with Codex CLI 0.159.3 on Windows:
 - All eight entries installed from their pinned remote sources with real native
   manifests, including private first-party sources and public upstream plugins.
 - Codex app-server discovered all 34 expected public skills and fleet, handoff
-  and token-usage hooks. token-usage's MCP resource was present.
+  and token-usage hooks. The installed token-usage MCP server also initialized
+  successfully and exposed its five tools.
 - The private vendor catalog was separately checked for complete coverage of
   its Claude reference. Vendor CI validates Windows, macOS and Linux behavior.
 - Catalog validation and regression tests passed.

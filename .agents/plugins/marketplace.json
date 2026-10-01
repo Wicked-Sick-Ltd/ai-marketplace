@@ -11,7 +11,7 @@
         "source": "git-subdir",
         "url": "https://github.com/Wicked-Sick-Ltd/ai-codex-repo.git",
         "path": "plugins/estate-maintenance",
-        "sha": "10246457ad6de6f5558626b82b79b93c1bde89be"
+        "sha": "1c0244a4f6392fe1a59b31256d53893cb0e72344"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -26,7 +26,7 @@
         "source": "git-subdir",
         "url": "https://github.com/Wicked-Sick-Ltd/ai-codex-repo.git",
         "path": "plugins/onboarding",
-        "sha": "10246457ad6de6f5558626b82b79b93c1bde89be"
+        "sha": "1c0244a4f6392fe1a59b31256d53893cb0e72344"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -41,7 +41,7 @@
         "source": "git-subdir",
         "url": "https://github.com/Wicked-Sick-Ltd/ai-codex-repo.git",
         "path": "plugins/pr-flow",
-        "sha": "10246457ad6de6f5558626b82b79b93c1bde89be"
+        "sha": "1c0244a4f6392fe1a59b31256d53893cb0e72344"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -56,7 +56,7 @@
         "source": "git-subdir",
         "url": "https://github.com/Wicked-Sick-Ltd/ai-codex-repo.git",
         "path": "plugins/product-lifecycle",
-        "sha": "10246457ad6de6f5558626b82b79b93c1bde89be"
+        "sha": "1c0244a4f6392fe1a59b31256d53893cb0e72344"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -71,7 +71,7 @@
         "source": "git-subdir",
         "url": "https://github.com/Wicked-Sick-Ltd/ai-codex-repo.git",
         "path": "plugins/session-lifecycle",
-        "sha": "10246457ad6de6f5558626b82b79b93c1bde89be"
+        "sha": "1c0244a4f6392fe1a59b31256d53893cb0e72344"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -86,7 +86,7 @@
         "source": "git-subdir",
         "url": "https://github.com/Wicked-Sick-Ltd/ai-codex-repo.git",
         "path": "plugins/wizzo-fleet-presence",
-        "sha": "10246457ad6de6f5558626b82b79b93c1bde89be"
+        "sha": "1c0244a4f6392fe1a59b31256d53893cb0e72344"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -99,7 +99,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Wicked-Sick-Ltd/token-usage.git",
-        "sha": "91d4ef7d2ee4f4744ed2972a8931a76334051a5f"
+        "sha": "1cc6ba14c4928edfc098d975c8d1be15579e9fae"
       },
       "policy": {
         "installation": "AVAILABLE",
