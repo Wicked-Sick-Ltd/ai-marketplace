@@ -11,7 +11,7 @@
         "source": "git-subdir",
         "url": "https://github.com/Wicked-Sick-Ltd/ai-codex-repo.git",
         "path": "plugins/estate-maintenance",
-        "sha": "1c0244a4f6392fe1a59b31256d53893cb0e72344"
+        "sha": "1eb677467d8b0351040b4e05a7e3cde5c4ceae53"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -26,7 +26,7 @@
         "source": "git-subdir",
         "url": "https://github.com/Wicked-Sick-Ltd/ai-codex-repo.git",
         "path": "plugins/onboarding",
-        "sha": "1c0244a4f6392fe1a59b31256d53893cb0e72344"
+        "sha": "1eb677467d8b0351040b4e05a7e3cde5c4ceae53"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -41,7 +41,7 @@
         "source": "git-subdir",
         "url": "https://github.com/Wicked-Sick-Ltd/ai-codex-repo.git",
         "path": "plugins/pr-flow",
-        "sha": "1c0244a4f6392fe1a59b31256d53893cb0e72344"
+        "sha": "1eb677467d8b0351040b4e05a7e3cde5c4ceae53"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -56,7 +56,7 @@
         "source": "git-subdir",
         "url": "https://github.com/Wicked-Sick-Ltd/ai-codex-repo.git",
         "path": "plugins/product-lifecycle",
-        "sha": "1c0244a4f6392fe1a59b31256d53893cb0e72344"
+        "sha": "1eb677467d8b0351040b4e05a7e3cde5c4ceae53"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -71,7 +71,7 @@
         "source": "git-subdir",
         "url": "https://github.com/Wicked-Sick-Ltd/ai-codex-repo.git",
         "path": "plugins/session-lifecycle",
-        "sha": "1c0244a4f6392fe1a59b31256d53893cb0e72344"
+        "sha": "1eb677467d8b0351040b4e05a7e3cde5c4ceae53"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -86,7 +86,7 @@
         "source": "git-subdir",
         "url": "https://github.com/Wicked-Sick-Ltd/ai-codex-repo.git",
         "path": "plugins/wizzo-fleet-presence",
-        "sha": "1c0244a4f6392fe1a59b31256d53893cb0e72344"
+        "sha": "1eb677467d8b0351040b4e05a7e3cde5c4ceae53"
       },
       "policy": {
         "installation": "AVAILABLE",
