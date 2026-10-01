@@ -71,7 +71,7 @@
         "source": "git-subdir",
         "url": "https://github.com/Wicked-Sick-Ltd/ai-codex-repo.git",
         "path": "plugins/session-lifecycle",
-        "sha": "1eb677467d8b0351040b4e05a7e3cde5c4ceae53"
+        "sha": "bd719507915fef0bf99600b4abd90a9bb5e62307"
       },
       "policy": {
         "installation": "AVAILABLE",
