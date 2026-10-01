@@ -64,7 +64,8 @@ def codex_shape_validates() -> None:
                     "name": "wizzo-fleet-presence",
                     "source": {
                         "source": "url",
-                        "url": "https://github.com/Wicked-Sick-Ltd/codex-repo.git",
+                        "url": "https://github.com/Wicked-Sick-Ltd/ai-codex-repo.git",
+                        "sha": "a" * 40,
                     },
                     "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"},
                     "category": "Developer Tools",
@@ -132,16 +133,37 @@ def duplicate_names_fail_on_every_catalog() -> None:
             ),
         )
     expect_fail(
-        "token-usage on the Cursor catalog",
-        "must not list Claude-only plugins",
-        lambda: validate.check_names("Cursor", ["token-usage"]),
+        "token-usage on the Copilot catalog",
+        "without a supported runtime",
+        lambda: validate.check_names("Copilot", ["token-usage"]),
     )
+
+
+def codex_native_sources():
+    source = {"source": "git-subdir", "url": "https://github.com/Wicked-Sick-Ltd/ai-codex-repo.git",
+              "path": "plugins/pr-flow", "sha": "a" * 40, "ref": "main"}
+    entry = {"name": "pr-flow", "source": source,
+             "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"},
+             "category": "Developer Tools"}
+    assert validate.codex_plugin_names({"plugins": [entry]}) == ["pr-flow"]
+    for key, value, error in [("sha", "main", "40 lowercase"),
+                              ("path", "", "missing path"),
+                              ("path", "../outside", "inside the source"),
+                              ("ref", "", "non-empty")]:
+        bad = dict(entry, source=dict(source, **{key: value}))
+        expect_fail(f"invalid Codex {key}", error,
+                    lambda: validate.codex_plugin_names({"plugins": [bad]}))
+    missing_pin = dict(entry, source={k: v for k, v in source.items() if k != "sha"})
+    expect_fail("unversioned Codex source", "pinned to a sha",
+                lambda: validate.codex_plugin_names({"plugins": [missing_pin]}))
+    validate.check_names("Codex", ["token-usage"])
 
 
 def main() -> None:
     run_validate()
     cursor_rejects_github_source()
     codex_shape_validates()
+    codex_native_sources()
     sha_pin_is_enforced()
     duplicate_names_fail_on_every_catalog()
     print("ok: validate tests passed")

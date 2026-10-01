@@ -6,8 +6,7 @@ runtimes. No plugin source lives in this index.
 
 Reviewed version: **4.10.0**, commit
 `e3ba2aa6f1e6f0bc4d69eb09c9f0d0a93af56156`.
-Claude and Copilot entries pin that commit. Codex resolves upstream's default
-branch; this review records a revision, but does not pin Codex installs.
+Claude, Codex and Copilot entries pin that commit.
 
 | Host | Configuration home | Runtime |
 | --- | --- | --- |
@@ -79,10 +78,9 @@ and use the review skill to identify unnecessary code. Validation, security,
 accessibility and data-loss handling remain required.
 
 For an update, inspect the new upstream manifests and relevant adapter tests,
-then update the Claude/Copilot SHA and version, the Cursor submodule pointer,
+then update the Claude/Codex/Copilot SHA and version, the Cursor submodule pointer,
 the Gemini install reference and the revision recorded here. Update Claude's
-marketplace and fleet minimum version together. Codex follows upstream's
-default branch independently. Run `python3 scripts/validate.py` after index
+marketplace and fleet minimum version together. Run `python3 scripts/validate.py` after index
 edits and each vendor repo's checks before landing its changes.
 
 ## Host setup ownership
