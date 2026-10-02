@@ -19,7 +19,14 @@
       "homepage": "https://discovery.wickedsick.com/token-usage-claude-code-plugin-documentation",
       "repository": "https://github.com/Wicked-Sick-Ltd/token-usage",
       "license": "MIT",
-      "keywords": ["tokens", "usage", "cost", "observability", "analytics", "cowork"],
+      "keywords": [
+        "tokens",
+        "usage",
+        "cost",
+        "observability",
+        "analytics",
+        "cowork"
+      ],
       "source": {
         "source": "github",
         "repo": "Wicked-Sick-Ltd/token-usage",
@@ -37,7 +44,16 @@
       "category": "integration",
       "repository": "https://github.com/Wicked-Sick-Ltd/ai-claude-repo",
       "license": "MIT",
-      "keywords": ["fleet", "presence", "coordination", "mesh", "hooks", "coordctl", "acsendr", "jarvis"],
+      "keywords": [
+        "fleet",
+        "presence",
+        "coordination",
+        "mesh",
+        "hooks",
+        "coordctl",
+        "acsendr",
+        "jarvis"
+      ],
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/Wicked-Sick-Ltd/ai-claude-repo.git",
@@ -62,6 +78,33 @@
         "source": "github",
         "repo": "DietrichGebert/ponytail",
         "sha": "e3ba2aa6f1e6f0bc4d69eb09c9f0d0a93af56156"
+      }
+    },
+    {
+      "name": "solar",
+      "description": "Live Solar System data from Solar (sol.wickedsick.com): what's up tonight, lessons by UK key stage, space fact-checks, object explainers, asteroid close-approach watch, weekly sky content and catalogue audits — via the free public Solar MCP",
+      "version": "0.1.0",
+      "author": {
+        "name": "Wicked Sick Ltd",
+        "email": "hello@wickedsick.com"
+      },
+      "category": "education",
+      "homepage": "https://sol.wickedsick.com",
+      "repository": "https://github.com/Wicked-Sick-Ltd/solar-plugin",
+      "license": "MIT",
+      "keywords": [
+        "astronomy",
+        "solar-system",
+        "education",
+        "nasa",
+        "jpl",
+        "stargazing",
+        "mcp"
+      ],
+      "source": {
+        "source": "github",
+        "repo": "Wicked-Sick-Ltd/solar-plugin",
+        "sha": "93dbb01bcfa108a9e790701f005c46042c79813b"
       }
     }
   ]
