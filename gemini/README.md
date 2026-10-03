@@ -21,7 +21,7 @@ Start a new session and use `/ponytail-help` or `/ponytail-review`. It does not
 reuse Claude/Codex lifecycle hooks. The CLI supports a commit as `--ref`;
 see the [extension reference](https://geminicli.com/docs/extensions/reference/).
 
-`token-usage` is Claude-transcript-shaped and is not a Gemini extension until that repo ships `gemini-extension.json` and a Gemini-relevant runtime.
+`token-usage` reads Claude Code, Codex and Cursor sessions only. It is not a Gemini extension until that repo ships `gemini-extension.json` and a Gemini session adapter.
 
 Gallery (public, later): https://geminicli.com/extensions/
 

@@ -99,7 +99,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Wicked-Sick-Ltd/token-usage.git",
-        "sha": "1cc6ba14c4928edfc098d975c8d1be15579e9fae"
+        "sha": "eed69391c16b06b17bd8e3a47c95c47525b986f2"
       },
       "policy": {
         "installation": "AVAILABLE",

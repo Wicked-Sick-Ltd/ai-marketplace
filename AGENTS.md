@@ -6,7 +6,7 @@ This repository is an **index**. It lists plugins; it does not contain plugin co
 - Claude, Codex and Copilot remote entries are pinned to full 40-character commit SHAs. Codex supports `url` and `git-subdir` sources with `sha` and optional `ref`; subdirectory paths select the actual native plugin package.
 - Cursor's `.cursor-plugin/marketplace.json` uses **in-repo paths** only (`source` is a directory in this git tree, optionally under `metadata.pluginRoot`). Do not copy Claude `github`/`sha` source objects there. Cursor Team Marketplace should import the repo that contains the plugin directories (`ai-claude-repo`), not vendor those plugins here.
 - List a plugin only on the catalogs where it has a real runtime.
-- `token-usage` has native Claude and Codex runtimes. Only list another host after verifying its parser and package.
+- `token-usage` has native Claude, Codex and Cursor runtimes (its Cursor package lives in the token-usage repo and cannot go in this repo's path-based Cursor index). Only list another host after verifying its parser and package.
 - After catalog edits, run `python3 scripts/validate.py`.
 
 A Next.js + Prisma demo app also lives in this tree, in-tree so the Cursor Cloud Agent environment has something to install and run ([`docs/demo-app.md`](docs/demo-app.md)). Do not treat its listings UI as plugin source or as a catalog — catalog edits are still edits to the index files above, followed by `python3 scripts/validate.py`. CI runs that Python validation only, so the demo app is unenforced there.

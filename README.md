@@ -89,9 +89,12 @@ Installation troubleshooting and tested package behavior: [Codex integration](do
 Ponytail setup, vendor ownership, revision tracking and runtime limitations:
 [`docs/ponytail.md`](docs/ponytail.md).
 
-`token-usage` now has native Claude and Codex transcript adapters. Codex token
-counts use recorded usage; costs are labelled API estimates, not subscription
-charges. It is not listed for hosts without a supported runtime.
+`token-usage` has native Claude Code (and Cowork), Codex and Cursor runtimes. Codex
+token counts use recorded usage; costs are labelled API estimates, not subscription
+charges. Its Cursor package (`.cursor-plugin/plugin.json`) lives in the token-usage
+repository, so add that repository to a Cursor Team Marketplace with **Add to
+Marketplace**; this repo's path-based Cursor index cannot point at another repository.
+It is not listed for hosts without a supported runtime (Copilot, Gemini).
 
 Codex workflow skills are maintained in
 [`ai-codex-repo`](https://github.com/Wicked-Sick-Ltd/ai-codex-repo), using
