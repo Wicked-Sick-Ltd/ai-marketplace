@@ -108,9 +108,10 @@ add a Cursor catalog **in `ai-claude-repo`**:
 Turn on **Auto Refresh** (Cursor GitHub App on the repo) so pushes re-index at
 most every 10 minutes.
 
-`token-usage` is a **different git repo**. Add it to the same Team Marketplace
-with **Add to Marketplace** (individual plugin URL), or keep it off Cursor
-until it can parse Cursor session logs (see matrix below).
+`token-usage` is a **different git repo**. It ships a Cursor package
+(`.cursor-plugin/plugin.json`, hooks and a Cursor session adapter, since its
+September 2026 Cursor runtime PR). Add it to the same Team Marketplace with **Add to
+Marketplace** (individual plugin URL).
 
 ### This repo (`ai-marketplace`)
 
@@ -192,7 +193,7 @@ Live Claude plugins today: `ai-claude-repo` marketplace + `token-usage`.
 | `estate-maintenance` | **Yes** | Cursor Plugin (skills + commands) | Skills call scripts in `wicked-repo-inventory`. Confirm those scripts run from Cursor Cloud Agents (inventory access, `gh`, dry-run defaults). |
 | `product-lifecycle` | **Yes** | Cursor Plugin (`commands/product-*.md` + any skills) | Prompt library; Notion writes. No Claude-only parser. |
 | `onboarding` | **Partial** | Skill yes; bootstrap later | `/onboard` + `CONVENTIONS.md` check ports. `scripts/bootstrap.sh` is Claude-marketplace (`/plugin marketplace add ai-claude-repo`). Cursor equivalent is Team Marketplace import + Default On, not that script. |
-| `token-usage` | **Not yet** | — | Skill + MCP + Stop hook are Claude/Cowork transcript-shaped (`~/.claude/projects`, `${CLAUDE_PLUGIN_ROOT}`). Listing it on Cursor without a Cursor log parser is a lie. Cloud `environment.json` does not fix that. Revisit when a Cursor parser exists, or with an explicit "Claude transcripts only" listing. |
+| `token-usage` | **Yes** | Cursor Plugin in its own repo (`.cursor-plugin/plugin.json`: skill, stdio MCP server, `hooks/hooks-cursor.json`) | Reads Cursor hook ledgers, read-only Desktop SQLite and Cloud Agent exports (`--runtime cursor`). Add the token-usage repo URL to the Team Marketplace; it cannot be listed in this repo's path-based index. See the repo's `docs/cursor-adapter.md` for what it can and cannot measure. |
 
 Workflow skills belong on every Agent Skills catalog **after** the shims above.
 Host-specific observability stays on the host that produces the logs.
@@ -231,6 +232,6 @@ Pin remotes on those JSON catalogs with a full SHA, same as Claude.
 - [ ] Import that repo as the Cursor Team Marketplace; Auto Refresh on.
 - [ ] Repeat for `estate-maintenance`, `product-lifecycle`.
 - [ ] Decide Cursor story for `onboarding` (skill vs skip bootstrap).
-- [ ] Leave `token-usage` off Cursor until logs or an honest Claude-only label.
+- [ ] Add `token-usage` to the Team Marketplace by repo URL (Cursor runtime shipped).
 - [ ] Add Agent Plugins `plugin.json` on plugins we also list on Codex/Copilot.
 - [ ] Point this repo's Cursor index at in-repo paths only if we ever host a Cursor pack here; keep it empty until then.

@@ -16,7 +16,7 @@
         "email": "craig@wickedsick.com"
       },
       "category": "monitoring",
-      "homepage": "https://discovery.wickedsick.com/token-usage-claude-code-plugin-documentation",
+      "homepage": "https://github.com/Wicked-Sick-Ltd/token-usage#readme",
       "repository": "https://github.com/Wicked-Sick-Ltd/token-usage",
       "license": "MIT",
       "keywords": [
@@ -30,7 +30,7 @@
       "source": {
         "source": "github",
         "repo": "Wicked-Sick-Ltd/token-usage",
-        "sha": "67164452fb51eff2e76df65b937dd3e725b75103"
+        "sha": "19e55344b510ddd5704cd823811905c0646e3325"
       }
     },
     {
