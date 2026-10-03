@@ -9,8 +9,8 @@
   "plugins": [
     {
       "name": "token-usage",
-      "description": "Attribute Claude Code and Cowork token usage to the work that consumed it — per-command, per-skill, per-agent and per-model breakdowns, cross-session history, live session ledger, cost estimates, and a bundled MCP server",
-      "version": "0.6.1",
+      "description": "A token profiler, not a cost meter: attributes Claude Code and Cowork usage to the slash command, skill or subagent that consumed it.",
+      "version": "0.7.0",
       "author": {
         "name": "Craig Fletcher",
         "email": "craig@wickedsick.com"
@@ -30,7 +30,7 @@
       "source": {
         "source": "github",
         "repo": "Wicked-Sick-Ltd/token-usage",
-        "sha": "19e55344b510ddd5704cd823811905c0646e3325"
+        "sha": "eed69391c16b06b17bd8e3a47c95c47525b986f2"
       }
     },
     {
