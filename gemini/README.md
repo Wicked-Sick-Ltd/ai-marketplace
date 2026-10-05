@@ -21,6 +21,20 @@ Start a new session and use `/ponytail-help` or `/ponytail-review`. It does not
 reuse Claude/Codex lifecycle hooks. The CLI supports a commit as `--ref`;
 see the [extension reference](https://geminicli.com/docs/extensions/reference/).
 
+## PublicUniverse (rollout pending)
+
+The astronomy plugin ships a generated `gemini-extension.json`, one public HTTP MCP server and seven shared skills. The reviewed source remains internal pending transfer to the `public-universe` organisation; update this URL after the destination is confirmed. Live MCP acceptance is blocked by HTTP 404. See [rollout evidence](../docs/publicuniverse.md).
+
+For authorised reviewers with repository access:
+
+```bash
+gemini extensions install https://github.com/Wicked-Sick-Ltd/solar-plugin --ref a37919160a80c6f8a97837751ec42b442ec297f9
+gemini extensions list
+gemini skills list
+```
+
+Windows local installation and discovery passed with Gemini CLI 0.62.0 on Node 24.21.0. All seven skills were discovered; the configured MCP server reported its existing 404. There are no extension hooks or credentials. Public installation must wait for the repository and service rollout.
+
 `token-usage` reads Claude Code, Codex and Cursor sessions only. It is not a Gemini extension until that repo ships `gemini-extension.json` and a Gemini session adapter.
 
 Gallery (public, later): https://geminicli.com/extensions/

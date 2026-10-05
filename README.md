@@ -76,15 +76,17 @@ The vendor repository owns [setup, prerequisites and migration](https://github.c
 
 Installation troubleshooting and tested package behavior: [Codex integration](docs/codex-integration.md).
 
+PublicUniverse's astronomy plugin is prepared for Claude, Codex, Copilot and Gemini; Cursor imports its portable source package directly. Its [rollout and acceptance record](docs/publicuniverse.md) tracks the pending repository transfer, public visibility and MCP restoration. Do not treat a catalog listing as a working live connection.
+
 ## Indexes
 
 | Client | File | Plugins listed today |
 | --- | --- | --- |
-| Claude Code / Grok | `.claude-plugin/marketplace.json` | `token-usage`, `wizzo-fleet-presence`, `ponytail` (pinned; Ponytail's Grok runtime is skills-only) |
+| Claude Code / Grok | `.claude-plugin/marketplace.json` | `token-usage`, `wizzo-fleet-presence`, `ponytail`, `publicuniverse` (pinned; PublicUniverse rollout pending; Ponytail's Grok runtime is skills-only) |
 | Cursor | `.cursor-plugin/marketplace.json` | none here (path-based catalog; live plugins stay in `ai-claude-repo`; the `wizzo-fleet-presence` Cursor pack is a hooks template in `acsendr`, not a plugin) |
-| ChatGPT / Codex | `.agents/plugins/marketplace.json` | `onboarding`, `session-lifecycle`, `pr-flow`, `estate-maintenance`, `product-lifecycle`, `token-usage`, `ponytail`, `wizzo-fleet-presence` (native packages, pinned) |
-| Copilot CLI | `.github/plugin/marketplace.json` | `ponytail` (pinned; Copilot-specific commands, skills and hooks) |
-| Gemini | [`gemini/README.md`](gemini/README.md) | `ponytail` (upstream extension) |
+| ChatGPT / Codex | `.agents/plugins/marketplace.json` | `onboarding`, `session-lifecycle`, `pr-flow`, `estate-maintenance`, `product-lifecycle`, `token-usage`, `ponytail`, `wizzo-fleet-presence`, `publicuniverse` (native packages, pinned; PublicUniverse rollout pending) |
+| Copilot CLI | `.github/plugin/marketplace.json` | `ponytail`, `publicuniverse` (pinned; PublicUniverse rollout pending) |
+| Gemini | [`gemini/README.md`](gemini/README.md) | `ponytail`, `publicuniverse` (upstream extensions; PublicUniverse rollout pending) |
 
 Ponytail setup, vendor ownership, revision tracking and runtime limitations:
 [`docs/ponytail.md`](docs/ponytail.md).

@@ -81,15 +81,16 @@
       }
     },
     {
-      "name": "solar",
-      "description": "Live Solar System data from Solar (sol.wickedsick.com): what's up tonight, lessons by UK key stage, space fact-checks, object explainers, asteroid close-approach watch, weekly sky content and catalogue audits — via the free public Solar MCP",
-      "version": "0.1.0",
+      "name": "publicuniverse",
+      "description": "PublicUniverse astronomy tools and skills: explore catalogue data, plan stargazing, explain objects, build lessons and check space facts using a public MCP server.",
+      "version": "0.3.0",
       "author": {
         "name": "Wicked Sick Ltd",
-        "email": "hello@wickedsick.com"
+        "email": "hello@wickedsick.com",
+        "url": "https://wickedsick.com"
       },
       "category": "education",
-      "homepage": "https://sol.wickedsick.com",
+      "homepage": "https://publicuniverse.net",
       "repository": "https://github.com/Wicked-Sick-Ltd/solar-plugin",
       "license": "MIT",
       "keywords": [
@@ -99,12 +100,14 @@
         "nasa",
         "jpl",
         "stargazing",
-        "mcp"
+        "mcp",
+        "public-universe",
+        "agent-skills"
       ],
       "source": {
         "source": "github",
         "repo": "Wicked-Sick-Ltd/solar-plugin",
-        "sha": "93dbb01bcfa108a9e790701f005c46042c79813b"
+        "sha": "a37919160a80c6f8a97837751ec42b442ec297f9"
       }
     }
   ]
