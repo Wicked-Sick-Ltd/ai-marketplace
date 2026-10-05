@@ -36,6 +36,20 @@ It reads local recordings and nested agents; unknown model prices stay unknown.
 It does not add Claude-style budget nudges. See
 [verification and limitations](../docs/token-usage.md) before rolling it out.
 
+## PublicUniverse (rollout pending)
+
+The astronomy plugin ships a generated `gemini-extension.json`, one public HTTP MCP server and seven shared skills. The reviewed source remains internal pending transfer to the `public-universe` organisation; update this URL after the destination is confirmed. Live MCP acceptance is blocked by HTTP 404. See [rollout evidence](../docs/publicuniverse.md).
+
+For authorised reviewers with repository access:
+
+```bash
+gemini extensions install https://github.com/Wicked-Sick-Ltd/solar-plugin --ref 8647a5e6e8a78f8426b03280b268370223a7599c
+gemini extensions list
+gemini skills list
+```
+
+Windows local installation and discovery passed with Gemini CLI 0.62.0 on Node 24.21.0. All seven skills were discovered; the configured MCP server reported its existing 404. There are no extension hooks or credentials. Public installation must wait for the repository and service rollout.
+
 Gallery (public, later): https://geminicli.com/extensions/
 
 `wizzo-fleet-presence` is **not listed for Gemini**. Gemini CLI has no session

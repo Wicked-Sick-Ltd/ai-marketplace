@@ -42,6 +42,19 @@
       "commands": "commands/",
       "skills": "skills/",
       "hooks": "hooks/copilot-hooks.json"
+    },
+    {
+      "name": "publicuniverse",
+      "description": "PublicUniverse astronomy tools and skills: explore catalogue data, plan stargazing, explain objects, build lessons and check space facts using a public MCP server.",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/Wicked-Sick-Ltd/solar-plugin.git",
+        "sha": "8647a5e6e8a78f8426b03280b268370223a7599c"
+      },
+      "version": "0.3.0",
+      "category": "education",
+      "homepage": "https://publicuniverse.net",
+      "license": "MIT"
     }
   ]
 }
