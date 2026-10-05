@@ -105,8 +105,8 @@
         "agent-skills"
       ],
       "source": {
-        "source": "github",
-        "repo": "Wicked-Sick-Ltd/solar-plugin",
+        "source": "url",
+        "url": "https://github.com/Wicked-Sick-Ltd/solar-plugin.git",
         "sha": "8647a5e6e8a78f8426b03280b268370223a7599c"
       }
     }
