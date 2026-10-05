@@ -10,6 +10,19 @@
   },
   "plugins": [
     {
+      "name": "token-usage",
+      "version": "0.8.0",
+      "description": "Local Copilot CLI token reports and API cost estimates. Per-call capture requires experimental extensions; recovered shutdown totals have partial attribution.",
+      "repository": "https://github.com/Wicked-Sick-Ltd/token-usage",
+      "license": "MIT",
+      "category": "monitoring",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/Wicked-Sick-Ltd/token-usage.git",
+        "sha": "ae989e2cde864447f8c63c1423c0d4ba3b9839df"
+      }
+    },
+    {
       "name": "ponytail",
       "description": "Prefer existing code, the standard library and native platform features; keep the smallest correct implementation without dropping validation, security or accessibility.",
       "version": "4.10.0",

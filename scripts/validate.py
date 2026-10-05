@@ -18,7 +18,7 @@ INDEXES = {
     "copilot": ROOT / ".github" / "plugin" / "marketplace.json",
 }
 
-TOKEN_USAGE_HOSTS = {"Claude", "Codex", "Cursor"}
+TOKEN_USAGE_HOSTS = {"Claude", "Codex", "Cursor", "Copilot", "Gemini"}
 
 
 def fail(msg: str) -> None:
@@ -185,7 +185,7 @@ def check_gemini_readme() -> None:
     text = path.read_text()
     for name in ("token-usage",):
         if name not in text:
-            fail(f"gemini/README.md must say why {name!r} is not listed for Gemini")
+            fail(f"gemini/README.md must document the {name!r} extension")
 
 
 def main() -> None:
