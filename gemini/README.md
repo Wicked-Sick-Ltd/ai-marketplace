@@ -28,7 +28,7 @@ The astronomy plugin ships a generated `gemini-extension.json`, one public HTTP 
 For authorised reviewers with repository access:
 
 ```bash
-gemini extensions install https://github.com/Wicked-Sick-Ltd/solar-plugin --ref a37919160a80c6f8a97837751ec42b442ec297f9
+gemini extensions install https://github.com/Wicked-Sick-Ltd/solar-plugin --ref d44a5765a1b37b3036fa13564d6820227343abea
 gemini extensions list
 gemini skills list
 ```

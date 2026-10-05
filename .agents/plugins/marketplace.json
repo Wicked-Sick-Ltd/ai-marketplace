@@ -128,7 +128,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Wicked-Sick-Ltd/solar-plugin.git",
-        "sha": "a37919160a80c6f8a97837751ec42b442ec297f9"
+        "sha": "d44a5765a1b37b3036fa13564d6820227343abea"
       },
       "policy": {
         "installation": "AVAILABLE",
