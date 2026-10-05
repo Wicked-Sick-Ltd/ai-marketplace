@@ -21,7 +21,20 @@ Start a new session and use `/ponytail-help` or `/ponytail-review`. It does not
 reuse Claude/Codex lifecycle hooks. The CLI supports a commit as `--ref`;
 see the [extension reference](https://geminicli.com/docs/extensions/reference/).
 
-`token-usage` reads Claude Code, Codex and Cursor sessions only. It is not a Gemini extension until that repo ships `gemini-extension.json` and a Gemini session adapter.
+## Token usage
+
+The 0.8.0 candidate supplies `gemini-extension.json`, the report skill and a Gemini
+JSON/JSONL session adapter. Install the pinned candidate after its release approval:
+
+```bash
+gemini extensions install https://github.com/Wicked-Sick-Ltd/token-usage --ref ae989e2cde864447f8c63c1423c0d4ba3b9839df
+gemini extensions list
+gemini mcp list
+```
+
+It reads local recordings and nested agents; unknown model prices stay unknown.
+It does not add Claude-style budget nudges. See
+[verification and limitations](../docs/token-usage.md) before rolling it out.
 
 Gallery (public, later): https://geminicli.com/extensions/
 

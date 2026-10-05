@@ -132,10 +132,12 @@ def duplicate_names_fail_on_every_catalog() -> None:
                 label, ["wizzo-fleet-presence", "wizzo-fleet-presence"]
             ),
         )
+    validate.check_names("Copilot", ["token-usage"])
+    validate.check_names("Gemini", ["token-usage"])
     expect_fail(
-        "token-usage on the Copilot catalog",
+        "token-usage on an unverified host",
         "without a supported runtime",
-        lambda: validate.check_names("Copilot", ["token-usage"]),
+        lambda: validate.check_names("Unverified", ["token-usage"]),
     )
 
 

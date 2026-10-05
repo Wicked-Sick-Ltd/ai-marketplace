@@ -44,6 +44,13 @@ do not establish which error occurred in a separate session.
 
 ## Validation evidence (2026-10-01)
 
+2026-10-05 update: Codex 0.160.0 installed token-usage 0.7.0 but its MCP launcher
+failed because a legacy argument placeholder was passed literally. The 0.8.0
+candidate fixes startup and listing metadata. Its isolated native install and
+five-tool discovery were verified again; see [the candidate record](token-usage.md).
+The older successful MCP observation below does not establish compatibility of
+0.7.0 with 0.160.0.
+
 Tested with Codex CLI 0.159.3 on Windows:
 
 - Marketplace registration from GitHub succeeded in an isolated `CODEX_HOME`.

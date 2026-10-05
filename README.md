@@ -42,7 +42,9 @@ codex plugin marketplace add Wicked-Sick-Ltd/ai-marketplace --sparse .agents/plu
 ```
 
 - **Cursor:** do **not** expect Claude-style GitHub SHA pins in `.cursor-plugin/marketplace.json`. Cursor Team Marketplaces import a git repo and resolve each plugin as a **path inside that repo**. Import [`ai-claude-repo`](https://github.com/Wicked-Sick-Ltd/ai-claude-repo) once those plugins have Cursor/Agent Plugins manifests. This catalog's Cursor index stays empty until we host a Cursor pack here. Details: [`docs/cursor-integration.md`](docs/cursor-integration.md).
-- **Copilot:** `"chat.plugins.marketplaces": ["Wicked-Sick-Ltd/ai-marketplace"]`
+- **Copilot CLI:** `copilot plugin marketplace add Wicked-Sick-Ltd/ai-marketplace`, then
+  `copilot plugin install token-usage@wickedsick`. Start with `copilot --experimental`
+  for per-call capture. This package targets the CLI, not VS Code Copilot.
 - **Gemini CLI:** no catalog file. Install from the plugin repo: see [`gemini/README.md`](gemini/README.md).
 - **Grok:** add the Claude marketplace above. A Grok-native index is omitted on purpose.
 
@@ -83,18 +85,22 @@ Installation troubleshooting and tested package behavior: [Codex integration](do
 | Claude Code / Grok | `.claude-plugin/marketplace.json` | `token-usage`, `wizzo-fleet-presence`, `ponytail` (pinned; Ponytail's Grok runtime is skills-only) |
 | Cursor | `.cursor-plugin/marketplace.json` | none here (path-based catalog; live plugins stay in `ai-claude-repo`; the `wizzo-fleet-presence` Cursor pack is a hooks template in `acsendr`, not a plugin) |
 | ChatGPT / Codex | `.agents/plugins/marketplace.json` | `onboarding`, `session-lifecycle`, `pr-flow`, `estate-maintenance`, `product-lifecycle`, `token-usage`, `ponytail`, `wizzo-fleet-presence` (native packages, pinned) |
-| Copilot CLI | `.github/plugin/marketplace.json` | `ponytail` (pinned; Copilot-specific commands, skills and hooks) |
-| Gemini | [`gemini/README.md`](gemini/README.md) | `ponytail` (upstream extension) |
+| Copilot CLI | `.github/plugin/marketplace.json` | `ponytail`, `token-usage` (pinned CLI packages) |
+| Gemini | [`gemini/README.md`](gemini/README.md) | `ponytail`, `token-usage` (upstream extensions, pinned install instructions) |
 
 Ponytail setup, vendor ownership, revision tracking and runtime limitations:
 [`docs/ponytail.md`](docs/ponytail.md).
 
-`token-usage` has native Claude Code (and Cowork), Codex and Cursor runtimes. Codex
+`token-usage` has native Claude Code (and Cowork), Codex, Cursor, Gemini CLI and
+GitHub Copilot CLI runtimes in the pinned 0.8.0 candidate. Codex
 token counts use recorded usage; costs are labelled API estimates, not subscription
 charges. Its Cursor package (`.cursor-plugin/plugin.json`) lives in the token-usage
 repository, so add that repository to a Cursor Team Marketplace with **Add to
 Marketplace**; this repo's path-based Cursor index cannot point at another repository.
-It is not listed for hosts without a supported runtime (Copilot, Gemini).
+Gemini reads native recordings; Copilot captures transient usage with its bundled
+SDK and recovers uncaptured shutdown totals with partial-attribution warnings.
+[Verification and release order](docs/token-usage.md) distinguishes package/MCP
+checks from model-driven or Desktop marketplace checks.
 
 Codex workflow skills are maintained in
 [`ai-codex-repo`](https://github.com/Wicked-Sick-Ltd/ai-codex-repo), using
