@@ -1,0 +1,18 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "net.publicuniverse/publicuniverse",
+  "title": "Public Universe",
+  "description": "Free astronomy catalogue: solar system objects, sky positions, close approaches and more.",
+  "version": "0.4.0",
+  "websiteUrl": "https://publicuniverse.net",
+  "repository": {
+    "url": "https://github.com/Wicked-Sick-Ltd/publicuniverse-plugin",
+    "source": "github"
+  },
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://api.sol.wickedsick.com/mcp"
+    }
+  ]
+}

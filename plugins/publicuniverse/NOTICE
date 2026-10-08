@@ -1,0 +1,19 @@
+Public Universe plugin
+Copyright (c) 2026 Wicked Sick Limited (https://wickedsick.com)
+
+Public Universe (https://publicuniverse.net) is a free, pro bono astronomy
+service created and maintained by Wicked Sick Limited (UK).
+
+This plugin is released under the MIT License (see LICENSE). The MIT License
+requires the copyright notice above and the licence text to be kept in all
+copies or substantial portions of the software.
+
+Attribution: if you use, adapt or redistribute this plugin, its skills or its
+documentation, please credit "Wicked Sick Ltd" and link to
+https://publicuniverse.net, for example:
+
+    Built with Public Universe by Wicked Sick Ltd (https://publicuniverse.net)
+
+Catalogue data served by the Public Universe MCP server comes from third-party
+sources (including NASA/JPL and the IAU Minor Planet Center) and keeps its own
+terms and attribution requirements. Check each source record before reuse.

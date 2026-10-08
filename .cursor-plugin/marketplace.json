@@ -8,5 +8,28 @@
     "description": "Wicked Sick plugins for Cursor. This file is the org catalog stub: Cursor resolves plugin source as a path inside the imported git repo, so we do not SHA-pin remote GitHub sources here. Import Wicked-Sick-Ltd/ai-claude-repo as the Team Marketplace once those plugins have .cursor-plugin/plugin.json. See docs/cursor-integration.md. The wizzo-fleet-presence Cursor pack is deliberately NOT listed here: it is a .cursor/hooks.json + hook-script template, not a Cursor plugin, and Cursor hooks are not marketplace-installable. It lives in Wicked-Sick-Ltd/acsendr at mcp/hooks/cursor/ — see docs/cursor-integration.md for its two install modes.",
     "version": "0.2.0"
   },
-  "plugins": []
+  "plugins": [
+    {
+      "name": "publicuniverse",
+      "source": "plugins/publicuniverse",
+      "description": "Public Universe astronomy tools and skills: explore catalogue data, plan stargazing, explain objects, build lessons and check space facts using a free public MCP server.",
+      "version": "0.4.0",
+      "author": {
+        "name": "Wicked Sick Ltd",
+        "email": "hello@wickedsick.com"
+      },
+      "homepage": "https://publicuniverse.net",
+      "repository": "https://github.com/Wicked-Sick-Ltd/publicuniverse-plugin",
+      "license": "MIT",
+      "keywords": [
+        "astronomy",
+        "education",
+        "stargazing",
+        "mcp",
+        "publicuniverse"
+      ],
+      "logo": "plugins/publicuniverse/assets/icon.svg",
+      "category": "education"
+    }
+  ]
 }

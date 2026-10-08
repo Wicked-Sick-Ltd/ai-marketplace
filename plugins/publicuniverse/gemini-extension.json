@@ -1,0 +1,9 @@
+{
+  "name": "publicuniverse",
+  "version": "0.4.0",
+  "mcpServers": {
+    "publicuniverse": {
+      "httpUrl": "https://api.sol.wickedsick.com/mcp"
+    }
+  }
+}

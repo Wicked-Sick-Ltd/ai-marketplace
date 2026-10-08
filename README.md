@@ -4,7 +4,7 @@ Repository migration: [plan and execution record](docs/ai-vendor-repository-migr
 
 For each machine: [local migration broadcast prompt](docs/local-ai-repository-migration-prompt.md).
 
-GitHub catalogs for the agent plugins we actually install. Plugins are **not** vendored here. Claude, Codex and Copilot indexes pin source repositories by commit SHA. Codex selects native packages with `url` or `git-subdir` sources. Cursor indexes use in-repo paths; the Team Marketplace imports the git repo that actually contains the plugin directories.
+GitHub catalogs for the agent plugins we actually install. Plugins are **not** vendored here, with one exception: `plugins/publicuniverse/` is a vendored copy so the path-based Cursor index can list Public Universe (see its `VENDORED.md`). Claude, Codex and Copilot indexes pin source repositories by commit SHA. Codex selects native packages with `url` or `git-subdir` sources. Cursor indexes use in-repo paths; the Team Marketplace imports the git repo that actually contains the plugin directories.
 
 This is not a Traefik module and not a substitute for `CLAUDE.md` / `AGENTS.md` in product repos. See the plan in [traefik-laravel-forge](https://github.com/Wicked-Sick-Ltd/traefik-laravel-forge/blob/master/docs/cross-ai-marketplace-plan.md).
 
@@ -41,7 +41,7 @@ claude plugin marketplace add Wicked-Sick-Ltd/ai-marketplace
 codex plugin marketplace add Wicked-Sick-Ltd/ai-marketplace --sparse .agents/plugins
 ```
 
-- **Cursor:** do **not** expect Claude-style GitHub SHA pins in `.cursor-plugin/marketplace.json`. Cursor Team Marketplaces import a git repo and resolve each plugin as a **path inside that repo**. Import [`ai-claude-repo`](https://github.com/Wicked-Sick-Ltd/ai-claude-repo) once those plugins have Cursor/Agent Plugins manifests. This catalog's Cursor index stays empty until we host a Cursor pack here. Details: [`docs/cursor-integration.md`](docs/cursor-integration.md).
+- **Cursor:** do **not** expect Claude-style GitHub SHA pins in `.cursor-plugin/marketplace.json`. Cursor Team Marketplaces import a git repo and resolve each plugin as a **path inside that repo**. Import [`ai-claude-repo`](https://github.com/Wicked-Sick-Ltd/ai-claude-repo) once those plugins have Cursor/Agent Plugins manifests. This catalog's Cursor index lists only `publicuniverse` (vendored at `plugins/publicuniverse/`). Details: [`docs/cursor-integration.md`](docs/cursor-integration.md).
 - **Copilot CLI:** `copilot plugin marketplace add Wicked-Sick-Ltd/ai-marketplace`, then
   `copilot plugin install token-usage@wickedsick`. Start with `copilot --experimental`
   for per-call capture. This package targets the CLI, not VS Code Copilot.
@@ -78,14 +78,14 @@ The vendor repository owns [setup, prerequisites and migration](https://github.c
 
 Installation troubleshooting and tested package behavior: [Codex integration](docs/codex-integration.md).
 
-PublicUniverse's astronomy plugin is prepared for Claude, Codex, Copilot and Gemini; Cursor imports its portable source package directly. Its [rollout and acceptance record](docs/publicuniverse.md) tracks the pending repository transfer, public visibility and MCP restoration. Do not treat a catalog listing as a working live connection.
+Public Universe's astronomy plugin (`publicuniverse` 0.4.0) is listed for Claude, Codex, Copilot, Cursor (vendored copy) and Gemini. Grok CLI reads the Claude catalog. Its [rollout and acceptance record](docs/publicuniverse.md) tracks the repository rename to `publicuniverse-plugin`, public visibility and MCP restoration. Do not treat a catalog listing as a working live connection.
 
 ## Indexes
 
 | Client | File | Plugins listed today |
 | --- | --- | --- |
 | Claude Code / Grok | `.claude-plugin/marketplace.json` | `token-usage`, `wizzo-fleet-presence`, `ponytail`, `publicuniverse` (pinned; PublicUniverse rollout pending; Ponytail's Grok runtime is skills-only) |
-| Cursor | `.cursor-plugin/marketplace.json` | none here (path-based catalog; live plugins stay in `ai-claude-repo`; the `wizzo-fleet-presence` Cursor pack is a hooks template in `acsendr`, not a plugin) |
+| Cursor | `.cursor-plugin/marketplace.json` | `publicuniverse` (vendored at `plugins/publicuniverse/`; rollout pending). Otherwise path-based only; live plugins stay in `ai-claude-repo`; the `wizzo-fleet-presence` Cursor pack is a hooks template in `acsendr`, not a plugin) |
 | ChatGPT / Codex | `.agents/plugins/marketplace.json` | `onboarding`, `session-lifecycle`, `pr-flow`, `estate-maintenance`, `product-lifecycle`, `token-usage`, `ponytail`, `wizzo-fleet-presence`, `publicuniverse` (native packages, pinned; PublicUniverse rollout pending) |
 | Copilot CLI | `.github/plugin/marketplace.json` | `ponytail`, `token-usage`, `publicuniverse` (pinned CLI packages; PublicUniverse rollout pending) |
 | Gemini | [`gemini/README.md`](gemini/README.md) | `ponytail`, `token-usage`, `publicuniverse` (upstream extensions; PublicUniverse rollout pending) |
