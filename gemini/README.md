@@ -36,19 +36,17 @@ It reads local recordings and nested agents; unknown model prices stay unknown.
 It does not add Claude-style budget nudges. See
 [verification and limitations](../docs/token-usage.md) before rolling it out.
 
-## PublicUniverse (rollout pending)
+## Public Universe (rollout pending)
 
-The astronomy plugin ships a generated `gemini-extension.json`, one public HTTP MCP server and seven shared skills. The reviewed source remains internal pending transfer to the `public-universe` organisation; update this URL after the destination is confirmed. Live MCP acceptance is blocked by HTTP 404. See [rollout evidence](../docs/publicuniverse.md).
-
-For authorised reviewers with repository access:
+The astronomy plugin (`publicuniverse` 0.4.0) ships a generated `gemini-extension.json`, one public HTTP MCP server (`publicuniverse`) and seven shared skills. The source repository is being renamed from `solar-plugin` to `Wicked-Sick-Ltd/publicuniverse-plugin` and made public. Live MCP acceptance is blocked until the `/mcp` route is deployed on the API origin. See [rollout evidence](../docs/publicuniverse.md).
 
 ```bash
-gemini extensions install https://github.com/Wicked-Sick-Ltd/solar-plugin --ref 8647a5e6e8a78f8426b03280b268370223a7599c
+gemini extensions install https://github.com/Wicked-Sick-Ltd/publicuniverse-plugin --ref 6aecc7bdd721b88a5aa5e50bc170f0b11aa76e0e
 gemini extensions list
 gemini skills list
 ```
 
-Windows local installation and discovery passed with Gemini CLI 0.62.0 on Node 24.21.0. All seven skills were discovered; the configured MCP server reported its existing 404. There are no extension hooks or credentials. Public installation must wait for the repository and service rollout.
+Re-pin `--ref` to the merged 0.4.0 commit before announcing. Windows local installation and discovery of 0.3.0 passed with Gemini CLI 0.62.0 on Node 24.21.0. There are no extension hooks or credentials.
 
 Gallery (public, later): https://geminicli.com/extensions/
 

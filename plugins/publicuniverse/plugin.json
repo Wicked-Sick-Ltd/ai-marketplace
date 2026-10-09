@@ -1,0 +1,48 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "publicuniverse",
+  "version": "0.4.0",
+  "description": "Public Universe astronomy tools and skills: explore catalogue data, plan stargazing, explain objects, build lessons and check space facts using a free public MCP server.",
+  "author": {
+    "name": "Wicked Sick Ltd",
+    "email": "hello@wickedsick.com",
+    "url": "https://wickedsick.com"
+  },
+  "homepage": "https://publicuniverse.net",
+  "repository": "https://github.com/Wicked-Sick-Ltd/publicuniverse-plugin",
+  "license": "MIT",
+  "keywords": [
+    "astronomy",
+    "solar-system",
+    "education",
+    "nasa",
+    "jpl",
+    "stargazing",
+    "mcp",
+    "public-universe",
+    "publicuniverse",
+    "agent-skills"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Public Universe",
+        "shortDescription": "Explore astronomy",
+        "developerName": "Wicked Sick Ltd",
+        "category": "Education",
+        "capabilities": [
+          "Read"
+        ],
+        "websiteURL": "https://publicuniverse.net",
+        "defaultPrompt": [
+          "What can I see tonight from Romsey?",
+          "Explain Saturn to a ten-year-old using live catalogue data.",
+          "Check the astronomy facts in this worksheet."
+        ],
+        "longDescription": "Explore astronomical catalogue data with seven workflows for stargazers, teachers and writers. Plan an evening, explain an object, build a UK school lesson, check space facts, compare close approaches, draft a weekly sky roundup or audit catalogue data. The public MCP service requires no API key. Positions are approximate and are not intended for telescope control.",
+        "logo": "./assets/icon.svg",
+        "composerIcon": "./assets/icon.svg"
+      }
+    }
+  }
+}

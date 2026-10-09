@@ -1,0 +1,8 @@
+{
+  "servers": {
+    "publicuniverse": {
+      "type": "http",
+      "url": "https://api.sol.wickedsick.com/mcp"
+    }
+  }
+}

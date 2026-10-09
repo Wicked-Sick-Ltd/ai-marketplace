@@ -1,5 +1,7 @@
 # PublicUniverse rollout
 
+> **2026-10-08 update (0.4.0):** source repository renamed to `Wicked-Sick-Ltd/publicuniverse-plugin` (pending), MCP server id is now `publicuniverse`, and Cursor is listed through the vendored copy at `plugins/publicuniverse/`. Entries are pinned to the 0.4.0 PR head and must be re-pinned to the merged commit. The live MCP 404 is an origin routing gap (Cloudflare passes the request), not the WAF.
+
 Package: `publicuniverse` 0.3.0. Replaces the old `solar` listing. Website: https://publicuniverse.net.
 
 The catalog changes are a release preparation, not a live-service acceptance claim. Keep the PR in draft until the repository transfer, visibility and service gates below are resolved.
