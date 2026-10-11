@@ -4,7 +4,7 @@ Free astronomy tools and seven reusable workflows for **Claude Code, Cursor, Cod
 
 - Plugin / package name: **`publicuniverse`** (display name: Public Universe)
 - MCP server name: **`publicuniverse`**
-- Repository: `https://github.com/Wicked-Sick-Ltd/publicuniverse-plugin` (formerly `solar-plugin`; GitHub redirects the old URL)
+- Repository: `https://github.com/Wicked-Sick-Ltd/public-universe` (formerly `solar-plugin`; GitHub redirects the old URL)
 - Licence: MIT, © Wicked Sick Limited. Please credit "Wicked Sick Ltd" when you reuse it (see [NOTICE](NOTICE)).
 
 ## Remote MCP server
@@ -25,11 +25,11 @@ Pick **one** route per client: the full plugin (tools + skills) or MCP-only (too
 ### Claude Code
 
 ```sh
-/plugin marketplace add https://github.com/Wicked-Sick-Ltd/publicuniverse-plugin.git
+/plugin marketplace add https://github.com/Wicked-Sick-Ltd/public-universe.git
 /plugin install publicuniverse@publicuniverse
 ```
 
-Or via the Wicked Sick catalogue: `/plugin marketplace add Wicked-Sick-Ltd/ai-marketplace` then `/plugin install publicuniverse@wickedsick`. Local checkout: `claude --plugin-dir /path/to/publicuniverse-plugin`. MCP only:
+Or via the Wicked Sick catalogue: `/plugin marketplace add Wicked-Sick-Ltd/ai-marketplace` then `/plugin install publicuniverse@wickedsick`. Local checkout: `claude --plugin-dir /path/to/public-universe`. MCP only:
 
 ```sh
 claude mcp add --transport http publicuniverse https://api.sol.wickedsick.com/mcp
@@ -57,7 +57,7 @@ Developer mode → add an MCP connection named **Public Universe** with the URL 
 ### Gemini CLI
 
 ```sh
-gemini extensions install https://github.com/Wicked-Sick-Ltd/publicuniverse-plugin
+gemini extensions install https://github.com/Wicked-Sick-Ltd/public-universe
 ```
 
 Pin a reviewed release with `--ref <tag-or-sha>`. Details: [docs/clients.md](docs/clients.md#gemini-cli).
@@ -76,7 +76,7 @@ VS Code MCP only: merge [clients/vscode.json](clients/vscode.json) into `.vscode
 Grok CLI reads Claude Code marketplaces and plugins, so the Claude route above works as is. Or:
 
 ```sh
-grok plugin install Wicked-Sick-Ltd/publicuniverse-plugin   # full plugin (or a local path)
+grok plugin install Wicked-Sick-Ltd/public-universe   # full plugin (or a local path)
 grok mcp add --transport http publicuniverse https://api.sol.wickedsick.com/mcp   # tools only
 ```
 

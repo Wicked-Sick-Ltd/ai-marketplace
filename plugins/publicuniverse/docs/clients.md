@@ -22,7 +22,7 @@ For tools only, merge the server entry from [clients/cursor.json](../clients/cur
 Install the reviewed local checkout, replacing the example path:
 
 ```sh
-copilot plugin install /absolute/path/to/publicuniverse-plugin
+copilot plugin install /absolute/path/to/public-universe
 copilot plugin list
 ```
 
@@ -45,12 +45,12 @@ Add these entries to your existing VS Code user `settings.json`, using your chec
 {
   "chat.plugins.enabled": true,
   "chat.pluginLocations": {
-    "/absolute/path/to/publicuniverse-plugin": true
+    "/absolute/path/to/public-universe": true
   }
 }
 ```
 
-Merge settings instead of replacing the file. On Windows, use a valid JSON path such as `C:/Users/you/publicuniverse-plugin`. Reload VS Code, open the agent customizations/skills view and MCP server list, and confirm the plugin's components appear. VS Code recognizes the root Agent Plugins manifest and registers the local directory through `chat.pluginLocations`. See [VS Code local plugins](https://code.visualstudio.com/docs/agent-customization/agent-plugins#use-local-plugins).
+Merge settings instead of replacing the file. On Windows, use a valid JSON path such as `C:/Users/you/public-universe`. Reload VS Code, open the agent customizations/skills view and MCP server list, and confirm the plugin's components appear. VS Code recognizes the root Agent Plugins manifest and registers the local directory through `chat.pluginLocations`. See [VS Code local plugins](https://code.visualstudio.com/docs/agent-customization/agent-plugins#use-local-plugins).
 
 For tools only, merge [clients/vscode.json](../clients/vscode.json) into the workspace's `.vscode/mcp.json`. This format uses **`servers`**, not `mcpServers`, with `type: "http"`. Start the server from its editor controls and review the trust prompt. See [VS Code MCP configuration](https://code.visualstudio.com/docs/agents/reference/mcp-configuration).
 
@@ -61,20 +61,20 @@ These instructions target Copilot CLI and VS Code. Installing locally does not c
 The repository is its own Claude marketplace (`.claude-plugin/marketplace.json`, generated from the portable manifests alongside `.claude-plugin/plugin.json` and `.mcp.json`). Install it permanently:
 
 ```sh
-/plugin marketplace add https://github.com/Wicked-Sick-Ltd/publicuniverse-plugin.git
+/plugin marketplace add https://github.com/Wicked-Sick-Ltd/public-universe.git
 /plugin install publicuniverse@publicuniverse
 ```
 
 The explicit HTTPS URL avoids an SSH host-key prompt that the `owner/repo` shorthand can trigger. Version 0.3.0 renamed the plugin from `solar` to `publicuniverse`; 0.4.0 renamed the MCP server from `solar-system-db` to `publicuniverse`. Or load a reviewed checkout for one session:
 
 ```sh
-claude --plugin-dir /absolute/path/to/publicuniverse-plugin
+claude --plugin-dir /absolute/path/to/public-universe
 ```
 
 This [local plugin route](https://code.claude.com/docs/en/plugins) does not require a marketplace. Try `/publicuniverse:tonight-sky` and inspect `/mcp`. For a manifest check, run:
 
 ```sh
-claude plugin validate /absolute/path/to/publicuniverse-plugin
+claude plugin validate /absolute/path/to/public-universe
 ```
 
 MCP-entry validation requires Claude Code 2.1.281 or newer; see the [manifest validation reference](https://code.claude.com/docs/en/plugins-reference#validate-the-manifest). Marketplace availability and versions are separate from this local installation.
@@ -88,12 +88,12 @@ The generated root `gemini-extension.json` registers the same public MCP endpoin
 Install the reviewed local checkout:
 
 ```sh
-gemini extensions install /absolute/path/to/publicuniverse-plugin
+gemini extensions install /absolute/path/to/public-universe
 gemini extensions list
 gemini skills list
 ```
 
-Review the installation prompt, restart Gemini and check that PublicUniverse and all seven skills appear. Repository installs use `gemini extensions install https://github.com/Wicked-Sick-Ltd/publicuniverse-plugin --ref <reviewed-tag-or-sha>` once the repository is public. The pinned command belongs in the existing `ai-marketplace/gemini/README.md`; Gemini does not use a marketplace JSON catalog.
+Review the installation prompt, restart Gemini and check that PublicUniverse and all seven skills appear. Repository installs use `gemini extensions install https://github.com/Wicked-Sick-Ltd/public-universe --ref <reviewed-tag-or-sha>` once the repository is public. The pinned command belongs in the existing `ai-marketplace/gemini/README.md`; Gemini does not use a marketplace JSON catalog.
 
 The tested Windows runtime is Gemini CLI 0.62.0 with Node 24.21.0. Node 25.6.1 produced a shutdown assertion after installation; repeat with Node 24 if you encounter that client error.
 
@@ -104,8 +104,8 @@ See the official [extension format and installation reference](https://geminicli
 Grok CLI reads Claude Code marketplaces, plugins, skills and `.mcp.json` files with no extra setup, so the Claude Code route above also installs Public Universe for Grok. Other routes:
 
 ```sh
-grok plugin install Wicked-Sick-Ltd/publicuniverse-plugin   # or a local checkout path; add @<tag> to pin
-grok plugin validate /absolute/path/to/publicuniverse-plugin
+grok plugin install Wicked-Sick-Ltd/public-universe   # or a local checkout path; add @<tag> to pin
+grok plugin validate /absolute/path/to/public-universe
 grok mcp add --transport http publicuniverse https://api.sol.wickedsick.com/mcp
 grok mcp doctor publicuniverse
 ```
