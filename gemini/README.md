@@ -27,7 +27,7 @@ The 0.8.0 candidate supplies `gemini-extension.json`, the report skill and a Gem
 JSON/JSONL session adapter. Install the pinned candidate after its release approval:
 
 ```bash
-gemini extensions install https://github.com/Wicked-Sick-Ltd/token-usage --ref ae989e2cde864447f8c63c1423c0d4ba3b9839df
+gemini extensions install https://github.com/Wicked-Sick-Ltd/token-usage --ref 394ba4dc12e72cdc656d88534a84427b6f76ae6d
 gemini extensions list
 gemini mcp list
 ```
