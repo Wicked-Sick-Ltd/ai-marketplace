@@ -128,7 +128,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Wicked-Sick-Ltd/public-universe.git",
-        "sha": "6aecc7bdd721b88a5aa5e50bc170f0b11aa76e0e"
+        "sha": "9f4d570d980fbd2cc24e43e0dc40b7959497967e"
       },
       "policy": {
         "installation": "AVAILABLE",
