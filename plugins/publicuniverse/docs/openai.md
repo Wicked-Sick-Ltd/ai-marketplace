@@ -28,7 +28,7 @@ codex plugin marketplace add Wicked-Sick-Ltd/ai-marketplace --sparse .agents/plu
 codex plugin add publicuniverse@wickedsick
 ```
 
-[clients/openai-marketplace.json](../clients/openai-marketplace.json) is a standalone development example, not a second public catalog. Its `main` reference works only after the plugin change is merged; for review, replace it with the tested revision. Production catalog entries must pin the full reviewed commit SHA. The repository is `https://github.com/Wicked-Sick-Ltd/publicuniverse-plugin` (renamed from `solar-plugin`; GitHub redirects the old URL). See [submission readiness](submission.md).
+[clients/openai-marketplace.json](../clients/openai-marketplace.json) is a standalone development example, not a second public catalog. Its `main` reference works only after the plugin change is merged; for review, replace it with the tested revision. Production catalog entries must pin the full reviewed commit SHA. The repository is `https://github.com/Wicked-Sick-Ltd/public-universe` (renamed from `solar-plugin`; GitHub redirects the old URL). See [submission readiness](submission.md).
 
 For a fully local test, replace the entry's source with `{"source":"local","path":"./plugins/publicuniverse"}` and place the whole plugin at `plugins/publicuniverse` inside the marketplace root. Paths start with `./` and must stay inside that root. Use either the full plugin or the manual MCP/skills route to avoid duplicates.
 

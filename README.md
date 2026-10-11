@@ -78,7 +78,7 @@ The vendor repository owns [setup, prerequisites and migration](https://github.c
 
 Installation troubleshooting and tested package behavior: [Codex integration](docs/codex-integration.md).
 
-Public Universe's astronomy plugin (`publicuniverse` 0.4.0) is listed for Claude, Codex, Copilot, Cursor (vendored copy) and Gemini. Grok CLI reads the Claude catalog. Its [rollout and acceptance record](docs/publicuniverse.md) tracks the repository rename to `publicuniverse-plugin`, public visibility and MCP restoration. Do not treat a catalog listing as a working live connection.
+Public Universe's astronomy plugin (`publicuniverse` 0.4.0) is listed for Claude, Codex, Copilot, Cursor (vendored copy) and Gemini. Grok CLI reads the Claude catalog. Its [rollout and acceptance record](docs/publicuniverse.md) tracks the repository rename to `public-universe`, public visibility and MCP restoration. Do not treat a catalog listing as a working live connection.
 
 ## Indexes
 

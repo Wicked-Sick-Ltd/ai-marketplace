@@ -38,10 +38,10 @@ It does not add Claude-style budget nudges. See
 
 ## Public Universe (rollout pending)
 
-The astronomy plugin (`publicuniverse` 0.4.0) ships a generated `gemini-extension.json`, one public HTTP MCP server (`publicuniverse`) and seven shared skills. The source repository is being renamed from `solar-plugin` to `Wicked-Sick-Ltd/publicuniverse-plugin` and made public. Live MCP acceptance is blocked until the `/mcp` route is deployed on the API origin. See [rollout evidence](../docs/publicuniverse.md).
+The astronomy plugin (`publicuniverse` 0.4.0) ships a generated `gemini-extension.json`, one public HTTP MCP server (`publicuniverse`) and seven shared skills. The source repository is being renamed from `solar-plugin` to `Wicked-Sick-Ltd/public-universe` and made public. Live MCP acceptance is blocked until the `/mcp` route is deployed on the API origin. See [rollout evidence](../docs/publicuniverse.md).
 
 ```bash
-gemini extensions install https://github.com/Wicked-Sick-Ltd/publicuniverse-plugin --ref 6aecc7bdd721b88a5aa5e50bc170f0b11aa76e0e
+gemini extensions install https://github.com/Wicked-Sick-Ltd/public-universe --ref 6aecc7bdd721b88a5aa5e50bc170f0b11aa76e0e
 gemini extensions list
 gemini skills list
 ```

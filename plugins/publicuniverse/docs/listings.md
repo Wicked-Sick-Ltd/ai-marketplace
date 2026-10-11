@@ -9,7 +9,7 @@ Draft text for public directories. **Nothing here has been submitted.** Submit o
 | Name / id | Public Universe / `publicuniverse` |
 | Publisher | Wicked Sick Ltd (Wicked Sick Limited), hello@wickedsick.com |
 | Website | https://publicuniverse.net |
-| Repository | https://github.com/Wicked-Sick-Ltd/publicuniverse-plugin |
+| Repository | https://github.com/Wicked-Sick-Ltd/public-universe |
 | Licence | MIT (please credit Wicked Sick Ltd; see NOTICE) |
 | MCP endpoint | `https://api.sol.wickedsick.com/mcp` (Streamable HTTP, no auth); planned `https://api.publicuniverse.net/mcp` |
 | Privacy policy | https://publicuniverse.net/privacy |
@@ -32,7 +32,7 @@ Draft text for public directories. **Nothing here has been submitted.** Submit o
 Submit the public repository URL through Anthropic's plugin directory submission form. The repository root has `.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json`; `claude plugin validate .` should pass.
 
 - Plugin name: `publicuniverse`; marketplace name: `publicuniverse`
-- Install test: `/plugin marketplace add https://github.com/Wicked-Sick-Ltd/publicuniverse-plugin.git` then `/plugin install publicuniverse@publicuniverse`
+- Install test: `/plugin marketplace add https://github.com/Wicked-Sick-Ltd/public-universe.git` then `/plugin install publicuniverse@publicuniverse`
 - Components: 7 skills, 1 remote HTTP MCP server; no hooks, commands, binaries or credentials
 - Use the short and long descriptions above.
 
@@ -61,7 +61,7 @@ Follow https://developers.openai.com/plugins/deploy/submission. The root `plugin
 
 ## 6. Gemini CLI extensions gallery
 
-The gallery indexes public GitHub repositories that contain `gemini-extension.json`. Add the repository topic `gemini-cli-extension` once public and check the listing at https://geminicli.com/extensions. Install line: `gemini extensions install https://github.com/Wicked-Sick-Ltd/publicuniverse-plugin`.
+The gallery indexes public GitHub repositories that contain `gemini-extension.json`. Add the repository topic `gemini-cli-extension` once public and check the listing at https://geminicli.com/extensions. Install line: `gemini extensions install https://github.com/Wicked-Sick-Ltd/public-universe`.
 
 ## 7. Wicked Sick catalogue (`Wicked-Sick-Ltd/ai-marketplace`)
 
