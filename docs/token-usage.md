@@ -1,10 +1,9 @@
-# Token usage: 0.8.0 candidate
+# Token usage: 0.8.0
 
 The companion [token-usage PR](https://github.com/Wicked-Sick-Ltd/token-usage/pull/20)
 repairs Codex installation and adds Gemini CLI/Copilot CLI support while preserving
-Claude Code and Cursor. This catalog update is a release candidate, not an approval
-to publish. The plugin PR has merged at `ae989e2cde864447f8c63c1423c0d4ba3b9839df`; approve its
-0.8.0 release before merging these catalog pins. If the reviewed tree changes, update every pin together.
+Claude Code and Cursor. 0.8.0 was released on 2026-10-11 as
+[v0.8.0](https://github.com/Wicked-Sick-Ltd/token-usage/releases/tag/v0.8.0) at `394ba4dc12e72cdc656d88534a84427b6f76ae6d`; the catalog pins point at that commit. If the reviewed tree changes, update every pin together.
 
 ## What failed in Codex
 
@@ -31,8 +30,8 @@ Token counts use recorded fields. Missing counters yield partial/activity-only
 reports, and unknown model prices remain unknown. Costs are API estimates, not
 subscription charges. The Copilot collector stores labels and counters locally,
 without prompt or tool text. See upstream
-[Gemini/Copilot notes](https://github.com/Wicked-Sick-Ltd/token-usage/blob/ae989e2cde864447f8c63c1423c0d4ba3b9839df/docs/gemini-copilot.md)
-and [privacy disclosures](https://github.com/Wicked-Sick-Ltd/token-usage/blob/ae989e2cde864447f8c63c1423c0d4ba3b9839df/README.md#privacy-and-data-handling).
+[Gemini/Copilot notes](https://github.com/Wicked-Sick-Ltd/token-usage/blob/394ba4dc12e72cdc656d88534a84427b6f76ae6d/docs/gemini-copilot.md)
+and [privacy disclosures](https://github.com/Wicked-Sick-Ltd/token-usage/blob/394ba4dc12e72cdc656d88534a84427b6f76ae6d/README.md#privacy-and-data-handling).
 
 Claude, Codex and Copilot catalogs pin the same commit. Gemini's install command
 uses that commit as `--ref`. Cursor users import the token-usage repository itself
