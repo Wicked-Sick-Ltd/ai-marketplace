@@ -44,7 +44,7 @@ Where your account and workspace policy allow developer mode:
 4. Review the discovered tools, then start a new conversation and enable the connection from the tools menu.
 5. Ask it to retrieve Mars's catalogue record and cite its source. Verify that a tool actually ran.
 
-The official [connection and testing guide](https://developers.openai.com/plugins/deploy/connect-chatgpt) documents this flow and policy-dependent availability. A 404 during initialization means the `/mcp` route is not deployed on the origin yet (checked 2026-10-08: Cloudflare passes the request and the API application answers 404). It is not an authentication problem; see the [validation record](validation.md).
+The official [connection and testing guide](https://developers.openai.com/plugins/deploy/connect-chatgpt) documents this flow and policy-dependent availability. As of 2026-10-16 the public endpoint initializes successfully and lists 33 read-only tools; if initialization fails, see the [validation record](validation.md) for diagnostics (this is not an authentication problem).
 
 ### Add the workflows
 

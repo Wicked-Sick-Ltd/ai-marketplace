@@ -36,7 +36,7 @@
       "name": "publicuniverse",
       "source": "plugins/publicuniverse",
       "description": "Public Universe astronomy tools and skills: explore catalogue data, plan stargazing, explain objects, build lessons and check space facts using a free public MCP server.",
-      "version": "0.4.0",
+      "version": "0.4.1",
       "author": {
         "name": "Wicked Sick Ltd",
         "email": "hello@wickedsick.com"

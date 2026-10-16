@@ -1,6 +1,6 @@
 # PublicUniverse public distribution
 
-Release candidate: 0.4.0. The package is prepared for review, not approved for public-directory publication. Client evidence is recorded in [validation.md](validation.md).
+Release candidate: 0.4.1. The package is prepared for Cursor marketplace review, not approved for other public directories. Client evidence is recorded in [validation.md](validation.md).
 
 ## Identity and migration
 
@@ -9,18 +9,18 @@ Release candidate: 0.4.0. The package is prepared for review, not approved for p
 - Website: `https://publicuniverse.net`, matching the website repository's canonical deployment configuration.
 - Audit skill: `publicuniverse-data-audit` replaces `solar-data-audit`. The other six skill names stay the same.
 - MCP identifier: `publicuniverse` from 0.4.0 (was `solar-system-db`). Skills refer to the new identifier; tool names are unchanged.
-- MCP URL: retain `https://api.sol.wickedsick.com/mcp` until the replacement is confirmed. It still returned 404 on 2026-10-08 (origin response, not a Cloudflare block); this blocks live acceptance on every host.
+- MCP URL: `https://api.sol.wickedsick.com/mcp` (Streamable HTTP, no auth). Initialized successfully on 2026-10-16 with 33 read-only tools and live `get_stats` / `get_object` calls (see validation.md). Keep this URL until `https://api.publicuniverse.net/mcp` is confirmed in production.
 - Public catalog: `Wicked-Sick-Ltd/ai-marketplace`. Its Claude, Codex and Copilot indexes pin the plugin source revision; Gemini has an installation guide. Cursor imports the plugin source repository directly because this index does not vendor plugin directories.
 
 Existing users should disable/remove the old `solar` plugin before enabling `publicuniverse`, using their client's plugin manager. Update explicit `/solar:…` invocations to `/publicuniverse:…` on Claude and any copied audit-skill directory after comparing local edits. Do not install both a full plugin and its standalone MCP profile, or overwrite unrelated client configuration.
 
 ## Repository and domain rollout
 
-1. Rename the repository to `Wicked-Sick-Ltd/public-universe` (decision of 2026-10-08; a later transfer to the `public-universe` organisation remains possible and also keeps redirects).
-2. Review the repository and its history for material unsuitable for public release; verify destination permissions. Make it public only after the transfer is complete.
-3. Update `plugin.json.repository`, regenerate profiles and update every catalog source URL to the confirmed destination. Pin the reviewed package commit in all remote listings and the Gemini command.
-4. Complete the website/domain and WAF rollout with the service owner. Update root `mcp.json` only with the confirmed endpoint and regenerate client profiles.
-5. Repeat MCP initialization, tool discovery and representative read-only calls, then the client acceptance scenarios. Merge the catalog PR only when its source is anonymously accessible and live acceptance passes.
+1. **Done:** repository is `Wicked-Sick-Ltd/public-universe` (public; GitHub redirects `solar-plugin`).
+2. **Done:** `plugin.json.repository` and generated profiles point at the public repository.
+3. Pin the reviewed package commit in remote catalog listings (`ai-marketplace`) and the Gemini install command when submitting those directories.
+4. Optional: cut over MCP to `https://api.publicuniverse.net/mcp` when DNS and the service owner confirm the host; update root `mcp.json` and run `python3 scripts/package.py generate`.
+5. Record native Cursor desktop acceptance after marketplace listing; package and live MCP checks passed on 2026-10-16.
 
 The generated ZIP and `.plugin` contain the same allowlisted files; neither includes Git history, credentials, development tests or unrelated local files. The icon is reused from the website's existing favicon.
 

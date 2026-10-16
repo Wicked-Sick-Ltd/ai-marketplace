@@ -16,7 +16,7 @@ The ZIP was extracted into a temporary marketplace and installed into isolated c
 
 Offline package validation passed for all 35 allowlisted files. The 19-test suite passed on Windows with four symlink cases skipped because this account lacks symlink privilege; Linux CI runs those security checks. Both distributable archives build. The root portable manifest carries OpenAI metadata, so a duplicate `.codex-plugin` manifest is unnecessary.
 
-The canonical website returned HTTP 200. MCP initialization still returned HTTP 404 with `{"detail":"Not Found"}` from the existing API host; no live astronomy tool call succeeded. See [submission.md](submission.md) for rollout prerequisites and reviewer scenarios. These results establish package compatibility, not public-directory approval or full end-to-end support.
+The canonical website returned HTTP 200. MCP initialization returned HTTP 404 at that time; see the live MCP section below for current status. These results establish package compatibility, not public-directory approval or full end-to-end support.
 
 ## Repeatable local checks
 
@@ -39,6 +39,22 @@ Verified locally on 2026-10-02:
 - An independent review checked client installation formats, archive contents, symlink handling and the distinction between package checks and live acceptance.
 
 ## Live MCP check
+
+### 2026-10-16 (end-to-end; supersedes earlier partial checks)
+
+From this cloud agent environment:
+
+- `POST https://api.sol.wickedsick.com/mcp` `initialize` → HTTP 200 (`text/event-stream`), `mcp-session-id` set, protocol `2025-03-26`, `serverInfo.name` `solar-system-db` `1.30.0`.
+- `notifications/initialized` → HTTP 202.
+- `tools/list` → 33 tools (all `readOnlyHint: true`).
+- `tools/call` `get_stats` → live catalogue counts (for example `total_objects` 1,578,967).
+- `tools/call` `get_object` with `name_or_designation: "Mars"` → Mars catalogue record with orbital elements.
+
+No authentication required. This satisfies marketplace review connectivity for the documented public endpoint.
+
+### 2026-10-11 (supersedes the 2026-10-08 result below)
+
+`POST https://api.sol.wickedsick.com/mcp` `initialize` returned HTTP 200 (`text/event-stream`) with an `mcp-session-id`, protocol `2025-03-26` and serverInfo `solar-system-db` 1.30.0. `notifications/initialized` returned 202 and `tools/list` returned 33 tools, all annotated `readOnlyHint: true`, `destructiveHint: false`. No authentication is required; `/.well-known/oauth-protected-resource` returns 404 (expected for an unauthenticated server). Tool calls and client acceptance scenarios were not run in this check. Note the server still reports its name as `solar-system-db`, not `publicuniverse`.
 
 ### 2026-10-08 (supersedes the WAF diagnosis below)
 

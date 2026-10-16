@@ -6,10 +6,10 @@ The full plugin supplies the astronomy tools and all seven workflows. An MCP-onl
 
 ## Cursor: full plugin
 
-Cursor supports the portable Agent Plugins format directly. No separate `.cursor-plugin` manifest is needed for this package.
+Cursor reads the portable Agent Plugins root manifest (`plugin.json`, `mcp.json`, `skills/`) and the Cursor-specific manifest at `.cursor-plugin/plugin.json` (generated from `plugin.json` by `python3 scripts/package.py generate`).
 
 1. Create a **new** directory `~/.cursor/plugins/local/publicuniverse`.
-2. Copy the plugin contents into it, including hidden compatibility files. The result must include `~/.cursor/plugins/local/publicuniverse/plugin.json`, `mcp.json` and `skills/tonight-sky/SKILL.md`; avoid adding an extra `publicuniverse-plugin/` nesting level.
+2. Copy the plugin contents into it, including hidden compatibility files. The result must include `plugin.json`, `.cursor-plugin/plugin.json`, `mcp.json` and `skills/tonight-sky/SKILL.md`; avoid adding an extra `publicuniverse-plugin/` nesting level.
 3. Restart Cursor or run **Developer: Reload Window**.
 4. Open **Customize** and check for the Public Universe skills and `publicuniverse` MCP server.
 

@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "publicuniverse",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Public Universe astronomy tools and skills: explore catalogue data, plan stargazing, explain objects, build lessons and check space facts using a free public MCP server.",
   "author": {
     "name": "Wicked Sick Ltd",
