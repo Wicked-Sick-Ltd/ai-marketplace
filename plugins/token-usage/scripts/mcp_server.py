@@ -267,6 +267,7 @@ def _resilient_stdin():
         try:
             sys.stdin.reconfigure(errors="replace")
         except (AttributeError, ValueError, OSError):
+            # Some runtimes/streams do not support reconfigure; fall back below.
             pass
         # Started with stdin closed, sys.stdin is None and serve() would do
         # `for line in None`: an empty stream ends the loop cleanly instead.
