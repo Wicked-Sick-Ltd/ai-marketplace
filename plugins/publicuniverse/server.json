@@ -3,7 +3,7 @@
   "name": "net.publicuniverse/publicuniverse",
   "title": "Public Universe",
   "description": "Free astronomy catalogue: solar system objects, sky positions, close approaches and more.",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "websiteUrl": "https://publicuniverse.net",
   "repository": {
     "url": "https://github.com/Wicked-Sick-Ltd/public-universe",

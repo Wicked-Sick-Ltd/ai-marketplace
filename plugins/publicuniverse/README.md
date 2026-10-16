@@ -16,7 +16,7 @@ Free astronomy tools and seven reusable workflows for **Claude Code, Cursor, Cod
 | URL | `https://api.sol.wickedsick.com/mcp` |
 | Authentication | None (free public service) |
 
-> **Status:** the REST API behind this server is live, but the `/mcp` endpoint is not yet routed on the production origin (it returns HTTP 404 from the API application, not from Cloudflare). Skills install and load everywhere; live tool calls work once the endpoint is deployed. See the [validation record](docs/validation.md). The planned long-term URL is `https://api.publicuniverse.net/mcp`; this package will switch only after that host is live.
+The public MCP endpoint is live on this URL (verified 2026-10-16: initialize, 33 read-only tools, and sample catalogue calls). The upstream service still reports its legacy name `solar-system-db` in MCP `serverInfo`; the client connection name in this package remains `publicuniverse`. A future `https://api.publicuniverse.net/mcp` host may replace the URL after DNS cutover; see [validation](docs/validation.md).
 
 ## Install
 
@@ -39,7 +39,7 @@ Try `/publicuniverse:tonight-sky`. Details: [docs/clients.md](docs/clients.md#cl
 
 ### Cursor
 
-Install from the Cursor marketplace once listed, or import `Wicked-Sick-Ltd/ai-marketplace` as a team marketplace. Local: copy this repository to `~/.cursor/plugins/local/publicuniverse/` and reload. MCP only: merge [clients/cursor.json](clients/cursor.json) into `~/.cursor/mcp.json`. Details: [docs/clients.md](docs/clients.md#cursor-full-plugin).
+Submit or install from this source repository (`plugin.json`, `.cursor-plugin/plugin.json`, `mcp.json`, `skills/`). For local testing, copy the repository to `~/.cursor/plugins/local/publicuniverse/` and reload. Team catalogues can import `Wicked-Sick-Ltd/ai-marketplace`. MCP only: merge [clients/cursor.json](clients/cursor.json) into `~/.cursor/mcp.json`. Details: [docs/clients.md](docs/clients.md#cursor-full-plugin).
 
 ### Codex (CLI, desktop, IDE)
 

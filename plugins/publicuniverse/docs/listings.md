@@ -1,6 +1,6 @@
 # Directory listing copy
 
-Draft text for public directories. **Nothing here has been submitted.** Submit only after the repository is public and the live MCP check in [validation.md](validation.md) passes, because every directory below tests the server or the install.
+Draft text for public directories. **Nothing here has been submitted.** The repository is public and the live MCP check in [validation.md](validation.md) passed on 2026-10-16; submit when review copy is final.
 
 ## Shared facts
 
@@ -38,7 +38,7 @@ Submit the public repository URL through Anthropic's plugin directory submission
 
 ## 2. Cursor marketplace
 
-Submit at https://cursor.com/marketplace/publish with the repository URL. The root `plugin.json`, `mcp.json` and `skills/` follow the Agent Plugins 1.0.0 format, which Cursor loads directly. Logo: `assets/icon.svg`. Description: short description above.
+Submit at https://cursor.com/marketplace/publish with the repository URL. The root `plugin.json`, `.cursor-plugin/plugin.json`, `mcp.json` and `skills/` follow the Agent Plugins 1.0.0 format (plus Cursor's manifest). Logo: `assets/icon.svg`. Description: short description above.
 
 ## 3. Official MCP Registry
 
