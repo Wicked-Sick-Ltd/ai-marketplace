@@ -705,4 +705,6 @@ if __name__ == "__main__":
     try:
         serve()
     except (KeyboardInterrupt, BrokenPipeError):
+        # Expected on user cancel (Ctrl+C) or when the stdio client closes its pipe.
+        # Exit quietly without printing a traceback.
         pass
