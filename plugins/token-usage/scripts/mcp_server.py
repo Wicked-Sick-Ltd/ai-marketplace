@@ -706,4 +706,6 @@ if __name__ == "__main__":
     try:
         serve()
     except (KeyboardInterrupt, BrokenPipeError):
-        pass
+        # Expected shutdown paths for a stdio server (user interrupt or closed pipe):
+        # exit quietly without printing a traceback.
+        sys.exit(0)
