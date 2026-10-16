@@ -34,8 +34,9 @@ without prompt or tool text. See upstream
 and [privacy disclosures](https://github.com/Wicked-Sick-Ltd/token-usage/blob/394ba4dc12e72cdc656d88534a84427b6f76ae6d/README.md#privacy-and-data-handling).
 
 Claude, Codex and Copilot catalogs pin the same commit. Gemini's install command
-uses that commit as `--ref`. Cursor users import the token-usage repository itself
-or register the local MCP server; no plugin source is vendored here.
+uses that commit as `--ref`. Cursor lists a vendored copy at `plugins/token-usage/`
+in this repository's `.cursor-plugin/marketplace.json` (see `plugins/token-usage/VENDORED.md`).
+Teams can also import the token-usage repository directly with **Add to Marketplace**.
 
 ## Catalog verification
 

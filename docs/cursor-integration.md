@@ -1,237 +1,89 @@
 # Cursor team marketplace
 
-How Wicked Sick gets **Cursor** (IDE, Cloud Agents, CLI) onto the same plugins
-and skills we already run on Claude Code — without copying plugin source into
-this catalog repo.
+How to install and review **Wicked Sick** plugins in Cursor using this repository.
 
-Convention for *how we work* stays in
-[`ai-claude-repo/CONVENTIONS.md`](https://github.com/Wicked-Sick-Ltd/ai-claude-repo/blob/main/CONVENTIONS.md)
-(session bookends, PRs, Risk Tier, `.remember/`, estate plugins). Product-repo
-rules stay in each product's `AGENTS.md` / `CLAUDE.md`. This repo only **lists**
-installable plugins.
+Official Cursor docs: [Plugins](https://cursor.com/docs/plugins) and [Plugins reference](https://cursor.com/docs/reference/plugins).
 
-Cursor's public docs: [Plugins](https://cursor.com/docs/plugins) and
-[Plugins reference](https://cursor.com/docs/reference/plugins).
+## What this repo is
 
-## Where we are (2026-09-16)
+`Wicked-Sick-Ltd/ai-marketplace` is a **catalogue repository**. It lists plugins per host (Claude, Codex, Copilot, Gemini, Cursor) and, for Cursor, contains **vendored copies** of the featured plugins under `plugins/`.
 
-| Surface | State |
-| --- | --- |
-| Org catalog repo | `Wicked-Sick-Ltd/ai-marketplace` exists. Claude index lists `token-usage` pinned to SHA `67164452…`. Cursor / Codex / Copilot indexes are **empty**. |
-| Working Claude marketplace | [`ai-claude-repo`](https://github.com/Wicked-Sick-Ltd/ai-claude-repo) still ships the plugins people actually install (`onboarding`, `session-lifecycle`, `estate-maintenance`, `product-lifecycle`, `wizzo-twin`, plus remote `token-usage`). |
-| Cloud Agent compatibility | Several plugin repos have `.cursor/environment.json`. That is **Cloud Agent VM setup**, not a Cursor plugin. It does not put skills on Customize → Plugins. |
-| Cursor plugin shims | None. No repo has `.cursor-plugin/plugin.json` or a root Agent Plugins `plugin.json` / `mcp.json`. |
-| This catalog's Cursor file | `.cursor-plugin/marketplace.json` is a valid empty Team Marketplace stub (`name: wickedsick`). Connecting it in the dashboard today would install **zero** plugins. |
+For marketplace review, the headline install path is:
 
-Rollout steps 1–2 from
-[cross-ai-marketplace-plan.md](https://github.com/Wicked-Sick-Ltd/traefik-laravel-forge/blob/master/docs/cross-ai-marketplace-plan.md)
-are done. Step 5 (Cursor team marketplace with a *portable* workflow plugin) is
-not.
+1. Import **`Wicked-Sick-Ltd/ai-marketplace`** as a Cursor Team Marketplace.
+2. Install plugins from the catalog — today **token-usage** and **publicuniverse**.
 
-## Two Cursor formats (pick one per plugin)
+Upstream source code and releases remain in each plugin's own GitHub repository; vendored trees record the exact commit in `plugins/<name>/VENDORED.md`.
 
-### Ponytail (2026-09-23)
+## Why plugins are vendored for Cursor
 
-Ponytail's native Cursor hook adapter is held as a pinned upstream submodule at
-`Wicked-Sick-Ltd/ai-cursor-repo/integrations/ponytail`. That repo's
-`docs/ponytail.md` covers initialization, user/project installation, verification,
-Cloud Agent rules and uninstall. Its source is not copied into this index, and
-the hook adapter is not listed as a Cursor marketplace plugin here.
+Claude-style catalogs in this repo pin plugins with a GitHub `repo` + 40-character `sha`. **Cursor's** `.cursor-plugin/marketplace.json` does not support that shape: each `plugins[].source` must be a **relative path inside the imported git repo**. Cursor then loads:
 
-The adapter preserves existing hooks. It needs Node.js on Cursor's PATH and a
-stable checkout path. Cloud Agents do not run `sessionStart`, so use the
-documented project rule alternative or explicitly activate a mode through
-project hooks. Subagents do not receive the injected context.
+- `<source>/.cursor-plugin/plugin.json` (Cursor plugin), or
+- `<source>/plugin.json` (Agent Plugins 1.0)
 
-### Plugin formats
+So featured plugins are copied into `plugins/` here (same approach as `plugins/publicuniverse/`). `scripts/validate.py` rejects GitHub SHA pins in the Cursor index.
 
-Cursor loads both. Team marketplaces can distribute either.
+**Alternative:** Import a plugin's upstream repository directly with **Add to Marketplace** (repo URL). That avoids vendoring but splits installs across multiple marketplace imports. This catalog keeps a **single** import for reviewers and teams.
 
-| Format | Manifest | Ships | Use when |
-| --- | --- | --- | --- |
-| **Agent Plugins 1.0** | Root `plugin.json` (`$schema` from agent-plugins.org) + `skills/` + optional `mcp.json` | Skills + MCP only | The plugin is a workflow skill or remote MCP we also want on Copilot / Codex. |
-| **Cursor Plugin** | `.cursor-plugin/plugin.json` | Skills, MCP, **rules**, **agents**, **commands**, **hooks**, **variables** | We need slash-style `commands/`, Cursor hooks, or dashboard variables (API tokens). |
+## Install steps (humans)
 
-Portable floor: **one** `skills/<id>/SKILL.md` (Agent Skills) plus **one**
-`mcp.json` at the plugin root. Claude keeps `.claude-plugin/plugin.json`. Do not
-fork the skill body per host.
+### 1. Import the team marketplace
 
-Cursor expands `${CURSOR_PLUGIN_ROOT}` and `${CLAUDE_PLUGIN_ROOT}` in MCP
-`command` / `cwd`. It does **not** expand Agent Plugins `${PLUGIN_ROOT}`. For
-stdio MCP, use `${CURSOR_PLUGIN_ROOT}`.
+1. Cursor dashboard → **Plugins** → **Team Marketplaces** → **Import from Repo**.
+2. Repository: `Wicked-Sick-Ltd/ai-marketplace`.
+3. Enable **Auto Refresh** if you want the index to follow new commits (subject to Cursor's refresh interval).
 
-## Why this catalog cannot SHA-pin Cursor plugins the Claude way
+### 2. Access and defaults
 
-Claude's `.claude-plugin/marketplace.json` accepts a GitHub `source` object
-(`repo` + 40-char `sha`). Cursor's `.cursor-plugin/marketplace.json` does not.
+1. Assign marketplace access (whole team or groups).
+2. Choose **Default Off**, **Default On**, or **Required** per plugin policy.
 
-Cursor resolves each `plugins[].source` as a **path inside the imported git
-repo** (optionally prefixed by `metadata.pluginRoot`). Parser then looks for
-`<source>/.cursor-plugin/plugin.json` (Cursor Plugin) or a root `plugin.json`
-(Agent Plugin). Official template:
-[fieldsphere/cursor-team-marketplace-template](https://github.com/fieldsphere/cursor-team-marketplace-template).
+### 3. Install on a developer machine
 
-So:
+1. **Cursor Settings → Plugins** → open the Wicked Sick marketplace.
+2. Install **token-usage** and/or **publicuniverse**.
+3. Approve bundled MCP servers when Cursor prompts.
+4. For **token-usage**, ensure `python3` is on the PATH (hooks and stdio MCP).
 
-- **Do not** copy Claude `{"source":"github","repo":"…","sha":"…"}` into the
-  Cursor index. `scripts/validate.py` rejects that.
-- **Do not** vendor plugin trees here to satisfy Cursor. Plugin behaviour stays
-  in `ai-claude-repo` / `token-usage`.
-- **Do** import the repo that *contains* the plugin directories as the Cursor
-  Team Marketplace.
+Skills are available under the plugin's skill entries; MCP tools appear when the server is connected.
 
-## Recommended org wiring
+## Featured plugins
 
-### Daily driver: import `ai-claude-repo`
+### token-usage (0.8.0)
 
-Dashboard → Plugins → Team Marketplaces → **Import from Repo** →
-`Wicked-Sick-Ltd/ai-claude-repo` (Teams: one marketplace; Enterprise: unlimited).
+- **Purpose:** Attribute token usage to activities, inspect session and history, optional Cursor hook attribution, read-only MCP tools.
+- **Vendored path:** `plugins/token-usage/`
+- **Manifest:** `plugins/token-usage/.cursor-plugin/plugin.json`
+- **Upstream:** https://github.com/Wicked-Sick-Ltd/token-usage (commit in `plugins/token-usage/VENDORED.md`)
+- **Logo:** `plugins/token-usage/assets/logo.svg`
+- **Category:** monitoring
 
-That repo already uses `plugins/<name>/` plus skills and `commands/` — the same
-layout Cursor discovers. After each plugin gets a Cursor/Agent Plugins manifest,
-add a Cursor catalog **in `ai-claude-repo`**:
+Costs shown are API list-price **estimates**, not subscription charges. See upstream README for privacy and data handling.
 
-```json
-{
-  "name": "wickedsick",
-  "owner": { "name": "Wicked Sick Ltd", "email": "craig@wickedsick.com" },
-  "metadata": {
-    "description": "Wicked Sick plugins for Cursor",
-    "pluginRoot": "plugins"
-  },
-  "plugins": [
-    { "name": "session-lifecycle", "source": "session-lifecycle" }
-  ]
-}
-```
+### publicuniverse (0.4.0)
 
-Turn on **Auto Refresh** (Cursor GitHub App on the repo) so pushes re-index at
-most every 10 minutes.
+- **Purpose:** Astronomy workflows (tonight's sky, lessons, fact-check, and more) via skills and a public HTTP MCP server.
+- **Vendored path:** `plugins/publicuniverse/`
+- **Manifest:** `plugins/publicuniverse/plugin.json` (Agent Plugins) plus client wiring in the package
+- **Upstream:** https://github.com/Wicked-Sick-Ltd/public-universe (commit in `plugins/publicuniverse/VENDORED.md`)
+- **Logo:** `plugins/publicuniverse/assets/icon.svg`
+- **Category:** education
 
-`token-usage` is a **different git repo**. It ships a Cursor package
-(`.cursor-plugin/plugin.json`, hooks and a Cursor session adapter, since its
-September 2026 Cursor runtime PR). Add it to the same Team Marketplace with **Add to
-Marketplace** (individual plugin URL).
+Positions and catalogue data are approximate and not for telescope pointing. See upstream data caveats in skill references.
 
-### This repo (`ai-marketplace`)
+## Catalog file
 
-Keep `.cursor-plugin/marketplace.json` as the **cross-AI stub** so the org
-catalog file exists at the path Cursor documents. List a plugin here only if we
-later choose to host a Cursor-native pack *in this repo* (still no vendored
-upstream). Until then the array stays empty on purpose.
+The Cursor index is `.cursor-plugin/marketplace.json` (`name: wickedsick`). Marketplace owner contact: **hello@wickedsick.com**.
 
-### `wizzo-fleet-presence` — hooks, not a plugin
+## Local smoke test (optional)
 
-Fleet presence for Cursor is a **hooks template**, not a Cursor plugin, so it
-does not appear in any `plugins[]` array. Source of truth:
-`Wicked-Sick-Ltd/acsendr` at `mcp/hooks/cursor/` — a `.cursor/hooks.json`
-binding `sessionStart` / `preToolUse` / `postToolUse` / `sessionEnd`, plus
-`.cursor/hooks/coordctl-hook.sh`, which calls `coordctl <verb> --vendor cursor`.
+Copy a vendored plugin directory to `~/.cursor/plugins/local/<name>/`, reload Cursor, and confirm **Settings → Plugins** shows skills, hooks (token-usage), and MCP. Enterprise policies may disable local imports.
 
-Two install modes, and there is no third: a `CURSOR_CONFIG_DIR`-rooted
-`hooks.json` silently does not fire, so Cursor hook discovery is project-level
-or user-level only.
+## Publishing to the public Cursor Marketplace
 
-1. **Interactive, on a human's box** — copy the template to `~/.cursor/hooks.json`
-   (and its script to `~/.cursor/hooks/`), then restart Cursor.
-2. **Headless, in a sidecar worktree** — nothing to install by hand. The sidecar
-   writes the template into each worktree at spawn, adds it to the worktree's
-   `.git/info/exclude` so it never reaches the agent's diff or its PR, and
-   removes it with the worktree.
+Public listing at [cursor.com/marketplace/publish](https://cursor.com/marketplace/publish) is separate from team marketplace import. Submit when the team catalog and upstream repos are ready; this document does not perform publication.
 
-Two Cursor-specific notes carried from the executor spike: `beforeSubmitPrompt`
-and `stop` do not fire in headless `-p` runs, so the liveness signal is
-`postToolUse` cadence, rate-limited client-side to at most one call per 60 s.
-And headless Cursor workers get **no hub MCP** this tranche — the sidecar
-performs claim/verify/complete/escalate on the worker's behalf, so no bearer
-token needs to touch a worktree. Interactive users manage their own
-`~/.cursor/mcp.json`.
+## Not in this Cursor catalog
 
-Verify either mode the same way: `coordctl status` shows the box with the
-`cursor` vendor tag.
-
-### Public Cursor Marketplace
-
-`cursor.com/marketplace/publish` is last, after the team catalog works. Same
-rule as Claude's official directory.
-
-## Conversion recipe (in the plugin source repo)
-
-Do this in `ai-claude-repo` / `token-usage`, then bump the pin in this catalog's
-Claude index if the Claude listing changes.
-
-1. **Keep** `skills/<name>/SKILL.md`. Strip or omit Claude-only `allowed-tools`
-   (`mcp__plugin_…`) so Cursor/Gemini are not bound to dead tool names. Trigger
-   language in `description` stays.
-2. **Keep** `commands/*.md` where they exist — Cursor discovers `commands/` on
-   Cursor Plugins. Claude slash commands and Cursor commands can share the same
-   files.
-3. Add **`.cursor-plugin/plugin.json`** (`name` required; copy description /
-   version / author from the Claude manifest).
-4. If there is MCP: add root **`mcp.json`**. Move HTTP servers from Claude
-   `.mcp.json`. Declare secrets under `variables` in the Cursor manifest; put
-   only `${VAR}` placeholders in `mcp.json`. For stdio, `cwd` /
-   `command` use `${CURSOR_PLUGIN_ROOT}`.
-5. Optional portable floor: root **`plugin.json`** with
-   `https://agent-plugins.org/schemas/1.0.0/plugin.schema.json` so Copilot and
-   Codex can load the same skills+MCP without Cursor extras.
-6. **Do not** port Claude `hooks/hooks.json` by copying it. Cursor hook event
-   names differ (`sessionEnd` vs Claude `Stop`). Rebuild or skip.
-7. Test locally: copy the plugin dir to `~/.cursor/plugins/local/<name>/`,
-   reload, confirm Customize shows skills/commands/MCP.
-   Enterprise: **Allow Local Plugin Imports** may be off.
-8. Only then list it on a Cursor catalog (in `ai-claude-repo`, or Add to
-   Marketplace from the plugin repo).
-
-## Plugin matrix (what to ship on Cursor)
-
-Live Claude plugins today: `ai-claude-repo` marketplace + `token-usage`.
-
-| Plugin | Cursor? | Shape | Notes |
-| --- | --- | --- | --- |
-| `session-lifecycle` | **Yes — first portable skill** | Cursor Plugin: existing `skills/` + `commands/startup.md` + `commands/shutdown.md` | Portfolio `.remember/` workflow from CONVENTIONS.md. Host-neutral git/shell. Best first Team Marketplace listing. |
-| `estate-maintenance` | **Yes** | Cursor Plugin (skills + commands) | Skills call scripts in `wicked-repo-inventory`. Confirm those scripts run from Cursor Cloud Agents (inventory access, `gh`, dry-run defaults). |
-| `product-lifecycle` | **Yes** | Cursor Plugin (`commands/product-*.md` + any skills) | Prompt library; Notion writes. No Claude-only parser. |
-| `onboarding` | **Partial** | Skill yes; bootstrap later | `/onboard` + `CONVENTIONS.md` check ports. `scripts/bootstrap.sh` is Claude-marketplace (`/plugin marketplace add ai-claude-repo`). Cursor equivalent is Team Marketplace import + Default On, not that script. |
-| `token-usage` | **Yes** | Cursor Plugin in its own repo (`.cursor-plugin/plugin.json`: skill, stdio MCP server, `hooks/hooks-cursor.json`) | Reads Cursor hook ledgers, read-only Desktop SQLite and Cloud Agent exports (`--runtime cursor`). Add the token-usage repo URL to the Team Marketplace; it cannot be listed in this repo's path-based index. See the repo's `docs/cursor-adapter.md` for what it can and cannot measure. |
-
-Workflow skills belong on every Agent Skills catalog **after** the shims above.
-Host-specific observability stays on the host that produces the logs.
-
-## Codex / Copilot / Gemini (same portable floor)
-
-Once a plugin has root `plugin.json` + `skills/` + `mcp.json`:
-
-| Host | Catalog in this repo | Extra shim |
-| --- | --- | --- |
-| ChatGPT Work / Codex | `.agents/plugins/marketplace.json` | Often reads Agent Plugins; `.codex-plugin/` only if needed |
-| Copilot | `.github/plugin/marketplace.json` | Optional `com.github.copilot/` |
-| Gemini CLI | `gemini/README.md` row | `gemini-extension.json` at the **plugin repo** root |
-| Grok | Claude catalog | Already reads `.claude-plugin/` |
-
-Pin remotes on those JSON catalogs with a full SHA, same as Claude.
-
-## Team Marketplace install (humans)
-
-1. Admin: Dashboard → Plugins → import `ai-claude-repo` (after Cursor manifests exist).
-2. Set access (whole team or Organisation Groups).
-3. Per plugin: Default Off / Default On / Required. Suggest Default On for
-   `session-lifecycle`; Required only for policy plugins
-   Off and owner-group restricted.
-4. Developers: Customize → team marketplace → install. Skills also via
-   `/skill-name`.
-5. Optional: members can Publish a personal `~/.cursor/skills/` skill to the
-   **Default** marketplace. That is *not* a substitute for `ai-claude-repo` PRs.
-   Canonical skills still land in git.
-
-## Checklist (when we implement)
-
-- [ ] Add `.cursor-plugin/plugin.json` (and root `mcp.json` where needed) to
-      `session-lifecycle` in `ai-claude-repo`; local-load test.
-- [ ] Add `.cursor-plugin/marketplace.json` to `ai-claude-repo` with `pluginRoot: plugins` and only plugins that have a real Cursor runtime.
-- [ ] Import that repo as the Cursor Team Marketplace; Auto Refresh on.
-- [ ] Repeat for `estate-maintenance`, `product-lifecycle`.
-- [ ] Decide Cursor story for `onboarding` (skill vs skip bootstrap).
-- [ ] Add `token-usage` to the Team Marketplace by repo URL (Cursor runtime shipped).
-- [ ] Add Agent Plugins `plugin.json` on plugins we also list on Codex/Copilot.
-- [ ] Point this repo's Cursor index at in-repo paths only if we ever host a Cursor pack here; keep it empty until then.
+Workflow plugins that live only in private org repos, hook-only fleet templates, and plugins without a Cursor runtime are intentionally omitted from `.cursor-plugin/marketplace.json`. Other hosts may still list them with SHA pins in their index files in this repository.
