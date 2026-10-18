@@ -23,7 +23,7 @@ all five tools. Advancing the catalog SHA brings both fixes into the installed p
 | Claude Code | Native manifest validator and MCP connection; existing parser/hook suite | Directory portal submission remains a separate owner action. |
 | Codex 0.160.0 | Actual isolated plugin install, app-server listing and five-tool discovery | Hook trust remains per machine. |
 | Cursor CLI 2026.10.01-e373342 | Manual MCP registration ready, five tools; synthetic parser/hook tests | Desktop plugin/marketplace UI not exercised. This repository cannot list external plugin paths in its Cursor index. |
-| Gemini CLI 0.62.0 | Extension validation, pinned Git install, report skill and Connected MCP; JSON/JSONL fixtures | No model-driven turn tested. Local install/link operations emitted a Windows Node/libuv shutdown assertion; the pinned Git install completed cleanly. |
+| Antigravity / Gemini CLI 0.62.0 | Antigravity `plugin.json` + `mcp_config.json` bundle, Antigravity `brain/*/transcript.jsonl` parser + legacy Gemini CLI JSON/JSONL fixtures | Antigravity 2.0 transcript parsing verified against live Windows session logs (`gt1-03-deep-vortex`); legacy Gemini CLI 0.62.0 pinned Git install also retained as fallback. |
 | Copilot CLI 1.0.91 | Plugin install, skill/server discovery, native offline tests with synthetic OpenAI/Anthropic responses and resumed sessions | Requires `--experimental` for per-call capture; no paid-account or IDE support claim. |
 
 Token counts use recorded fields. Missing counters yield partial/activity-only

@@ -14,7 +14,7 @@ Claude, Codex and Copilot entries pin that commit.
 | Codex | `ai-codex-repo/.agents/plugins/marketplace.json`; also this index | Upstream `.codex-plugin/plugin.json`, skills and Node lifecycle hooks |
 | Copilot CLI | This index's `.github/plugin/marketplace.json` | Copilot commands, skills and `hooks/copilot-hooks.json` |
 | Cursor | `ai-cursor-repo/integrations/ponytail` (pinned upstream submodule) | Native hooks installer; project rule alternative for Cloud Agents |
-| Gemini CLI | [Gemini install guide](../gemini/README.md) | Upstream `gemini-extension.json`, context, commands and skills |
+| Antigravity / Gemini | [Antigravity & Gemini install guide](../gemini/README.md) | Antigravity `plugin.json` (`rules/AGENTS.md` + `skills/`); legacy `gemini-extension.json` fallback |
 | Grok Build | Upstream native plugin; setup documented in [ai-grok-repo](https://github.com/Wicked-Sick-Ltd/ai-grok-repo) | Skills only; no lifecycle context injection |
 
 ## Claude Code
@@ -57,7 +57,7 @@ Use `/ponytail:ponytail full` and `/ponytail:ponytail-review`. This is a
 Copilot **CLI** listing; it does not promise automatic activation in every
 Copilot editor integration.
 
-## Cursor, Gemini and Grok
+## Cursor, Antigravity / Gemini and Grok
 
 Cursor setup belongs in `ai-cursor-repo`; see [Cursor integration](cursor-integration.md).
 There is no Cursor entry here because native hook installation is not an
@@ -65,7 +65,12 @@ in-repo marketplace plugin. Cursor Cloud Agents need the project rule
 alternative or explicit mode activation through project hooks; they do not
 run `sessionStart`. Cursor subagents do not receive Ponytail's injected rules.
 
-Gemini uses the pinned extension command in [its guide](../gemini/README.md).
+Google Antigravity (`agy` CLI, Antigravity 2.0, and Antigravity IDE) installs the
+pinned bundle into `~/.gemini/config/plugins/ponytail/` (loading `rules/AGENTS.md`
+and `skills/ponytail*/SKILL.md` automatically while enabled) or stages a checkout via
+`agy plugin install`, as documented in [its guide](../gemini/README.md) and
+[`ai-gemini-repo`](https://github.com/Wicked-Sick-Ltd/ai-gemini-repo). Legacy
+standalone Gemini CLI uses the pinned `gemini extensions install` fallback there.
 Grok Build installs the upstream skill-only plugin; its lifecycle hooks do not
 inject Ponytail context. Do not infer Grok hook support from the Claude catalog.
 

@@ -46,7 +46,7 @@ Then install plugins by name from that marketplace (for example `claude plugin i
 | Claude Code / Grok | `.claude-plugin/marketplace.json` | GitHub SHA pins |
 | ChatGPT / Codex | `.agents/plugins/marketplace.json` | Native Codex packages, SHA pins |
 | Copilot CLI | `.github/plugin/marketplace.json` | SHA pins |
-| Gemini | [`gemini/README.md`](gemini/README.md) | Upstream extension installs |
+| Antigravity / Gemini | [`gemini/README.md`](gemini/README.md) | Antigravity (`~/.gemini/config/plugins/`, `agy plugin`) & legacy Gemini CLI |
 
 ## Validation
 
