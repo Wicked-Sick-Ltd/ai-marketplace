@@ -33,7 +33,7 @@ From a pinned checkout of `Wicked-Sick-Ltd/token-usage`, copy or link the plugin
 ### Legacy Gemini CLI
 
 ```bash
-gemini extensions install https://github.com/Wicked-Sick-Ltd/token-usage --ref 394ba4dc12e72cdc656d88534a84427b6f76ae6d
+gemini extensions install https://github.com/Wicked-Sick-Ltd/token-usage --ref fe998547b0dfa9472e2a80cb9beee9bae3018575
 gemini extensions list
 gemini mcp list
 ```

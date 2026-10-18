@@ -10,7 +10,7 @@
     {
       "name": "token-usage",
       "description": "A token profiler, not a cost meter: attributes Claude Code and Cowork usage to the slash command, skill or subagent that consumed it.",
-      "version": "0.8.0",
+      "version": "0.9.0",
       "author": {
         "name": "Craig Fletcher",
         "email": "craig@wickedsick.com"
@@ -30,7 +30,7 @@
       "source": {
         "source": "github",
         "repo": "Wicked-Sick-Ltd/token-usage",
-        "sha": "394ba4dc12e72cdc656d88534a84427b6f76ae6d"
+        "sha": "fe998547b0dfa9472e2a80cb9beee9bae3018575"
       }
     },
     {

@@ -50,7 +50,7 @@ Skills are available under the plugin's skill entries; MCP tools appear when the
 
 ## Featured plugins
 
-### token-usage (0.8.0)
+### token-usage (0.9.0)
 
 - **Purpose:** Attribute token usage to activities, inspect session and history, optional Cursor hook attribution, read-only MCP tools.
 - **Vendored path:** `plugins/token-usage/`
