@@ -10,7 +10,7 @@ This repo is a catalog. Plugin behaviour changes belong in the plugin's own repo
    - Cursor: `.cursor-plugin/marketplace.json` (in-repo path `source`; see below)
    - ChatGPT / Codex: `.agents/plugins/marketplace.json`
    - Copilot: `.github/plugin/marketplace.json`
-   - Gemini: a row in `gemini/README.md` (no JSON catalog)
+   - Antigravity / Gemini: a section in `gemini/README.md` (no shared remote JSON catalog)
 3. For Claude, Codex and Copilot remotes: set `source.sha` to a full 40-character commit. Prefer a release tag as `ref` when one exists; SHA still wins. Codex uses `url` for a root package and `git-subdir` with `path` for a native package inside a vendor repository. Verify installation with the actual Codex CLI in a temporary `CODEX_HOME`.
 4. For Cursor: `source` must be a relative directory in this repository (string, or `{ "path": "…" }`). Cursor does not clone a GitHub SHA from this file. Plugin shims (`.cursor-plugin/plugin.json`, root `mcp.json`) belong in the plugin's own repo. Team Marketplace import of `ai-claude-repo` is documented in `docs/cursor-integration.md`.
 5. Run `python3 scripts/validate.py`.

@@ -13,7 +13,7 @@
       "name": "token-usage",
       "source": "plugins/token-usage",
       "description": "Attribute Cursor token usage to the work that consumed it — per-activity breakdowns, session history, API-price estimates, and an MCP server with optional hook attribution.",
-      "version": "0.8.0",
+      "version": "0.9.0",
       "author": {
         "name": "Wicked Sick Ltd",
         "email": "hello@wickedsick.com"

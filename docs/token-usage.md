@@ -1,11 +1,10 @@
-# Token usage: 0.8.0
+# Token usage: 0.9.0
 
-The companion [token-usage PR](https://github.com/Wicked-Sick-Ltd/token-usage/pull/20)
-repairs Codex installation and adds Gemini CLI/Copilot CLI support while preserving
-Claude Code and Cursor. 0.8.0 was released on 2026-10-11 as
-[v0.8.0](https://github.com/Wicked-Sick-Ltd/token-usage/releases/tag/v0.8.0) at `394ba4dc12e72cdc656d88534a84427b6f76ae6d`; the catalog pins point at that commit. If the reviewed tree changes, update every pin together.
+The companion [token-usage PR #26](https://github.com/Wicked-Sick-Ltd/token-usage/pull/26)
+adds Google Antigravity (`~/.gemini/antigravity*/brain/<conversation-id>/.system_generated/logs/transcript.jsonl`) support and MCP stdio shutdown fixes while preserving Claude Code, Codex, Cursor, Copilot CLI, and legacy Gemini CLI. 0.9.0 was released on 2026-10-18 as
+[v0.9.0](https://github.com/Wicked-Sick-Ltd/token-usage/releases/tag/v0.9.0) at `fe998547b0dfa9472e2a80cb9beee9bae3018575`; the catalog pins and vendored Cursor copy point at that commit. If the reviewed tree changes, update every pin together.
 
-## What failed in Codex
+## What failed in Codex (0.7.0 → 0.8.0+)
 
 Codex 0.160.0 could install the 0.7.0 package, but its legacy MCP configuration did
 not expand `${PLUGIN_ROOT}` in arguments. Python received a literal path and the
@@ -23,15 +22,15 @@ all five tools. Advancing the catalog SHA brings both fixes into the installed p
 | Claude Code | Native manifest validator and MCP connection; existing parser/hook suite | Directory portal submission remains a separate owner action. |
 | Codex 0.160.0 | Actual isolated plugin install, app-server listing and five-tool discovery | Hook trust remains per machine. |
 | Cursor CLI 2026.10.01-e373342 | Manual MCP registration ready, five tools; synthetic parser/hook tests | Desktop plugin/marketplace UI not exercised. This repository cannot list external plugin paths in its Cursor index. |
-| Gemini CLI 0.62.0 | Extension validation, pinned Git install, report skill and Connected MCP; JSON/JSONL fixtures | No model-driven turn tested. Local install/link operations emitted a Windows Node/libuv shutdown assertion; the pinned Git install completed cleanly. |
+| Antigravity / Gemini CLI 0.62.0 | Antigravity `plugin.json` + `mcp_config.json` bundle, Antigravity `brain/*/transcript.jsonl` parser + legacy Gemini CLI JSON/JSONL fixtures | Antigravity 2.0 transcript parsing and MCP tools verified against live Windows session logs (`gt1-03-deep-vortex`); legacy Gemini CLI 0.62.0 pinned Git install also retained as fallback. |
 | Copilot CLI 1.0.91 | Plugin install, skill/server discovery, native offline tests with synthetic OpenAI/Anthropic responses and resumed sessions | Requires `--experimental` for per-call capture; no paid-account or IDE support claim. |
 
 Token counts use recorded fields. Missing counters yield partial/activity-only
 reports, and unknown model prices remain unknown. Costs are API estimates, not
 subscription charges. The Copilot collector stores labels and counters locally,
 without prompt or tool text. See upstream
-[Gemini/Copilot notes](https://github.com/Wicked-Sick-Ltd/token-usage/blob/394ba4dc12e72cdc656d88534a84427b6f76ae6d/docs/gemini-copilot.md)
-and [privacy disclosures](https://github.com/Wicked-Sick-Ltd/token-usage/blob/394ba4dc12e72cdc656d88534a84427b6f76ae6d/README.md#privacy-and-data-handling).
+[Gemini/Copilot notes](https://github.com/Wicked-Sick-Ltd/token-usage/blob/fe998547b0dfa9472e2a80cb9beee9bae3018575/docs/gemini-copilot.md)
+and [privacy disclosures](https://github.com/Wicked-Sick-Ltd/token-usage/blob/fe998547b0dfa9472e2a80cb9beee9bae3018575/README.md#privacy-and-data-handling).
 
 Claude, Codex and Copilot catalogs pin the same commit. Gemini's install command
 uses that commit as `--ref`. Cursor lists a vendored copy at `plugins/token-usage/`
@@ -53,7 +52,6 @@ containing remote URL entries but did not load the plugin afterward. Registering
 the actual GitHub branch marketplace loaded it correctly. Validate distribution
 through the GitHub route documented in the README, not that local-directory shortcut.
 
-Upstream PR #20 completed 11 checks with zero failures, including Python 3.9/3.12,
-native Copilot on Windows/Linux, Claude validation and security scans. Bugbot was
-paused by the team's spend limit and did not provide a review; no review threads
-were open. The merged tree matches the tested PR head.
+Upstream PR #26 (0.9.0) completed 13 checks with zero failures, including Python 3.9/3.12,
+native Copilot on Windows/Linux, Claude validation and security scans (CodeQL, Semgrep).
+Also update local Antigravity installations under `~/.gemini/config/plugins/token-usage` to 0.9.0.
