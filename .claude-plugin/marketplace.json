@@ -30,7 +30,7 @@
       "source": {
         "source": "github",
         "repo": "Wicked-Sick-Ltd/token-usage",
-        "sha": "fe998547b0dfa9472e2a80cb9beee9bae3018575"
+        "sha": "39cbb737084bf4f8aaa0c17b8cd1c560f6a0a47c"
       }
     },
     {
@@ -59,7 +59,7 @@
         "url": "https://github.com/Wicked-Sick-Ltd/ai-claude-repo.git",
         "path": "plugins/wizzo-fleet-presence",
         "ref": "main",
-        "sha": "0cb15af9a28adac61f0c7e9ffc709f96b5d92576"
+        "sha": "a41deeb46c1bb016676ec55821dc3fb985586b0f"
       }
     },
     {
@@ -83,7 +83,7 @@
     {
       "name": "publicuniverse",
       "description": "Public Universe astronomy tools and skills: explore catalogue data, plan stargazing, explain objects, build lessons and check space facts using a free public MCP server.",
-      "version": "0.4.0",
+      "version": "0.4.1",
       "author": {
         "name": "Wicked Sick Ltd",
         "email": "hello@wickedsick.com",
@@ -108,7 +108,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Wicked-Sick-Ltd/public-universe.git",
-        "sha": "9f4d570d980fbd2cc24e43e0dc40b7959497967e"
+        "sha": "bb5919e47e8c8e1eb66c2fc5dcdba9bbc51b2f56"
       }
     }
   ]
