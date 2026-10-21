@@ -19,7 +19,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Wicked-Sick-Ltd/token-usage.git",
-        "sha": "fe998547b0dfa9472e2a80cb9beee9bae3018575"
+        "sha": "39cbb737084bf4f8aaa0c17b8cd1c560f6a0a47c"
       }
     },
     {
@@ -49,9 +49,9 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Wicked-Sick-Ltd/public-universe.git",
-        "sha": "9f4d570d980fbd2cc24e43e0dc40b7959497967e"
+        "sha": "bb5919e47e8c8e1eb66c2fc5dcdba9bbc51b2f56"
       },
-      "version": "0.4.0",
+      "version": "0.4.1",
       "category": "education",
       "homepage": "https://publicuniverse.net",
       "license": "MIT"

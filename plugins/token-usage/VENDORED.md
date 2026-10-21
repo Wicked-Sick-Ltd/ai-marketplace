@@ -4,7 +4,7 @@ Cursor team marketplaces resolve plugin sources as directories inside this catal
 
 - Upstream: https://github.com/Wicked-Sick-Ltd/token-usage
 - Version: 0.9.0
-- Source commit: `fe998547b0dfa9472e2a80cb9beee9bae3018575` (`v0.9.0`; includes Google Antigravity `transcript.jsonl` support and MCP stdio shutdown fixes)
+- Source commit: `39cbb737084bf4f8aaa0c17b8cd1c560f6a0a47c` (`v0.9.0`; includes Google Antigravity `transcript.jsonl`, xAI Grok Build transcript support, and MCP stdio shutdown fixes)
 - Contents: `.cursor-plugin/`, `skills/report/`, `hooks/hooks-cursor.json`, `scripts/`, `data/pricing.json`, `assets/logo.svg`, `LICENSE`, and `NOTICE` — the files required for the Cursor plugin runtime at that commit.
 
 Do not edit these files here. To update: check out the reviewed upstream commit, replace this directory's contents (except this file), and update the commit above.
