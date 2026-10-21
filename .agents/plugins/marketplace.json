@@ -95,21 +95,6 @@
       "category": "Developer Tools"
     },
     {
-      "name": "wizzo-twin",
-      "description": "Query the owner's Digital Twin knowledge corpus (email, iMessage, WhatsApp, Obsidian, Notion, voice notes, calendar) to verify context, facts, and tone.",
-      "source": {
-        "source": "git-subdir",
-        "url": "https://github.com/Wicked-Sick-Ltd/ai-codex-repo.git",
-        "path": "plugins/wizzo-twin",
-        "sha": "06f5c0a19808e91ccc53bba9111346fdbb86ee23"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Developer Tools"
-    },
-    {
       "name": "amiga-decoding",
       "description": "Reverse engineering, disassembly, and decoding workflows for classic Commodore Amiga 68k binaries, hunks, custom chip registers, and disk images.",
       "source": {
