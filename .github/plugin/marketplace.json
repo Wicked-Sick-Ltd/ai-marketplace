@@ -55,6 +55,22 @@
       "category": "education",
       "homepage": "https://publicuniverse.net",
       "license": "MIT"
+    },
+    {
+      "name": "pr-flow",
+      "version": "1.0.0",
+      "description": "Skills and a Bash/gh/jq helper for creating pull requests, waiting for checks, addressing reviews and landing changes.",
+      "repository": "https://github.com/Wicked-Sick-Ltd/ai-grok-repo",
+      "license": "Proprietary",
+      "category": "productivity",
+      "skills": "skills/",
+      "source": {
+        "source": "github",
+        "repo": "Wicked-Sick-Ltd/ai-marketplace",
+        "path": "plugins/pr-flow",
+        "ref": "main",
+        "sha": "111f91616a8e194a808697b6531519735d676564"
+      }
     }
   ]
 }

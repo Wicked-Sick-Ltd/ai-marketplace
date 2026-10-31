@@ -36,12 +36,13 @@
     },
     {
       "name": "pr-flow",
-      "description": "Codex skills and a Bash/gh/jq helper for creating pull requests, waiting for checks, addressing reviews and landing changes.",
+      "description": "Skills and a Bash/gh/jq helper for creating pull requests, waiting for checks, addressing reviews and landing changes.",
       "source": {
         "source": "git-subdir",
-        "url": "https://github.com/Wicked-Sick-Ltd/ai-codex-repo.git",
+        "url": "https://github.com/Wicked-Sick-Ltd/ai-marketplace.git",
         "path": "plugins/pr-flow",
-        "sha": "06f5c0a19808e91ccc53bba9111346fdbb86ee23"
+        "ref": "main",
+        "sha": "111f91616a8e194a808697b6531519735d676564"
       },
       "policy": {
         "installation": "AVAILABLE",

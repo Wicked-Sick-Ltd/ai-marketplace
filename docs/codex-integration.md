@@ -13,7 +13,10 @@ apparently successful install did not establish lifecycle-hook installation.
 
 The index now selects `plugins/<name>` using `git-subdir`, with real
 `.codex-plugin/plugin.json` resources. token-usage and Ponytail select their
-upstream root packages. Every remote source is pinned by SHA; the validator
+upstream root packages. `pr-flow` is pinned to `plugins/pr-flow` in this
+repository (the catalogue copy of `Wicked-Sick-Ltd/ai-grok-repo`), which
+ships `.codex-plugin/plugin.json` and the portable root `plugin.json`.
+Every remote source is pinned by SHA; the validator
 rejects missing or malformed pins and escaping subdirectory paths.
 
 The earlier claim that Codex had no `sha` or `ref` field was incorrect for the
