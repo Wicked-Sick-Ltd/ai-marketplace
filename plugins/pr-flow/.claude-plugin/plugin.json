@@ -1,0 +1,10 @@
+{
+  "name": "pr-flow",
+  "version": "1.0.0",
+  "description": "Grok Build skills and a Bash/gh/jq helper for creating pull requests, waiting for checks, addressing reviews and landing changes.",
+  "author": {
+    "name": "Wicked Sick Ltd"
+  },
+  "license": "Proprietary",
+  "skills": "./skills/"
+}

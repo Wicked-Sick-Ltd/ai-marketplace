@@ -5,8 +5,8 @@
     "email": "hello@wickedsick.com"
   },
   "metadata": {
-    "description": "Wicked Sick team marketplace for Cursor: featured plugins for token attribution and public astronomy data. Import this repository as a Team Marketplace; each plugin is an in-repo path under plugins/.",
-    "version": "0.3.0"
+    "description": "Wicked Sick team marketplace for Cursor: featured plugins for token attribution, public astronomy data, and pull-request landing. Import this repository as a Team Marketplace; each plugin is an in-repo path under plugins/.",
+    "version": "0.4.0"
   },
   "plugins": [
     {
@@ -53,6 +53,27 @@
       ],
       "logo": "plugins/publicuniverse/assets/icon.svg",
       "category": "education"
+    },
+    {
+      "name": "pr-flow",
+      "source": "plugins/pr-flow",
+      "description": "Skills and a Bash/gh/jq helper for creating pull requests, waiting for checks, addressing reviews and landing changes.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Wicked Sick Ltd",
+        "email": "hello@wickedsick.com"
+      },
+      "homepage": "https://github.com/Wicked-Sick-Ltd/ai-grok-repo/tree/main/plugins/pr-flow",
+      "repository": "https://github.com/Wicked-Sick-Ltd/ai-grok-repo",
+      "license": "Proprietary",
+      "keywords": [
+        "pull-request",
+        "ci",
+        "code-review",
+        "landing-prs",
+        "pr-flow"
+      ],
+      "category": "developer-tools"
     }
   ]
 }
