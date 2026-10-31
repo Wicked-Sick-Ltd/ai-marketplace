@@ -132,10 +132,10 @@
       ],
       "source": {
         "source": "git-subdir",
-        "url": "https://github.com/Wicked-Sick-Ltd/ai-marketplace.git",
+        "url": "https://github.com/Wicked-Sick-Ltd/ai-grok-repo.git",
         "path": "plugins/pr-flow",
         "ref": "main",
-        "sha": "111f91616a8e194a808697b6531519735d676564"
+        "sha": "2b70a9bf8fe3e98c69451492f7516a549ae798f3"
       }
     }
   ]
