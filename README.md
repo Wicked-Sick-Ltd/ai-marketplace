@@ -12,19 +12,20 @@ Other hosts (Claude Code, Codex, Copilot, Gemini) use commit-pinned remote sourc
 | --- | --- | --- |
 | **token-usage** | Token profiler for Cursor (and other agents): attribute usage to activities, query history via MCP, optional hook-based attribution. Estimates API list prices; not a subscription bill. | [token-usage](https://github.com/Wicked-Sick-Ltd/token-usage) |
 | **publicuniverse** | Astronomy skills and a public MCP server: tonight's sky, lessons, fact-checking, and catalogue exploration. No API key required for the public MCP endpoint. | [public-universe](https://github.com/Wicked-Sick-Ltd/public-universe) |
+| **pr-flow** | Pull-request lifecycle skills (`landing-prs`, `pr`) and `pr-wait.sh`: open a PR, wait for CI and reviewer bots, fix or answer every finding, then land it. | [ai-grok-repo `plugins/pr-flow`](https://github.com/Wicked-Sick-Ltd/ai-grok-repo/tree/main/plugins/pr-flow) |
 
-Vendored paths: `plugins/token-usage/`, `plugins/publicuniverse/`.
+Vendored paths: `plugins/token-usage/`, `plugins/publicuniverse/`, `plugins/pr-flow/`.
 
 ## Install in Cursor (team marketplace)
 
 1. **Admin:** In the Cursor dashboard, open **Plugins → Team Marketplaces → Import from Repo** and import `https://github.com/Wicked-Sick-Ltd/ai-marketplace`.
 2. Turn on **Auto Refresh** if you want the catalog to track new commits on this repo.
 3. Grant your team access to the marketplace.
-4. **Developers:** **Cursor Settings → Plugins**, open the Wicked Sick marketplace, and install **token-usage** and/or **publicuniverse**. Enable the bundled MCP servers when prompted.
+4. **Developers:** **Cursor Settings → Plugins**, open the Wicked Sick marketplace, and install **token-usage**, **publicuniverse**, and/or **pr-flow**. Enable the bundled MCP servers when prompted.
 
 Detailed Cursor notes (formats, vendoring rationale, verification): [`docs/cursor-integration.md`](docs/cursor-integration.md).
 
-**Requirements:** Python 3.9+ on the PATH for **token-usage** (stdio MCP and hooks). **publicuniverse** uses a remote HTTP MCP server documented in the plugin README.
+**Requirements:** Python 3.9+ on the PATH for **token-usage** (stdio MCP and hooks). **publicuniverse** uses a remote HTTP MCP server documented in the plugin README. **pr-flow** needs authenticated `gh`, Bash and `jq`.
 
 ## Other agents
 

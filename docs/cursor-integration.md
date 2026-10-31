@@ -11,7 +11,7 @@ Official Cursor docs: [Plugins](https://cursor.com/docs/plugins) and [Plugins re
 For marketplace review, the headline install path is:
 
 1. Import **`Wicked-Sick-Ltd/ai-marketplace`** as a Cursor Team Marketplace.
-2. Install plugins from the catalog — today **token-usage** and **publicuniverse**.
+2. Install plugins from the catalog — today **token-usage**, **publicuniverse** and **pr-flow**.
 
 Upstream source code and releases remain in each plugin's own GitHub repository; vendored trees record the exact commit in `plugins/<name>/VENDORED.md`.
 
@@ -42,7 +42,7 @@ So featured plugins are copied into `plugins/` here (same approach as `plugins/p
 ### 3. Install on a developer machine
 
 1. **Cursor Settings → Plugins** → open the Wicked Sick marketplace.
-2. Install **token-usage** and/or **publicuniverse**.
+2. Install **token-usage**, **publicuniverse** and/or **pr-flow**.
 3. Approve bundled MCP servers when Cursor prompts.
 4. For **token-usage**, ensure `python3` is on the PATH (hooks and stdio MCP).
 
@@ -71,6 +71,16 @@ Costs shown are API list-price **estimates**, not subscription charges. See upst
 - **Category:** education
 
 Positions and catalogue data are approximate and not for telescope pointing. See upstream data caveats in skill references.
+
+### pr-flow (1.0.0)
+
+- **Purpose:** Open a pull request, wait until CI and reviewer bots finish, fix or answer every finding, and land the change. Skills: `landing-prs` and `pr`. Helper: `pr-wait.sh`.
+- **Vendored path:** `plugins/pr-flow/`
+- **Manifest:** `plugins/pr-flow/.cursor-plugin/plugin.json`
+- **Upstream:** https://github.com/Wicked-Sick-Ltd/ai-grok-repo (`plugins/pr-flow`; commit in `plugins/pr-flow/VENDORED.md`)
+- **Category:** developer-tools
+
+Requires authenticated `gh`, Bash and `jq`. Review comments from Claude, Bugbot, Copilot, CodeQL and Semgrep are in scope.
 
 ## Catalog file
 

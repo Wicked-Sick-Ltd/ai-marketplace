@@ -110,6 +110,33 @@
         "url": "https://github.com/Wicked-Sick-Ltd/public-universe.git",
         "sha": "bb5919e47e8c8e1eb66c2fc5dcdba9bbc51b2f56"
       }
+    },
+    {
+      "name": "pr-flow",
+      "description": "Skills and a Bash/gh/jq helper for creating pull requests, waiting for checks, addressing reviews and landing changes.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Wicked Sick Ltd",
+        "email": "hello@wickedsick.com"
+      },
+      "category": "productivity",
+      "homepage": "https://github.com/Wicked-Sick-Ltd/ai-grok-repo/tree/main/plugins/pr-flow",
+      "repository": "https://github.com/Wicked-Sick-Ltd/ai-grok-repo",
+      "license": "Proprietary",
+      "keywords": [
+        "pull-request",
+        "ci",
+        "code-review",
+        "landing-prs",
+        "pr-flow"
+      ],
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/Wicked-Sick-Ltd/ai-grok-repo.git",
+        "path": "plugins/pr-flow",
+        "ref": "main",
+        "sha": "62272ec3ec8eba9059fd43ce9a9d1f913e317fbb"
+      }
     }
   ]
 }
