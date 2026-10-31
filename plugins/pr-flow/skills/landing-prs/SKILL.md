@@ -11,8 +11,6 @@ finished and been answered. This skill is that lifecycle; `$pr` is its
 command form. Org policy: `Wicked-Sick-Ltd/ai-grok-repo/CONVENTIONS.md`
 ("Shipping changes") and the Notion page *Repository Standards & Governance*.
 
-Review comments from Claude, Bugbot, Copilot, CodeQL and Semgrep are covered: every finding is either fixed or answered, and every thread is resolved before the PR counts as done.
-
 **Violating the letter of the lifecycle is violating the spirit of it.**
 
 ## The lifecycle
@@ -41,6 +39,7 @@ Review comments from Claude, Bugbot, Copilot, CodeQL and Semgrep are covered: ev
    digest: reproduce, fix at the root with a test (add a focused regression test), push, and go back to step 3. A
    finding you disagree with gets a reply explaining why, never silence.
    Resolve threads you addressed.
+   Review comments from Claude, Bugbot, Copilot, CodeQL and Semgrep all count: every finding is fixed or answered, and every thread is resolved, before the PR counts as done.
 5. **Merge** when asked to merge/land/ship, or when running autonomously on a
    non-Critical repo: `gh pr merge --squash --delete-branch` (rebase where the
    repo prefers it; merge commits are disallowed by the org ruleset). Read
