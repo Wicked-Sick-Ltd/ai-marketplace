@@ -16,7 +16,8 @@ command form. Org policy: `Wicked-Sick-Ltd/ai-grok-repo/CONVENTIONS.md`
 ## Ready for review (Craig, 5 Nov 2026)
 
 When a cloud agent finishes its work, open the pull request ready for review.
-Do not pass `--draft`. If a draft already exists, run `gh pr ready` before
+Do not pass `--draft`. If a draft already exists, run `gh pr ready <pr>`
+(and `--repo owner/name` when that PR is not in the current repo) before
 waiting on reviewers or CI, so reviewers and CI start straight away.
 
 A draft is only allowed while work is still in progress. That includes
@@ -36,9 +37,9 @@ finding is fixed or answered, every thread is resolved, and CI is green.
    branch (`develop` where the repo has a staging flow, else the default
    branch). Body: *Why / Root cause or design / What changed / Verification*,
    honest about what was not verified. When the work is finished, omit
-   `--draft`, or run `gh pr ready` on an existing draft (see **Ready for
-   review**). Pass `--draft` only while work is still in progress, Critical-tier
-   repos included.
+   `--draft`, or run `gh pr ready <pr>` on an existing draft (see **Ready for
+   review**; add `--repo` when the PR is not in the current repo). Pass
+   `--draft` only while work is still in progress, Critical-tier repos included.
 3. **Wait.** Run `pr-wait.sh <pr>` from this skill's directory (see
    `--help`). It returns only when every check run on the head commit is
    terminal, and on our repos every reviewer bot registers a check run, so that
@@ -56,7 +57,8 @@ finding is fixed or answered, every thread is resolved, and CI is green.
    Resolve threads you addressed.
    Review comments from Claude, Bugbot, Copilot, CodeQL and Semgrep all count: every finding is fixed or answered, and every thread is resolved, before the PR counts as done.
 5. **Merge** when asked to merge/land/ship, or when running autonomously on a
-   non-Critical repo. If the finished PR is still a draft, `gh pr ready` first.
+   non-Critical repo. If the finished PR is still a draft, `gh pr ready <pr>`
+   first (with `--repo` when it is not the current repo).
    Then `gh pr merge --squash --delete-branch` (rebase where the repo prefers
    it; merge commits are disallowed by the org ruleset). Read
    `merge_state` from the pr-wait SUMMARY (same poll as the checks). If it is
