@@ -11,7 +11,7 @@ RUN CONFIG from the user's arguments for this skill:
   aliases: open/raise → create, monitor/ci → watch, ship → land). No verb → `status`
   if a PR exists for the current branch, else `create`.
 - PR: an optional number or URL; default the current branch's PR.
-- REPO: `--repo owner/name`; default the current repo.
+- REPO: `<OWNER/REPO>` passed as `--repo`; default the current repo.
 - WAIT TOOL: `pr-wait.sh` lives in `skills/landing-prs/` next to this command's
   plugin root (`${PLUGIN_ROOT}/skills/landing-prs/pr-wait.sh`); run it with
   `bash`, in the background for long waits, and read its `SUMMARY` line.
@@ -21,12 +21,20 @@ RUN CONFIG from the user's arguments for this skill:
 2. Commit the pending work (one focused commit; attribution trailer per the
    session's rules), `git push -u origin <branch>`.
 3. `gh pr create --base <integration branch> --title … --body …` with the
-   Why / Root cause / What changed / Verification shape. `--draft` when the repo is
-   Critical tier or the change touches auth, payments, migrations, infra, secrets.
+   Why / Root cause / What changed / Verification shape. When the work is
+   finished, omit `--draft` (ready for review). If a draft already exists, run
+   `gh pr ready <PR> --repo <OWNER/REPO>` before watch so reviewers and CI start
+   straight away. Pass that PR and repository explicitly; a bare `gh pr ready`
+   would target the current branch instead.
+   Use `--draft` only while work is still in progress, including Critical-tier
+   repos and changes that touch auth, payments, migrations, infra, or secrets
+   (Craig, 5 Nov 2026).
 4. Continue with **watch**.
 
 ## watch
-1. `pr-wait.sh <PR>` — wait for it (it polls; do not poll around it).
+1. If the PR is still a draft and the work is finished,
+   `gh pr ready <PR> --repo <OWNER/REPO>` first. Then `pr-wait.sh <PR>` — wait
+   for it (it polls; do not poll around it).
 2. Triage the digest: every failed check and every `[OPEN]` review thread gets a
    root-cause fix with a test, or a reasoned reply. Push, then re-run step 1.
 3. Stop when `checks_failed=0` and `unresolved_threads=0`. Report the final
@@ -34,8 +42,11 @@ RUN CONFIG from the user's arguments for this skill:
 
 ## merge
 1. Run **watch** first (a green digest is the precondition).
-2. Refuse on a draft PR, on a Critical-tier repo without the user's explicit go,
-   or with `--admin`. Confirm the base branch matches the repo's flow.
+2. If the work is finished and the PR is still a draft,
+   `gh pr ready <PR> --repo <OWNER/REPO>` first.
+   Refuse to merge a draft that is still in progress, a Critical-tier repo
+   without the user's explicit go, or with `--admin`. Confirm the base branch
+   matches the repo's flow.
 3. Read `merge_state` from the pr-wait SUMMARY (`CLEAN`, `BEHIND`, `BLOCKED`,
    `UNKNOWN`, …). If it is `BEHIND` (base moved since the checks ran, and the
    repo requires an up-to-date branch), run `gh pr update-branch <PR>`, then go

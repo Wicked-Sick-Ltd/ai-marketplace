@@ -44,7 +44,12 @@ Two skills and the Bash helper implement the PR lifecycle:
   points remain.
 
 `watch` stops after triage; `land` includes merging when authorized. Preserve
-repository branch rules and the Critical/sensitive-work draft requirement.
+repository branch rules. When the work is finished, open the PR ready for
+review (no `--draft`) or run `gh pr ready <PR> --repo <OWNER/REPO>` on an
+existing draft, including Critical-tier repositories, so reviewers and CI start
+straight away. A draft is only for work still in progress (Craig, 5 Nov 2026).
+A finished PR left as draft is a red flag.
+
 The helper's zero exit code means checks passed: callers must also inspect
 `unresolved_threads` in its SUMMARY before merging. The same line reports
 `mergeable` and `merge_state` from that poll.

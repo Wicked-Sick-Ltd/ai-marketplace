@@ -72,9 +72,9 @@ Costs shown are API list-price **estimates**, not subscription charges. See upst
 
 Positions and catalogue data are approximate and not for telescope pointing. See upstream data caveats in skill references.
 
-### pr-flow (1.0.0)
+### pr-flow (1.1.0)
 
-- **Purpose:** Open a pull request, wait until CI and reviewer bots finish, fix or answer every finding, and land the change. Skills: `landing-prs` and `pr`. Helper: `pr-wait.sh`.
+- **Purpose:** Open a finished pull request ready for review, wait until CI and reviewer bots finish, fix or answer every finding, and land the change. Skills: `landing-prs` and `pr`. Helper: `pr-wait.sh`. A draft is only for work still in progress, Critical-tier PRs included (Craig, 5 Nov 2026). A finished PR left as draft is a red flag.
 - **Vendored path:** `plugins/pr-flow/`
 - **Manifest:** `plugins/pr-flow/.cursor-plugin/plugin.json`
 - **Upstream:** https://github.com/Wicked-Sick-Ltd/ai-grok-repo (`plugins/pr-flow`; commit in `plugins/pr-flow/VENDORED.md`)
