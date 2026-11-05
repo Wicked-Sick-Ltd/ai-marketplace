@@ -13,6 +13,19 @@ command form. Org policy: `Wicked-Sick-Ltd/ai-grok-repo/CONVENTIONS.md`
 
 **Violating the letter of the lifecycle is violating the spirit of it.**
 
+## Ready for review (Craig, 5 Nov 2026)
+
+When a cloud agent finishes its work, open the pull request ready for review.
+Do not pass `--draft`. If a draft already exists, run `gh pr ready` before
+waiting on reviewers or CI, so reviewers and CI start straight away.
+
+A draft is only allowed while work is still in progress. That includes
+Critical-tier repositories and changes that touch auth, payments, migrations,
+infra or secrets. A finished PR left as draft is a red flag.
+
+Done is unchanged. Claude, Bugbot, Copilot, CodeQL and Semgrep have run, every
+finding is fixed or answered, every thread is resolved, and CI is green.
+
 ## The lifecycle
 
 1. **Branch.** Never commit on `main`/`master`/`develop`. If you are on one,
@@ -22,8 +35,10 @@ command form. Org policy: `Wicked-Sick-Ltd/ai-grok-repo/CONVENTIONS.md`
 2. **Open.** Push the branch; `gh pr create` against the repo's integration
    branch (`develop` where the repo has a staging flow, else the default
    branch). Body: *Why / Root cause or design / What changed / Verification*,
-   honest about what was not verified. Draft PR on a **Critical**-tier repo or
-   any change touching auth, payments, migrations, infra or secrets.
+   honest about what was not verified. When the work is finished, omit
+   `--draft`, or run `gh pr ready` on an existing draft (see **Ready for
+   review**). Pass `--draft` only while work is still in progress, Critical-tier
+   repos included.
 3. **Wait.** Run `pr-wait.sh <pr>` from this skill's directory (see
    `--help`). It returns only when every check run on the head commit is
    terminal, and on our repos every reviewer bot registers a check run, so that
@@ -41,8 +56,9 @@ command form. Org policy: `Wicked-Sick-Ltd/ai-grok-repo/CONVENTIONS.md`
    Resolve threads you addressed.
    Review comments from Claude, Bugbot, Copilot, CodeQL and Semgrep all count: every finding is fixed or answered, and every thread is resolved, before the PR counts as done.
 5. **Merge** when asked to merge/land/ship, or when running autonomously on a
-   non-Critical repo: `gh pr merge --squash --delete-branch` (rebase where the
-   repo prefers it; merge commits are disallowed by the org ruleset). Read
+   non-Critical repo. If the finished PR is still a draft, `gh pr ready` first.
+   Then `gh pr merge --squash --delete-branch` (rebase where the repo prefers
+   it; merge commits are disallowed by the org ruleset). Read
    `merge_state` from the pr-wait SUMMARY (same poll as the checks). If it is
    `BEHIND` (the base moved since the checks ran), `gh pr update-branch` and go
    back to step 3 — checks must pass on the head that merges. `BLOCKED` means a
@@ -63,7 +79,7 @@ still needs reviewing. Urgency you inferred yourself is not an order.
 
 | Ask | Do |
 |---|---|
-| "push and create a PR", "raise the PR" | steps 1–3, report the digest |
+| "push and create a PR", "raise the PR" | steps 1–3, ready for review when the work is finished, report the digest |
 | "watch CI", "keep an eye on the PR", "wait for comments and fix" | steps 3–4 until clean |
 | "merge", "merge once green", "ship it", "land it" | steps 3–6 |
 | "did this merge?", "anything missed in the comments?" | `pr-wait.sh --no-wait`, then report |
@@ -74,6 +90,7 @@ still needs reviewing. Urgency you inferred yourself is not an order.
 | Excuse | Reality |
 |---|---|
 | "Small, tested fix — straight to main is fine" | Main pushes skip the bots and hide CI breakage; a 6-hour CI hang went unnoticed for two weeks this way. |
+| "Critical-tier work stays a draft so review can wait" | A draft blocks reviewers and CI. Draft only while work is still in progress; a finished PR, Critical tier included, is ready for review. |
 | "Local suite is green, so it's done" | Local ≠ CI (different OS, start method, services). CI is the gate. |
 | "All checks passed, reporting done" | Reviewer bots post minutes after checks; the digest, not the checks tab, says when you are done. |
 | "The bot's comment is a nit" | Reply with the reason. An unanswered thread is an unfinished PR. |
@@ -82,7 +99,7 @@ still needs reviewing. Urgency you inferred yourself is not an order.
 ## Red flags
 
 `git push origin main` · reporting before `pr-wait.sh` returned · a digest with
-`unresolved_threads>0` in your final message · `gh pr merge --admin`.
+`unresolved_threads>0` in your final message · `gh pr merge --admin` · a finished PR left as draft.
 
 ## Grok Build execution
 
