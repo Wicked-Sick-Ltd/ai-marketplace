@@ -4,7 +4,7 @@
 
 ### Changed
 
-- `landing-prs` and `pr`: Craig's standing rule (5 Nov 2026). When a cloud agent finishes its work, open the PR ready for review (no `--draft`) or run `gh pr ready <pr> --repo <owner/name>` on an existing draft, so reviewers and CI start straight away. A draft is only allowed while work is still in progress, Critical-tier PRs included. A finished PR left as draft is a red flag. The `pr` command always passes the selected PR and repository, so a bare `gh pr ready` cannot mark a different current-branch PR ready.
+- `landing-prs` and `pr`: Craig's standing rule (5 Nov 2026). When a cloud agent finishes its work, open the PR ready for review (no `--draft`) or run `gh pr ready <PR> --repo <OWNER/REPO>` on an existing draft, so reviewers and CI start straight away. A draft is only allowed while work is still in progress, Critical-tier PRs included. A finished PR left as draft is a red flag. The `pr` command always passes the selected PR and repository, so a bare `gh pr ready` cannot mark a different current-branch PR ready.
 - Done criteria are unchanged: Claude, Bugbot, Copilot, CodeQL and Semgrep have run, every finding is fixed or answered, every thread is resolved, and CI is green.
 
 ## 1.0.0 (2026-10-31)
