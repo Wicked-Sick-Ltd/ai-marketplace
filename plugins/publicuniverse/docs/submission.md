@@ -1,6 +1,6 @@
 # PublicUniverse public distribution
 
-Release candidate: 0.4.1. The package is prepared for Cursor marketplace review, not approved for other public directories. Client evidence is recorded in [validation.md](validation.md).
+Release candidate: 0.4.2. The package is prepared for Cursor marketplace review, not approved for other public directories. Client evidence is recorded in [validation.md](validation.md).
 
 ## Identity and migration
 
@@ -9,7 +9,7 @@ Release candidate: 0.4.1. The package is prepared for Cursor marketplace review,
 - Website: `https://publicuniverse.net`, matching the website repository's canonical deployment configuration.
 - Audit skill: `publicuniverse-data-audit` replaces `solar-data-audit`. The other six skill names stay the same.
 - MCP identifier: `publicuniverse` from 0.4.0 (was `solar-system-db`). Skills refer to the new identifier; tool names are unchanged.
-- MCP URL: `https://api.sol.wickedsick.com/mcp` (Streamable HTTP, no auth). Initialized successfully on 2026-10-16 with 33 read-only tools and live `get_stats` / `get_object` calls (see validation.md). Keep this URL until `https://api.publicuniverse.net/mcp` is confirmed in production.
+- MCP URL: `https://api.publicuniverse.net/mcp` (Streamable HTTP, no auth). `https://api.sol.wickedsick.com/mcp` keeps working. The two hosts serve in parallel, with no redirect. The old host initialized successfully on 2026-10-16 with 33 read-only tools and live `get_stats` / `get_object` calls (see validation.md). Both hosts answered `initialize` with HTTP 200 on 2026-11-11.
 - Public catalog: `Wicked-Sick-Ltd/ai-marketplace`. Its Claude, Codex and Copilot indexes pin the plugin source revision; Gemini has an installation guide. Cursor imports the plugin source repository directly because this index does not vendor plugin directories.
 
 Existing users should disable/remove the old `solar` plugin before enabling `publicuniverse`, using their client's plugin manager. Update explicit `/solar:…` invocations to `/publicuniverse:…` on Claude and any copied audit-skill directory after comparing local edits. Do not install both a full plugin and its standalone MCP profile, or overwrite unrelated client configuration.
@@ -19,7 +19,7 @@ Existing users should disable/remove the old `solar` plugin before enabling `pub
 1. **Done:** repository is `Wicked-Sick-Ltd/public-universe` (public; GitHub redirects `solar-plugin`).
 2. **Done:** `plugin.json.repository` and generated profiles point at the public repository.
 3. Pin the reviewed package commit in remote catalog listings (`ai-marketplace`) and the Gemini install command when submitting those directories.
-4. Optional: cut over MCP to `https://api.publicuniverse.net/mcp` when DNS and the service owner confirm the host; update root `mcp.json` and run `python3 scripts/package.py generate`.
+4. **Done (0.4.2):** advertised MCP URL is `https://api.publicuniverse.net/mcp` in root `mcp.json` and the generated client profiles. The old host stays in service, with no redirect.
 5. Record native Cursor desktop acceptance after marketplace listing; package and live MCP checks passed on 2026-10-16.
 
 The generated ZIP and `.plugin` contain the same allowlisted files; neither includes Git history, credentials, development tests or unrelated local files. The icon is reused from the website's existing favicon.

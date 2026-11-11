@@ -11,7 +11,7 @@ Draft text for public directories. **Nothing here has been submitted.** The repo
 | Website | https://publicuniverse.net |
 | Repository | https://github.com/Wicked-Sick-Ltd/public-universe |
 | Licence | MIT (please credit Wicked Sick Ltd; see NOTICE) |
-| MCP endpoint | `https://api.sol.wickedsick.com/mcp` (Streamable HTTP, no auth); planned `https://api.publicuniverse.net/mcp` |
+| MCP endpoint | `https://api.publicuniverse.net/mcp` (Streamable HTTP, no auth). `https://api.sol.wickedsick.com/mcp` keeps working; the two hosts serve in parallel, with no redirect. |
 | Privacy policy | https://publicuniverse.net/privacy |
 | Icon | `assets/icon.svg` |
 | Category | Education (secondary: Science, Research) |

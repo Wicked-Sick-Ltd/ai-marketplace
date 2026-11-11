@@ -1,5 +1,7 @@
 # PublicUniverse rollout
 
+> **2026-11-11 update (0.4.2):** the advertised remote MCP URL is `https://api.publicuniverse.net/mcp`. `https://api.sol.wickedsick.com/mcp` keeps working. The two hosts serve in parallel, with no redirect. On 2026-11-11 both hosts answered `initialize` with HTTP 200 and no `Location` header.
+
 > **2026-10-08 update (0.4.0):** source repository renamed to `Wicked-Sick-Ltd/public-universe` (pending), MCP server id is now `publicuniverse`, and Cursor is listed through the vendored copy at `plugins/publicuniverse/`. Entries are pinned to the 0.4.0 PR head and must be re-pinned to the merged commit. The live MCP 404 is an origin routing gap (Cloudflare passes the request), not the WAF.
 
 Package: `publicuniverse` 0.3.0. Replaces the old `solar` listing. Website: https://publicuniverse.net.
@@ -24,7 +26,7 @@ Use the explicit HTTPS source for Claude: its GitHub shorthand attempted SSH on 
 
 1. Confirm the exact repository name in `public-universe`. Transfer first, then make public, following Craig's requested sequence.
 2. Update plugin metadata, these three catalog source URLs and the Gemini command to the confirmed destination; pin the final reviewed package commit. Verify anonymous Git access before public rollout.
-3. Restore MCP initialization and tool calls at the confirmed production URL. The existing `https://api.sol.wickedsick.com/mcp` returned 404 on 2026-10-05; the website itself returned 200. DNS/WAF/origin work belongs to the service rollout.
+3. New clients use `https://api.publicuniverse.net/mcp`. `https://api.sol.wickedsick.com/mcp` keeps working: the two hosts serve in parallel, with no redirect. On 2026-10-05 that old host returned 404 while the website returned 200; the 404 was an origin routing gap (Cloudflare passed the request), later cleared. DNS/WAF/origin work belongs to the service rollout.
 4. Complete outstanding client acceptance, CI and reviews. Official vendor-directory submissions have separate review/identity/policy requirements; this GitHub catalog does not confer approval.
 
 After rollout, install with:

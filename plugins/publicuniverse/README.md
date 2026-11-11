@@ -13,10 +13,10 @@ Free astronomy tools and seven reusable workflows for **Claude Code, Cursor, Cod
 | --- | --- |
 | Name | `publicuniverse` |
 | Transport | Streamable HTTP |
-| URL | `https://api.sol.wickedsick.com/mcp` |
+| URL | `https://api.publicuniverse.net/mcp` |
 | Authentication | None (free public service) |
 
-The public MCP endpoint is live on this URL (verified 2026-10-16: initialize, 33 read-only tools, and sample catalogue calls). The upstream service still reports its legacy name `solar-system-db` in MCP `serverInfo`; the client connection name in this package remains `publicuniverse`. A future `https://api.publicuniverse.net/mcp` host may replace the URL after DNS cutover; see [validation](docs/validation.md).
+The advertised public MCP endpoint is this URL. `https://api.sol.wickedsick.com/mcp` keeps working. The two hosts serve in parallel, with no redirect. Initialize, 33 read-only tools, and sample catalogue calls were verified on the old host on 2026-10-16; both hosts answered `initialize` with HTTP 200 on 2026-11-11 (see [validation](docs/validation.md)). The upstream service still reports its legacy name `solar-system-db` in MCP `serverInfo`; the client connection name in this package remains `publicuniverse`.
 
 ## Install
 
@@ -32,7 +32,7 @@ Pick **one** route per client: the full plugin (tools + skills) or MCP-only (too
 Or via the Wicked Sick catalogue: `/plugin marketplace add Wicked-Sick-Ltd/ai-marketplace` then `/plugin install publicuniverse@wickedsick`. Local checkout: `claude --plugin-dir /path/to/public-universe`. MCP only:
 
 ```sh
-claude mcp add --transport http publicuniverse https://api.sol.wickedsick.com/mcp
+claude mcp add --transport http publicuniverse https://api.publicuniverse.net/mcp
 ```
 
 Try `/publicuniverse:tonight-sky`. Details: [docs/clients.md](docs/clients.md#claude-code).
@@ -48,7 +48,7 @@ codex plugin marketplace add Wicked-Sick-Ltd/ai-marketplace --sparse .agents/plu
 codex plugin add publicuniverse@wickedsick
 ```
 
-MCP only: `codex mcp add publicuniverse --url https://api.sol.wickedsick.com/mcp`, or merge [clients/codex.toml](clients/codex.toml) into `~/.codex/config.toml`. Details: [docs/openai.md](docs/openai.md#codex).
+MCP only: `codex mcp add publicuniverse --url https://api.publicuniverse.net/mcp`, or merge [clients/codex.toml](clients/codex.toml) into `~/.codex/config.toml`. Details: [docs/openai.md](docs/openai.md#codex).
 
 ### ChatGPT
 
@@ -77,17 +77,17 @@ Grok CLI reads Claude Code marketplaces and plugins, so the Claude route above w
 
 ```sh
 grok plugin install Wicked-Sick-Ltd/public-universe   # full plugin (or a local path)
-grok mcp add --transport http publicuniverse https://api.sol.wickedsick.com/mcp   # tools only
+grok mcp add --transport http publicuniverse https://api.publicuniverse.net/mcp   # tools only
 ```
 
-On grok.com, add a custom MCP connector with the URL above. Via the xAI API, add `{"type": "mcp", "server_url": "https://api.sol.wickedsick.com/mcp", "server_label": "publicuniverse"}` to `tools`. Details: [docs/clients.md](docs/clients.md#grok).
+On grok.com, add a custom MCP connector with the URL above. Via the xAI API, add `{"type": "mcp", "server_url": "https://api.publicuniverse.net/mcp", "server_label": "publicuniverse"}` to `tools`. Details: [docs/clients.md](docs/clients.md#grok).
 
 ### Any other MCP client
 
 Add a remote **Streamable HTTP** server named `publicuniverse` with the URL above and no authentication. Most clients accept:
 
 ```json
-{ "mcpServers": { "publicuniverse": { "type": "http", "url": "https://api.sol.wickedsick.com/mcp" } } }
+{ "mcpServers": { "publicuniverse": { "type": "http", "url": "https://api.publicuniverse.net/mcp" } } }
 ```
 
 To use the skills without a plugin system, copy whole folders from `skills/` into your client's Agent Skills directory (see [docs/clients.md](docs/clients.md#skills-without-a-full-plugin)).

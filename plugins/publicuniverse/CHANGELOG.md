@@ -4,6 +4,13 @@ All notable changes to this plugin are documented here.
 
 ## [Unreleased]
 
+## 0.4.2 (2026-11-11)
+
+### Changed
+
+- Advertised remote MCP URL is `https://api.publicuniverse.net/mcp` in `mcp.json`, `server.json`, generated client profiles, and the install docs.
+- `https://api.sol.wickedsick.com/mcp` keeps working. The two hosts serve in parallel, with no redirect.
+
 ## 0.4.1 (2026-10-16)
 
 ### Added
