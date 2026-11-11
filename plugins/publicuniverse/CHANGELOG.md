@@ -4,12 +4,15 @@ All notable changes to this plugin are documented here.
 
 ## [Unreleased]
 
+### Added
+
+- Fair-use note for bulk REST access: send `X-PU-Api-Key`; a missing, invalid, or revoked key stays anonymous. Cloudflare Pro still caps every IP, keyed or not, at 300 requests per minute. See [fair-use.md](docs/fair-use.md). The website and API enforcement live in `solar-system-web` and `solar-system-db`.
+
 ## 0.4.2 (2026-11-11)
 
 ### Changed
 
-- Advertised remote MCP URL is `https://api.publicuniverse.net/mcp` in `mcp.json`, `server.json`, generated client profiles, and the install docs.
-- `https://api.sol.wickedsick.com/mcp` keeps working. The two hosts serve in parallel, with no redirect.
+- Advertised remote MCP URL is `https://api.publicuniverse.net/mcp`. `https://api.sol.wickedsick.com/mcp` keeps working: the two hosts serve in parallel, with no redirect.
 
 ## 0.4.1 (2026-10-16)
 

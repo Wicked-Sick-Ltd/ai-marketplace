@@ -14,9 +14,11 @@ Free astronomy tools and seven reusable workflows for **Claude Code, Cursor, Cod
 | Name | `publicuniverse` |
 | Transport | Streamable HTTP |
 | URL | `https://api.publicuniverse.net/mcp` |
-| Authentication | None (free public service) |
+| Authentication | None for interactive MCP use. Bulk REST calls send `X-PU-Api-Key`. |
 
-The advertised public MCP endpoint is this URL. `https://api.sol.wickedsick.com/mcp` keeps working. The two hosts serve in parallel, with no redirect. Initialize, 33 read-only tools, and sample catalogue calls were verified on the old host on 2026-10-16; both hosts answered `initialize` with HTTP 200 on 2026-11-11 (see [validation](docs/validation.md)). The upstream service still reports its legacy name `solar-system-db` in MCP `serverInfo`; the client connection name in this package remains `publicuniverse`.
+The advertised public MCP endpoint is `https://api.publicuniverse.net/mcp`. `https://api.sol.wickedsick.com/mcp` keeps working: the two hosts serve in parallel, with no redirect. The upstream service still reports its legacy name `solar-system-db` in MCP `serverInfo`; the client connection name in this package remains `publicuniverse`. The 2026-10-16 check (initialize, 33 read-only tools, and sample catalogue calls) was recorded against the alias host; see [validation](docs/validation.md).
+
+Interactive MCP use stays open, with no API key. Bulk or automated use of the REST catalogue must send a key in the `X-PU-Api-Key` header. A missing, invalid, or revoked key is anonymous per-IP traffic. The policy is [fair use](docs/fair-use.md).
 
 ## Install
 

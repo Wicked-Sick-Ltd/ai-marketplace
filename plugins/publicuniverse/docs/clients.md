@@ -122,7 +122,7 @@ See [xAI remote MCP tools](https://docs.x.ai/developers/tools/remote-mcp). xAI c
 
 ## Generic MCP clients
 
-Add a remote Streamable HTTP server named `publicuniverse` at `https://api.publicuniverse.net/mcp` with no authentication. `https://api.sol.wickedsick.com/mcp` keeps working. The two hosts serve in parallel, with no redirect. The MCP Registry entry is generated in [server.json](../server.json).
+Add a remote Streamable HTTP server named `publicuniverse` at `https://api.publicuniverse.net/mcp` with no authentication. `https://api.sol.wickedsick.com/mcp` keeps working: the two hosts serve in parallel, with no redirect. The MCP Registry entry is generated in [server.json](../server.json).
 
 ## Skills without a full plugin
 

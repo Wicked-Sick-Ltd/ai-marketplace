@@ -40,11 +40,17 @@ Verified locally on 2026-10-02:
 
 ## Live MCP check
 
+Package 0.4.2 advertises `https://api.publicuniverse.net/mcp`. `https://api.sol.wickedsick.com/mcp` keeps working: the two hosts serve in parallel, with no redirect. Checks dated before 2026-11-11 were run against the alias host and are unchanged.
+
 ### 2026-11-11 (advertised host)
 
-The package advertises `https://api.publicuniverse.net/mcp`. `https://api.sol.wickedsick.com/mcp` keeps working. The two hosts serve in parallel, with no redirect.
+From the 0.4.2 review environment, against `https://api.publicuniverse.net/mcp`:
 
-From this cloud agent environment, `POST` `initialize` (protocol `2025-03-26`, client `publicuniverse-check` `0.4.2`) returned HTTP 200 (`text/event-stream`) with an `mcp-session-id` and `serverInfo` `solar-system-db` `1.30.0` on both hosts. Neither response included a `Location` header. Tool calls were not repeated in this check. Dated sections below record the host that was actually called.
+- `initialize` → HTTP 200 (`text/event-stream`), `mcp-session-id` set, protocol `2025-03-26`, `serverInfo.name` `solar-system-db` `1.30.0`. No `Location` redirect and no `cf-mitigated` header.
+- `notifications/initialized` → HTTP 202.
+- `tools/list` → 33 tools, all `readOnlyHint: true` and `destructiveHint: false`.
+
+`get_stats` and `get_object` were not repeated on this host. Those calls in the 2026-10-16 section below are the alias host. The same `initialize` on `https://api.sol.wickedsick.com/mcp` also returned HTTP 200 with no `Location` header.
 
 ### 2026-10-16 (end-to-end; supersedes earlier partial checks)
 
@@ -56,7 +62,7 @@ From this cloud agent environment:
 - `tools/call` `get_stats` → live catalogue counts (for example `total_objects` 1,578,967).
 - `tools/call` `get_object` with `name_or_designation: "Mars"` → Mars catalogue record with orbital elements.
 
-No authentication required. This satisfies marketplace review connectivity for the documented public endpoint.
+No authentication required. On that date this satisfied marketplace review connectivity for the then-documented endpoint, `https://api.sol.wickedsick.com/mcp`.
 
 ### 2026-10-11 (supersedes the 2026-10-08 result below)
 
@@ -72,7 +78,7 @@ One edge rule does affect API clients: Browser Integrity Check returns Cloudflar
 
 The existing public endpoint `https://api.sol.wickedsick.com/mcp` returned HTTP 404 with `{"detail":"Not Found"}` on 2026-10-02 at approximately 21:25 UTC. A Python MCP SDK initialization also failed with `Session terminated`. No tool invocation completed. This is an outstanding service acceptance issue, not a successful connection test.
 
-The trailing-slash `/mcp/` also returned 404, while `/healthz` and `/openapi.json` served the REST API successfully. The backend's checked-in php01 systemd unit launches the REST API alone; its separate Docker/Caddy example routes MCP to a different service on port 8002. Those repository templates did not establish the deployed configuration or explain the public response. On 2026-10-03 the issue was attributed to Cloudflare WAF rules; the 2026-10-08 check above found the edge passing requests through and the origin answering 404, which restores the origin-routing explanation. The documented URL is now `https://api.publicuniverse.net/mcp`. `https://api.sol.wickedsick.com/mcp` keeps working; the two hosts serve in parallel, with no redirect. Repeat initialization against the advertised host after any edge change.
+The trailing-slash `/mcp/` also returned 404, while `/healthz` and `/openapi.json` served the REST API successfully. The backend's checked-in php01 systemd unit launches the REST API alone; its separate Docker/Caddy example routes MCP to a different service on port 8002. Those repository templates did not establish the deployed configuration or explain the public response. On 2026-10-03 the issue was attributed to Cloudflare WAF rules; the 2026-10-08 check above found the edge passing requests through and the origin answering 404, which restores the origin-routing explanation. That record kept the documented URL on the alias until the replacement host was confirmed. Package 0.4.2 advertises `https://api.publicuniverse.net/mcp`. `https://api.sol.wickedsick.com/mcp` keeps working: the two hosts serve in parallel, with no redirect.
 
 [Backend PR #47](https://github.com/Wicked-Sick-Ltd/solar-system-db/pull/47) includes transport metadata/security improvements and optional origin service/proxy templates. It is not a required remedy for the WAF issue. Do not install or replace a service based on the 404 alone: check the existing origin after resolving the edge configuration, and use those templates only if a remaining origin gap is established. No WAF or origin changes are part of the current plugin work.
 
