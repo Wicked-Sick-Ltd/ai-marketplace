@@ -2,7 +2,7 @@
   "servers": {
     "publicuniverse": {
       "type": "http",
-      "url": "https://api.sol.wickedsick.com/mcp"
+      "url": "https://api.publicuniverse.net/mcp"
     }
   }
 }

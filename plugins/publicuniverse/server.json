@@ -3,7 +3,7 @@
   "name": "net.publicuniverse/publicuniverse",
   "title": "Public Universe",
   "description": "Free astronomy catalogue: solar system objects, sky positions, close approaches and more.",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "websiteUrl": "https://publicuniverse.net",
   "repository": {
     "url": "https://github.com/Wicked-Sick-Ltd/public-universe",
@@ -12,7 +12,7 @@
   "remotes": [
     {
       "type": "streamable-http",
-      "url": "https://api.sol.wickedsick.com/mcp"
+      "url": "https://api.publicuniverse.net/mcp"
     }
   ]
 }

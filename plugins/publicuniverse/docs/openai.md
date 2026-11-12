@@ -9,7 +9,7 @@ These instructions follow official OpenAI documentation checked on 2026-10-02. S
 This route works without publishing a plugin. Register the public Streamable HTTP server:
 
 ```sh
-codex mcp add publicuniverse --url https://api.sol.wickedsick.com/mcp
+codex mcp add publicuniverse --url https://api.publicuniverse.net/mcp
 codex mcp list
 ```
 
@@ -40,11 +40,11 @@ Where your account and workspace policy allow developer mode:
 
 1. Open **Settings → Security and login → Developer mode**.
 2. Open [ChatGPT Plugins](https://chatgpt.com/plugins), choose the plus button, and name the connection **Public Universe**.
-3. Enter `https://api.sol.wickedsick.com/mcp` as the public MCP URL. The intended public service needs no authentication.
+3. Enter `https://api.publicuniverse.net/mcp` as the public MCP URL. The intended public service needs no authentication. `https://api.sol.wickedsick.com/mcp` keeps working: the two hosts serve in parallel, with no redirect.
 4. Review the discovered tools, then start a new conversation and enable the connection from the tools menu.
 5. Ask it to retrieve Mars's catalogue record and cite its source. Verify that a tool actually ran.
 
-The official [connection and testing guide](https://developers.openai.com/plugins/deploy/connect-chatgpt) documents this flow and policy-dependent availability. As of 2026-10-16 the public endpoint initializes successfully and lists 33 read-only tools; if initialization fails, see the [validation record](validation.md) for diagnostics (this is not an authentication problem).
+The official [connection and testing guide](https://developers.openai.com/plugins/deploy/connect-chatgpt) documents this flow and policy-dependent availability. The 2026-10-16 initialize and 33-tool listing were recorded against the alias `https://api.sol.wickedsick.com/mcp`, not the URL in step 3. On 2026-11-11, `https://api.publicuniverse.net/mcp` accepted `initialize` (HTTP 200) and `tools/list` (33 read-only tools). If initialization fails, see the [validation record](validation.md) for diagnostics (this is not an authentication problem).
 
 ### Add the workflows
 

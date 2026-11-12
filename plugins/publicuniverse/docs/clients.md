@@ -106,7 +106,7 @@ Grok CLI reads Claude Code marketplaces, plugins, skills and `.mcp.json` files w
 ```sh
 grok plugin install Wicked-Sick-Ltd/public-universe   # or a local checkout path; add @<tag> to pin
 grok plugin validate /absolute/path/to/public-universe
-grok mcp add --transport http publicuniverse https://api.sol.wickedsick.com/mcp
+grok mcp add --transport http publicuniverse https://api.publicuniverse.net/mcp
 grok mcp doctor publicuniverse
 ```
 
@@ -115,14 +115,14 @@ For tools only you can also merge [clients/grok.toml](../clients/grok.toml) into
 **grok.com:** add a custom MCP connector with the server URL; no authentication is needed. **xAI API:** add a remote MCP tool to a Responses API request:
 
 ```json
-{"type": "mcp", "server_url": "https://api.sol.wickedsick.com/mcp", "server_label": "publicuniverse", "server_description": "Public Universe astronomy catalogue (read-only)"}
+{"type": "mcp", "server_url": "https://api.publicuniverse.net/mcp", "server_label": "publicuniverse", "server_description": "Public Universe astronomy catalogue (read-only)"}
 ```
 
 See [xAI remote MCP tools](https://docs.x.ai/developers/tools/remote-mcp). xAI connects from its own servers, so the endpoint must be publicly reachable.
 
 ## Generic MCP clients
 
-Add a remote Streamable HTTP server named `publicuniverse` at `https://api.sol.wickedsick.com/mcp` with no authentication. The MCP Registry entry is generated in [server.json](../server.json).
+Add a remote Streamable HTTP server named `publicuniverse` at `https://api.publicuniverse.net/mcp` with no authentication. `https://api.sol.wickedsick.com/mcp` keeps working: the two hosts serve in parallel, with no redirect. The MCP Registry entry is generated in [server.json](../server.json).
 
 ## Skills without a full plugin
 
