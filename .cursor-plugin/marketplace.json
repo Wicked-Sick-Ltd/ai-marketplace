@@ -5,7 +5,7 @@
     "email": "hello@wickedsick.com"
   },
   "metadata": {
-    "description": "Wicked Sick team marketplace for Cursor: featured plugins for token attribution, public astronomy data, and pull-request landing. Import this repository as a Team Marketplace; each plugin is an in-repo path under plugins/.",
+    "description": "Wicked Sick team marketplace for Cursor: featured plugins for token attribution, public astronomy data, pull-request landing, and Amiga disk decompilation. Import this repository as a Team Marketplace; each plugin is an in-repo path under plugins/.",
     "version": "0.4.0"
   },
   "plugins": [
@@ -72,6 +72,28 @@
         "code-review",
         "landing-prs",
         "pr-flow"
+      ],
+      "category": "developer-tools"
+    },
+    {
+      "name": "amiga-decoding",
+      "source": "plugins/amiga-decoding",
+      "description": "Evidence-led Amiga ADF extraction and decompilation to exhaustion, with separate disk, content and semantic coverage.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Wicked Sick Ltd",
+        "email": "craig@wickedsick.com"
+      },
+      "homepage": "https://github.com/Wicked-Sick-Ltd/ai-marketplace/tree/main/plugins/amiga-decoding",
+      "repository": "https://github.com/Wicked-Sick-Ltd/ai-marketplace",
+      "license": "MIT",
+      "keywords": [
+        "amiga",
+        "adf",
+        "decompilation",
+        "reverse-engineering",
+        "preservation",
+        "m68k"
       ],
       "category": "developer-tools"
     }

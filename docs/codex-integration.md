@@ -15,13 +15,13 @@ From `.agents/plugins/marketplace.json`. None of these entries set a `version` f
 | product-lifecycle | `ai-codex-repo` `plugins/product-lifecycle` | `06f5c0a19808e91ccc53bba9111346fdbb86ee23` |
 | session-lifecycle | `ai-codex-repo` `plugins/session-lifecycle` | `06f5c0a19808e91ccc53bba9111346fdbb86ee23` |
 | wizzo-fleet-presence | `ai-codex-repo` `plugins/wizzo-fleet-presence` | `06f5c0a19808e91ccc53bba9111346fdbb86ee23` |
-| amiga-decoding | `ai-codex-repo` `plugins/amiga-decoding` | `06f5c0a19808e91ccc53bba9111346fdbb86ee23` |
+| amiga-decoding | this repo `./plugins/amiga-decoding` | none (vendored directory) |
 | pr-flow | `ai-grok-repo` `plugins/pr-flow` | `62272ec3ec8eba9059fd43ce9a9d1f913e317fbb` |
 | token-usage | `Wicked-Sick-Ltd/token-usage` root | `39cbb737084bf4f8aaa0c17b8cd1c560f6a0a47c` |
 | ponytail | `DietrichGebert/ponytail` root | `e3ba2aa6f1e6f0bc4d69eb09c9f0d0a93af56156` |
 | publicuniverse | `Wicked-Sick-Ltd/public-universe` root | `bb5919e47e8c8e1eb66c2fc5dcdba9bbc51b2f56` |
 
-`ai-codex-repo` `main` was `e4e911ab30ecbb179c318c60681210d9f25de2d5` on 2026-11-05 (ready-for-review rule in that repo's own landing-prs). This index still pins the six first-party packages at `06f5c0a`. `pr-flow` here is the ai-grok-repo 1.0.0 tree, not the 1.1.0 Cursor directory and not current ai-grok-repo `main`. `publicuniverse` 0.4.1 still configures `https://api.sol.wickedsick.com/mcp`. `token-usage` does not include the unreleased `cursor-cloud` runtime. This page does not move those pins.
+`ai-codex-repo` `main` was `e4e911ab30ecbb179c318c60681210d9f25de2d5` on 2026-11-05 (ready-for-review rule in that repo's own landing-prs). This index still pins five first-party packages at `06f5c0a`. **amiga-decoding** is not one of them: Codex installs `./plugins/amiga-decoding` from this public repository, the same directory Cursor installs. That entry has no SHA and no `version` field, matching the other Codex entries. `pr-flow` here is the ai-grok-repo 1.0.0 tree, not the 1.1.0 Cursor directory and not current ai-grok-repo `main`. `publicuniverse` 0.4.1 still configures `https://api.sol.wickedsick.com/mcp`. `token-usage` does not include the unreleased `cursor-cloud` runtime. This page does not move those pins.
 
 ## Packaging correction
 
@@ -47,7 +47,9 @@ tested runtime. See the [official plugin documentation](https://developers.opena
 Check `codex --version`, then retry the exact command in the
 [README](../README.md). Distinguish marketplace registration from individual
 plugin installation: registration reads this public index; first-party installs
-also need authenticated Git access to `Wicked-Sick-Ltd/ai-codex-repo`.
+also need authenticated Git access to `Wicked-Sick-Ltd/ai-codex-repo`, except
+**amiga-decoding**, whose source is `./plugins/amiga-decoding` in this checkout.
+A `--sparse .agents/plugins` marketplace add does not include that directory.
 
 On Windows, `Filename too long` or `cannot write keep file` during a plugin
 clone can come from Git's staging path. Reproduced with a deeply nested temporary

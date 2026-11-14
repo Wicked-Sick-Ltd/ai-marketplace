@@ -137,6 +137,28 @@
         "ref": "main",
         "sha": "62272ec3ec8eba9059fd43ce9a9d1f913e317fbb"
       }
+    },
+    {
+      "name": "amiga-decoding",
+      "description": "Evidence-led Amiga ADF extraction and decompilation to exhaustion, with separate disk, content and semantic coverage.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Wicked Sick Ltd",
+        "email": "craig@wickedsick.com"
+      },
+      "category": "developer-tools",
+      "homepage": "https://github.com/Wicked-Sick-Ltd/ai-marketplace/tree/main/plugins/amiga-decoding",
+      "repository": "https://github.com/Wicked-Sick-Ltd/ai-marketplace",
+      "license": "MIT",
+      "keywords": [
+        "amiga",
+        "adf",
+        "decompilation",
+        "reverse-engineering",
+        "preservation",
+        "m68k"
+      ],
+      "source": "./plugins/amiga-decoding"
     }
   ]
 }

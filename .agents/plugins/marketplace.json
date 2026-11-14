@@ -97,13 +97,8 @@
     },
     {
       "name": "amiga-decoding",
-      "description": "Reverse engineering, disassembly, and decoding workflows for classic Commodore Amiga 68k binaries, hunks, custom chip registers, and disk images.",
-      "source": {
-        "source": "git-subdir",
-        "url": "https://github.com/Wicked-Sick-Ltd/ai-codex-repo.git",
-        "path": "plugins/amiga-decoding",
-        "sha": "06f5c0a19808e91ccc53bba9111346fdbb86ee23"
-      },
+      "description": "Evidence-led Amiga ADF extraction and decompilation to exhaustion, with separate disk, content and semantic coverage.",
+      "source": "./plugins/amiga-decoding",
       "policy": {
         "installation": "AVAILABLE",
         "authentication": "ON_INSTALL"

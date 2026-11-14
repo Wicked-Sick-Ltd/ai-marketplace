@@ -1,0 +1,20 @@
+{
+  "name": "amiga-decoding",
+  "version": "1.0.0",
+  "description": "Evidence-led Amiga ADF extraction and decompilation to exhaustion, with separate disk, content and semantic coverage.",
+  "author": {
+    "name": "Wicked Sick Ltd",
+    "email": "craig@wickedsick.com"
+  },
+  "license": "MIT",
+  "interface": {
+    "displayName": "Amiga Decoding",
+    "shortDescription": "Exhaustive Amiga disk decompilation",
+    "longDescription": "Recover and validate ADF disk files, packed streams, assets and program behavior with provenance and explicit coverage limits.",
+    "developerName": "Wicked Sick Ltd",
+    "category": "Developer Tools",
+    "defaultPrompt": "Use $amiga-adf-decompile to investigate these Amiga disks to exhaustion.",
+    "capabilities": []
+  },
+  "skills": "./skills/"
+}

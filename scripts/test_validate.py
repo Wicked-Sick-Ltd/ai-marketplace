@@ -4,7 +4,10 @@
 from __future__ import annotations
 
 import contextlib
+import hashlib
 import io
+import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -161,8 +164,114 @@ def codex_native_sources():
     validate.check_names("Codex", ["token-usage"])
 
 
+def vendored_relative_source_is_allowed() -> None:
+    names = validate.plugin_names(
+        {"plugins": [{"name": "pr-flow", "source": "./plugins/pr-flow"}]},
+        require_sha=True,
+    )
+    if names != ["pr-flow"]:
+        raise SystemExit(f"relative Claude source was rejected: {names}")
+    codex_names = validate.codex_plugin_names(
+        {
+            "plugins": [
+                {
+                    "name": "pr-flow",
+                    "source": "./plugins/pr-flow",
+                    "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"},
+                    "category": "Developer Tools",
+                }
+            ]
+        }
+    )
+    if codex_names != ["pr-flow"]:
+        raise SystemExit(f"relative Codex source was rejected: {codex_names}")
+    expect_fail(
+        "a missing vendored directory",
+        "not a directory",
+        lambda: validate.plugin_names(
+            {"plugins": [{"name": "missing", "source": "./plugins/missing-plugin"}]},
+            require_sha=True,
+        ),
+    )
+    expect_fail(
+        "a vendored source outside plugins/",
+        "under ./plugins/",
+        lambda: validate.plugin_names(
+            {"plugins": [{"name": "docs", "source": "./docs"}]},
+            require_sha=True,
+        ),
+    )
+
+
+def amiga_decoding_is_public() -> None:
+    description = (
+        "Evidence-led Amiga ADF extraction and decompilation to exhaustion, "
+        "with separate disk, content and semantic coverage."
+    )
+    private = (
+        "ai-grok-repo",
+        "ai-codex-repo",
+        "ai-claude-repo",
+        "ai-copilot-repo",
+        "ai-cursor-repo",
+        "ai-gemini-repo",
+        "code-catalog",
+        "Proprietary",
+    )
+    # SHA-256 of personal tokens that must not appear. Plaintext is not stored.
+    forbidden_sha256 = {
+        "0cf548e7d1b66f356aa4be3ef8884f0ec14158a3c09300fb08ed9651f39ddd25",
+        "6c2a806e0d9ad255834ea0e03f159be06346c0d7718d6e1e31c330243509fdd6",
+    }
+    token_re = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}|[A-Za-z0-9]+")
+    for key, path in validate.INDEXES.items():
+        data = json.loads(path.read_text())
+        matches = [plugin for plugin in data["plugins"] if plugin.get("name") == "amiga-decoding"]
+        if len(matches) != 1:
+            raise SystemExit(f"{key} should list amiga-decoding once, found {len(matches)}")
+        plugin = matches[0]
+        if plugin.get("description") != description:
+            raise SystemExit(f"{key} description drifted: {plugin.get('description')!r}")
+        blob = json.dumps(plugin)
+        for token in private:
+            if token in blob:
+                raise SystemExit(f"{key} amiga-decoding still contains {token}")
+        for token in token_re.findall(blob):
+            digest = hashlib.sha256(token.encode()).hexdigest()
+            if digest in forbidden_sha256:
+                raise SystemExit(f"{key} amiga-decoding contains a forbidden token")
+        source = plugin.get("source")
+        if key == "cursor":
+            if source != "plugins/amiga-decoding":
+                raise SystemExit(f"cursor source is {source!r}")
+        elif source != "./plugins/amiga-decoding":
+            raise SystemExit(f"{key} source is {source!r}")
+        if key != "codex" and plugin.get("version") != "1.0.0":
+            raise SystemExit(f"{key} version is {plugin.get('version')!r}")
+        if not plugin.get("category"):
+            raise SystemExit(f"{key} amiga-decoding is missing category")
+    manifest = ROOT / "plugins" / "amiga-decoding" / ".claude-plugin" / "plugin.json"
+    version = json.loads(manifest.read_text())["version"]
+    if version != "1.0.0":
+        raise SystemExit(f"plugin.json version is {version!r}")
+    extension = ROOT / "plugins" / "amiga-decoding" / "gemini-extension.json"
+    if not extension.is_file():
+        raise SystemExit("gemini-extension.json must sit at the plugin root")
+    if "contextFileName" in extension.read_text():
+        raise SystemExit("gemini-extension.json must not set contextFileName")
+    plugin_text = "\n".join(
+        path.read_text() for path in (ROOT / "plugins" / "amiga-decoding").rglob("*") if path.is_file()
+    )
+    for token in token_re.findall(plugin_text):
+        digest = hashlib.sha256(token.encode()).hexdigest()
+        if digest in forbidden_sha256:
+            raise SystemExit("vendored amiga-decoding contains a forbidden token")
+
+
 def main() -> None:
     run_validate()
+    vendored_relative_source_is_allowed()
+    amiga_decoding_is_public()
     cursor_rejects_github_source()
     codex_shape_validates()
     codex_native_sources()
