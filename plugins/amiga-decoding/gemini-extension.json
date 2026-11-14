@@ -1,0 +1,5 @@
+{
+  "name": "amiga-decoding",
+  "version": "1.0.0",
+  "description": "Evidence-led Amiga ADF extraction and decompilation to exhaustion, with separate disk, content and semantic coverage."
+}

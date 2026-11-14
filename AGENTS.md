@@ -2,8 +2,8 @@
 
 This repository is an **index**, plus the Cursor team-marketplace copies of the featured plugins.
 
-- Featured Cursor packages are vendored under `plugins/` (`token-usage`, `publicuniverse`, `pr-flow`). Each `VENDORED.md` names the upstream repository and commit. Do not edit those runtime files here. Replace a directory from a reviewed upstream commit and record that commit in `VENDORED.md`.
-- Claude, Codex and Copilot remote entries are pinned to full 40-character commit SHAs. Codex supports `url` and `git-subdir` sources with `sha` and optional `ref`; subdirectory paths select the actual native plugin package.
+- Featured Cursor packages are vendored under `plugins/` (`token-usage`, `publicuniverse`, `pr-flow`, `amiga-decoding`). Each `VENDORED.md` names the upstream repository and commit. Do not edit those runtime files here. Replace a directory from a reviewed upstream commit and record that commit in `VENDORED.md`.
+- Claude, Codex and Copilot remote entries are pinned to full 40-character commit SHAs. Codex supports `url` and `git-subdir` sources with `sha` and optional `ref`; subdirectory paths select the actual native plugin package. `amiga-decoding` is not a remote pin: every host source is the vendored directory in this repository, because the upstream repositories are private.
 - Cursor's `.cursor-plugin/marketplace.json` uses **in-repo paths** only (`source` is a directory in this git tree, optionally under `metadata.pluginRoot`). Do not copy Claude `github`/`sha` source objects there. Import `Wicked-Sick-Ltd/ai-marketplace` as the Cursor Team Marketplace.
 - List a plugin only on the catalogs where it has a real runtime.
 - `token-usage` is listed for Claude, Codex, Copilot, Cursor, and Antigravity/Gemini. The Cursor package in this tree is `plugins/token-usage/` at the commit in `plugins/token-usage/VENDORED.md`. That copy reads an explicit Cloud Agent export `.json`. Upstream `main` also has an unreleased `cursor-cloud` runtime; it is not in this pin. See [`docs/token-usage.md`](docs/token-usage.md).

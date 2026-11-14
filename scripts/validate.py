@@ -51,6 +51,9 @@ def plugin_names(data: dict, *, require_sha: bool) -> list[str]:
             fail(f"plugins[{i}] missing name")
         names.append(name)
         source = plugin.get("source")
+        if require_sha and isinstance(source, str) and source.startswith("./"):
+            _require_vendored_dir(name, source)
+            continue
         if require_sha:
             if not isinstance(source, dict):
                 fail(f"plugin {name!r} needs a source object pinned to a sha")
@@ -82,27 +85,30 @@ def codex_plugin_names(data: dict) -> list[str]:
             fail(f"plugins[{i}] missing name")
         names.append(name)
         source = plugin.get("source")
-        if not isinstance(source, dict):
+        if isinstance(source, str):
+            _require_vendored_dir(name, source)
+        elif not isinstance(source, dict):
             fail(f"Codex plugin {name!r} missing source")
-        if "sha" in source and (not isinstance(source["sha"], str) or not SHA_RE.fullmatch(source["sha"])):
-            fail(f"Codex plugin {name!r} sha must be 40 lowercase hex chars")
-        if "ref" in source and (not isinstance(source["ref"], str) or not source["ref"].strip()):
-            fail(f"Codex plugin {name!r} ref must be a non-empty string")
-        source_type = source.get("source")
-        if source_type not in CODEX_SOURCE_TYPES:
-            fail(f"Codex plugin {name!r} source.source must be one of {sorted(CODEX_SOURCE_TYPES)}")
-        if source_type in ("url", "git-subdir") and "sha" not in source:
-            fail(f"Codex plugin {name!r} needs a source pinned to a sha (40 lowercase hex chars)")
-        if source_type in ("url", "git-subdir") and not source.get("url"):
-            fail(f"Codex plugin {name!r} source is missing url")
-        if source_type == "local" and not source.get("path"):
-            fail(f"Codex plugin {name!r} local source is missing path")
-        if source_type == "git-subdir":
-            path = source.get("path")
-            if not isinstance(path, str) or not path.strip():
-                fail(f"Codex plugin {name!r} git-subdir source is missing path")
-            if path.startswith(("/", "\\", "~")) or ":" in path or ".." in path.replace("\\", "/").split("/"):
-                fail(f"Codex plugin {name!r} path must stay inside the source repository")
+        else:
+            if "sha" in source and (not isinstance(source["sha"], str) or not SHA_RE.fullmatch(source["sha"])):
+                fail(f"Codex plugin {name!r} sha must be 40 lowercase hex chars")
+            if "ref" in source and (not isinstance(source["ref"], str) or not source["ref"].strip()):
+                fail(f"Codex plugin {name!r} ref must be a non-empty string")
+            source_type = source.get("source")
+            if source_type not in CODEX_SOURCE_TYPES:
+                fail(f"Codex plugin {name!r} source.source must be one of {sorted(CODEX_SOURCE_TYPES)}")
+            if source_type in ("url", "git-subdir") and "sha" not in source:
+                fail(f"Codex plugin {name!r} needs a source pinned to a sha (40 lowercase hex chars)")
+            if source_type in ("url", "git-subdir") and not source.get("url"):
+                fail(f"Codex plugin {name!r} source is missing url")
+            if source_type == "local" and not source.get("path"):
+                fail(f"Codex plugin {name!r} local source is missing path")
+            if source_type == "git-subdir":
+                path = source.get("path")
+                if not isinstance(path, str) or not path.strip():
+                    fail(f"Codex plugin {name!r} git-subdir source is missing path")
+                if path.startswith(("/", "\\", "~")) or ":" in path or ".." in path.replace("\\", "/").split("/"):
+                    fail(f"Codex plugin {name!r} path must stay inside the source repository")
         policy = plugin.get("policy")
         if (
             not isinstance(policy, dict)
@@ -113,6 +119,43 @@ def codex_plugin_names(data: dict) -> list[str]:
         if not plugin.get("category"):
             fail(f"Codex plugin {name!r} missing category")
     return names
+
+
+def _require_vendored_dir(name: str, source: str) -> None:
+    """A public plugin in this repo is a directory under ./plugins/<name>."""
+    prefix = "./plugins/"
+    if not source.startswith(prefix):
+        fail(f"plugin {name!r} vendored source must be a directory under ./plugins/")
+    rel = source[2:]
+    parts = Path(rel).parts
+    if (
+        len(parts) < 2
+        or parts[0] != "plugins"
+        or any(part in ("", ".", "..") for part in parts)
+        or not (ROOT / rel).is_dir()
+    ):
+        fail(f"plugin {name!r} vendored source is not a directory under ./plugins/: {source}")
+
+
+def check_claude_vendored_versions(data: dict) -> None:
+    """claude plugin validate --strict warns when the catalog version differs."""
+    for plugin in data["plugins"]:
+        source = plugin.get("source")
+        if not isinstance(source, str) or not source.startswith("./"):
+            continue
+        manifest_path = ROOT / source[2:] / ".claude-plugin" / "plugin.json"
+        if not manifest_path.is_file():
+            fail(
+                f"Claude plugin {plugin['name']!r} relative source has no "
+                f"{manifest_path.relative_to(ROOT)}"
+            )
+        manifest = json.loads(manifest_path.read_text())
+        if plugin.get("version") != manifest.get("version"):
+            fail(
+                f"Claude plugin {plugin['name']!r} marketplace version "
+                f"{plugin.get('version')!r} must match plugin.json version "
+                f"{manifest.get('version')!r}"
+            )
 
 
 def _cursor_source_path(name: str, source: object) -> Path:
@@ -195,6 +238,7 @@ def main() -> None:
     if claude.get("name") != "wickedsick":
         fail("Claude marketplace name must be wickedsick")
     claude_names = plugin_names(claude, require_sha=True)
+    check_claude_vendored_versions(claude)
     if "token-usage" not in claude_names:
         fail("Claude catalog must list token-usage")
     check_names("Claude", claude_names, allow_claude_only=True)

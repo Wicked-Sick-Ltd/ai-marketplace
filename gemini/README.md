@@ -59,4 +59,15 @@ Windows local installation and discovery of 0.3.0 passed with Gemini CLI 0.62.0 
 
 Unlike standalone Gemini CLI (which had no session lifecycle hooks), **Google Antigravity natively supports `<plugin_dir>/hooks.json`** with `SessionStart`, `PreInvocation`, `PostInvocation`, `PreToolUse`, `PostToolUse`, and `Stop` events. Antigravity fleet-presence hooks bind `SessionStart`, `PreInvocation`, and `Stop` to `coordctl.py --vendor gemini`. Standalone Gemini CLI remains unsupported for `wizzo-fleet-presence`.
 
-The private [ai-gemini-repo](https://github.com/Wicked-Sick-Ltd/ai-gemini-repo) ships the compiled Antigravity workflow plugins (`session-lifecycle`, `pr-flow`, `product-lifecycle`, `estate-maintenance`, `onboarding`, `wizzo-fleet-presence`, `amiga-decoding`) under `plugins/<name>/`. An earlier note in this file cited checkout `ecae8ed7404c5b9029c8b97744fd18bb8f5ad455`. On 2026-11-14 `main` was `58a0ff0f20caead17107d8a0ecd0c1413c7b1c7e` (ready-for-review rule, #8). This repository does not pin that repo in a JSON catalog. The Ponytail runtime remains in upstream Ponytail.
+## Amiga decoding
+
+`amiga-decoding` 1.0.0 is the vendored directory `plugins/amiga-decoding/` in this repository (skill `amiga-adf-decompile`). `gemini-extension.json` is at the root of that directory. It is instructions only. Python disk utilities are not part of the plugin.
+
+Clone this repository, then install that directory:
+
+```bash
+gemini extensions install /path/to/ai-marketplace/plugins/amiga-decoding
+gemini extensions list
+```
+
+The private [ai-gemini-repo](https://github.com/Wicked-Sick-Ltd/ai-gemini-repo) ships the compiled Antigravity workflow plugins (`session-lifecycle`, `pr-flow`, `product-lifecycle`, `estate-maintenance`, `onboarding`, `wizzo-fleet-presence`) under `plugins/<name>/`. An earlier note in this file cited checkout `ecae8ed7404c5b9029c8b97744fd18bb8f5ad455`. On 2026-11-14 `main` was `58a0ff0f20caead17107d8a0ecd0c1413c7b1c7e` (ready-for-review rule, #8). This repository does not pin that repo in a JSON catalog. The Ponytail runtime remains in upstream Ponytail.

@@ -11,7 +11,7 @@ Official Cursor docs: [Plugins](https://cursor.com/docs/plugins) and [Plugins re
 For marketplace review, the headline install path is:
 
 1. Import **`Wicked-Sick-Ltd/ai-marketplace`** as a Cursor Team Marketplace.
-2. Install plugins from the catalog — today **token-usage**, **publicuniverse** and **pr-flow**.
+2. Install plugins from the catalog — today **token-usage**, **publicuniverse**, **pr-flow** and **amiga-decoding**.
 
 Upstream source code and releases remain in each plugin's own GitHub repository; vendored trees record the exact commit in `plugins/<name>/VENDORED.md`.
 
@@ -42,7 +42,7 @@ So featured plugins are copied into `plugins/` here (same approach as `plugins/p
 ### 3. Install on a developer machine
 
 1. **Cursor Settings → Plugins** → open the Wicked Sick marketplace.
-2. Install **token-usage**, **publicuniverse** and/or **pr-flow**.
+2. Install **token-usage**, **publicuniverse**, **pr-flow** and/or **amiga-decoding**.
 3. Approve bundled MCP servers when Cursor prompts.
 4. For **token-usage**, ensure `python3` is on the PATH (hooks and stdio MCP). Cloud Agents do not pick up this install automatically; see the token-usage section below.
 
@@ -84,6 +84,14 @@ Costs shown are API list-price **estimates**, not subscription charges.
 - **Category:** developer-tools
 
 Requires authenticated `gh`, Bash and `jq`. Review comments from Claude, Bugbot, Copilot, CodeQL and Semgrep are in scope.
+
+### amiga-decoding (1.0.0)
+
+- **Purpose:** Evidence-led Amiga ADF extraction and decompilation to exhaustion, with separate disk, content and semantic coverage. Skill: `amiga-adf-decompile`. Instructions only.
+- **Vendored path:** `plugins/amiga-decoding/`
+- **Manifest:** `plugins/amiga-decoding/.cursor-plugin/plugin.json` (version 1.0.0)
+- **Provenance:** `plugins/amiga-decoding/VENDORED.md` (`5ba30a22df385e75135101e3f886471ee0e9ee9d`). Claude, Codex, Copilot and Gemini install this same directory. No icon.
+- **Category:** developer-tools
 
 ## Catalog file
 
