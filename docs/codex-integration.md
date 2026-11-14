@@ -1,8 +1,27 @@
 # Codex integration and troubleshooting
 
 `ai-marketplace` is the entry point; `ai-codex-repo` owns the first-party
-Codex packages, setup and private configuration. The public index contains eight
+Codex packages, setup and private configuration. The public index contains **ten**
 native packages. Organisation access is required for the first-party sources.
+
+## Current Codex entries
+
+From `.agents/plugins/marketplace.json`. None of these entries set a `version` field. The SHA is the pin.
+
+| Plugin | Source | SHA |
+| --- | --- | --- |
+| estate-maintenance | `ai-codex-repo` `plugins/estate-maintenance` | `06f5c0a19808e91ccc53bba9111346fdbb86ee23` |
+| onboarding | `ai-codex-repo` `plugins/onboarding` | `06f5c0a19808e91ccc53bba9111346fdbb86ee23` |
+| product-lifecycle | `ai-codex-repo` `plugins/product-lifecycle` | `06f5c0a19808e91ccc53bba9111346fdbb86ee23` |
+| session-lifecycle | `ai-codex-repo` `plugins/session-lifecycle` | `06f5c0a19808e91ccc53bba9111346fdbb86ee23` |
+| wizzo-fleet-presence | `ai-codex-repo` `plugins/wizzo-fleet-presence` | `06f5c0a19808e91ccc53bba9111346fdbb86ee23` |
+| amiga-decoding | `ai-codex-repo` `plugins/amiga-decoding` | `06f5c0a19808e91ccc53bba9111346fdbb86ee23` |
+| pr-flow | `ai-grok-repo` `plugins/pr-flow` | `62272ec3ec8eba9059fd43ce9a9d1f913e317fbb` |
+| token-usage | `Wicked-Sick-Ltd/token-usage` root | `39cbb737084bf4f8aaa0c17b8cd1c560f6a0a47c` |
+| ponytail | `DietrichGebert/ponytail` root | `e3ba2aa6f1e6f0bc4d69eb09c9f0d0a93af56156` |
+| publicuniverse | `Wicked-Sick-Ltd/public-universe` root | `bb5919e47e8c8e1eb66c2fc5dcdba9bbc51b2f56` |
+
+`ai-codex-repo` `main` was `e4e911ab30ecbb179c318c60681210d9f25de2d5` on 2026-11-05 (ready-for-review rule in that repo's own landing-prs). This index still pins the six first-party packages at `06f5c0a`. `pr-flow` here is the ai-grok-repo 1.0.0 tree, not the 1.1.0 Cursor directory and not current ai-grok-repo `main`. `publicuniverse` 0.4.1 still configures `https://api.sol.wickedsick.com/mcp`. `token-usage` does not include the unreleased `cursor-cloud` runtime. This page does not move those pins.
 
 ## Packaging correction
 
@@ -53,12 +72,15 @@ failed because a legacy argument placeholder was passed literally. The 0.8.0
 candidate fixes startup and listing metadata. Its isolated native install and
 five-tool discovery were verified again; see [the candidate record](token-usage.md).
 The older successful MCP observation below does not establish compatibility of
-0.7.0 with 0.160.0.
+0.7.0 with 0.160.0. The catalogue pin is now `39cbb737` (manifest 0.9.0), which
+was not the build under that October check.
 
-Tested with Codex CLI 0.159.3 on Windows:
+Tested with Codex CLI 0.159.3 on Windows, against the eight-package index of that
+date (the index now has ten entries; `pr-flow` and `publicuniverse` were added
+later):
 
 - Marketplace registration from GitHub succeeded in an isolated `CODEX_HOME`.
-- All eight entries installed from their pinned remote sources with real native
+- All eight entries then listed installed from their pinned remote sources with real native
   manifests, including private first-party sources and public upstream plugins.
 - Codex app-server discovered all 34 expected public skills and fleet, handoff
   and token-usage hooks. The installed token-usage MCP server also initialized

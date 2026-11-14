@@ -1,35 +1,31 @@
-# PublicUniverse rollout
+# Public Universe
 
-> **2026-11-11 update (0.4.2):** the advertised remote MCP URL is `https://api.publicuniverse.net/mcp`. `https://api.sol.wickedsick.com/mcp` keeps working. The two hosts serve in parallel, with no redirect. On 2026-11-11 both hosts answered `initialize` with HTTP 200 and no `Location` header.
+Package name `publicuniverse`. Website: https://publicuniverse.net. Upstream: https://github.com/Wicked-Sick-Ltd/public-universe.
 
-> **2026-10-08 update (0.4.0):** source repository renamed to `Wicked-Sick-Ltd/public-universe` (pending), MCP server id is now `publicuniverse`, and Cursor is listed through the vendored copy at `plugins/publicuniverse/`. Entries are pinned to the 0.4.0 PR head and must be re-pinned to the merged commit. The live MCP 404 is an origin routing gap (Cloudflare passes the request), not the WAF.
+The public MCP service answers on two hosts with no redirect:
 
-Package: `publicuniverse` 0.3.0. Replaces the old `solar` listing. Website: https://publicuniverse.net.
+| Host | Role |
+| --- | --- |
+| `https://api.publicuniverse.net/mcp` | Advertised URL. Cursor's vendored 0.4.2 copy and upstream `main` use this. |
+| `https://api.sol.wickedsick.com/mcp` | Still in service. The 0.4.1 pin used by Claude, Codex, Copilot and the Gemini `--ref` still configures this URL. |
 
-The catalog changes are a release preparation, not a live-service acceptance claim. Keep the PR in draft until the repository transfer, visibility and service gates below are resolved.
+On 2026-11-11 both hosts answered `initialize` with HTTP 200 and no `Location` header. The service still reports MCP `serverInfo.name` `solar-system-db`. The client connection name in the package is `publicuniverse`. Interactive MCP use has no API key. Bulk REST calls send `X-PU-Api-Key`; see the plugin's [fair-use note](../plugins/publicuniverse/docs/fair-use.md).
 
-## Catalogs and evidence
+## What each host installs
 
-| Host | Distribution | Verification on 2026-10-05 |
-| --- | --- | --- |
-| Codex | `.agents/plugins/marketplace.json`, SHA-pinned portable package | CLI 0.160.0 installed the archive; app-server discovered all seven skills, MCP configuration and listing metadata. |
-| Claude | `.claude-plugin/marketplace.json`, replaces `solar` | CLI 2.1.273 installed the pinned HTTPS source from the catalog and listed it enabled; model-free initialization discovered all seven namespaced skills. Live tool acceptance remains pending. |
-| Copilot | `.github/plugin/marketplace.json`, SHA-pinned portable package | CLI 1.0.91 installed/listed PublicUniverse from the Git-hosted catalog branch and discovered seven skills. VS Code acceptance remains pending. |
-| Gemini | [Pinned extension command](../gemini/README.md#publicuniverse-rollout-pending) | CLI 0.62.0 on Node 24.21.0 installed and discovered all seven skills and the MCP configuration. |
-| Cursor | Import the final plugin repository directly, or install its portable package locally | Agent Plugins 1.0.0 schema checks passed; desktop acceptance remains pending. No remote-source entry is added to this repository's path-only Cursor index. |
+| Host | Version | Commit | MCP URL inside that package |
+| --- | --- | --- | --- |
+| Cursor | 0.4.2, vendored at `plugins/publicuniverse/` | `8b1e7b348067194d5a400f6bf16a0144a51d74aa` (head of [public-universe #9](https://github.com/Wicked-Sick-Ltd/public-universe/pull/9), before the squash) | `https://api.publicuniverse.net/mcp` |
+| Claude, Codex, Copilot | 0.4.1 | `bb5919e47e8c8e1eb66c2fc5dcdba9bbc51b2f56` | `https://api.sol.wickedsick.com/mcp` |
+| Gemini CLI command in [`gemini/README.md`](../gemini/README.md) | 0.4.1 | the same SHA as `--ref` | the alias URL above |
 
-The source package includes complete installation guides, an allowlisted ZIP/`.plugin`, regression tests, icons and submission scenarios. See its [validation record](https://github.com/Wicked-Sick-Ltd/solar-plugin/blob/d592c69493ece86261a6aef059cd872d380b1201/docs/validation.md) and [submission checklist](https://github.com/Wicked-Sick-Ltd/solar-plugin/blob/d592c69493ece86261a6aef059cd872d380b1201/docs/submission.md). These links require organisation access until the repository becomes public.
+#9 merged to `main` on 2026-11-12 as `f660a494163def6b3d9e4427eebcf9cf1190f052`. `main` has since moved to `4d7fee039221247817b6ee7251a0a2970b6d66aa` (2026-11-13), which also includes the catalogue notes in #11 and the manifest cleanup in #10. This docs change does not re-pin or re-vendor. The Cursor directory is still the pre-merge #9 tree, not `4d7fee03`.
 
-Use the explicit HTTPS source for Claude: its GitHub shorthand attempted SSH on the test machine and failed host-key verification. No SSH trust settings were changed. Copilot's local-directory marketplace mode pruned its downloaded plugin on the next command; importing `https://github.com/Wicked-Sick-Ltd/ai-marketplace.git#feat/publicuniverse` into an isolated profile exercised the intended Git-hosted route successfully. Use the default branch after rollout.
+Seven skills ship with the package: `tonight-sky`, `lesson-builder`, `space-fact-check`, `object-explainer`, `close-approach-watch`, `sky-this-week`, `publicuniverse-data-audit`. Skill `metadata.version` fields in this tree still say `0.4.0`. Positions are approximate and are not for telescope pointing.
 
-## Release gates
+## Install
 
-1. Confirm the exact repository name in `public-universe`. Transfer first, then make public, following Craig's requested sequence.
-2. Update plugin metadata, these three catalog source URLs and the Gemini command to the confirmed destination; pin the final reviewed package commit. Verify anonymous Git access before public rollout.
-3. New clients use `https://api.publicuniverse.net/mcp`. `https://api.sol.wickedsick.com/mcp` keeps working: the two hosts serve in parallel, with no redirect. On 2026-10-05 that old host returned 404 while the website returned 200; the 404 was an origin routing gap (Cloudflare passed the request), later cleared. DNS/WAF/origin work belongs to the service rollout.
-4. Complete outstanding client acceptance, CI and reviews. Official vendor-directory submissions have separate review/identity/policy requirements; this GitHub catalog does not confer approval.
-
-After rollout, install with:
+Register `Wicked-Sick-Ltd/ai-marketplace` first.
 
 ```sh
 codex plugin add publicuniverse@wickedsick
@@ -37,4 +33,10 @@ claude plugin install publicuniverse@wickedsick
 copilot plugin install publicuniverse@wickedsick
 ```
 
-Register `Wicked-Sick-Ltd/ai-marketplace` with each client first. Existing `solar` users should disable/remove that package before enabling `publicuniverse`; the MCP identifier remains `solar-system-db`, and the renamed audit skill is `publicuniverse-data-audit`.
+Those three commands install 0.4.1 at `bb5919e`. Cursor installs 0.4.2 from `plugins/publicuniverse/` after the team marketplace import in the [README](../README.md).
+
+Remove an old `solar` plugin before enabling `publicuniverse`. From 0.4.0 the MCP server id is `publicuniverse`, not `solar-system-db`, and the audit skill is `publicuniverse-data-audit`. Tool names are unchanged; client prefixes and saved permission allowlists change.
+
+## Earlier rollout notes
+
+The 2026-10-05 checks (Codex 0.160.0, Claude 2.1.273, Copilot 1.0.91, Gemini 0.62.0) discovered the skills. Several of those notes still said the repository rename and the `/mcp` route were pending. Both have since landed: the repository is `Wicked-Sick-Ltd/public-universe`, and both MCP hosts answer. Those October checks are not a fresh acceptance pass of 0.4.2. Official vendor-directory submissions are still separate from this GitHub catalogue.

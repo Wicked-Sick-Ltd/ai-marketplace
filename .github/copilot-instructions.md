@@ -1,3 +1,3 @@
-This repository is a plugin catalog. Follow `AGENTS.md`. Pin remote plugins by commit SHA. Do not vendor plugin source here.
+This repository is a plugin catalog. Follow `AGENTS.md`. Pin Claude, Codex and Copilot plugins by full commit SHA. Cursor entries are in-repo paths; the featured packages are vendored under `plugins/` and recorded in each `VENDORED.md`. Do not edit those runtime files in place.
 
-The Next.js + Prisma demo app in this tree is Cloud Agent scaffolding (`docs/demo-app.md`), not plugin source, and its listings UI is not a catalog. Catalog edits still go through the JSON indexes plus `python3 scripts/validate.py`, which is all CI runs — the demo app is unenforced there.
+The Next.js + Prisma demo app in this tree is Cloud Agent scaffolding (`docs/demo-app.md`), not plugin source, and its listings UI is not a catalog. It depends on Next.js 15.5.28. Catalog edits still go through the JSON indexes plus `python3 scripts/validate.py`. CI also runs `scripts/test_validate.py` and `scripts/test_dependabot_alerts.py`. The demo app is unenforced there.

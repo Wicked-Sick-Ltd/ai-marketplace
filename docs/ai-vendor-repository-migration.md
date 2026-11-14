@@ -1,5 +1,7 @@
 # AI vendor repository migration implementation plan
 
+> **Status, 2026-11-14:** The index on `main` already uses the renamed repositories (`ai-claude-repo`, `ai-codex-repo`, `ai-cursor-repo`, `ai-gemini-repo`, `ai-copilot-repo`, `ai-grok-repo`). [ai-claude-repo #38](https://github.com/Wicked-Sick-Ltd/ai-claude-repo/pull/38) merged on 2026-09-24. Cursor has since vendored `token-usage`, `publicuniverse` and `pr-flow` under `plugins/`; the "do not vendor" checkbox below is the original plan, not the current Cursor rule (see `AGENTS.md`). The open checkboxes are unfinished operational items (per-machine rollout, inventory reconciliation, live verification). They are not a claim that the catalogues still point at `claude-repo`, `codex-repo` or `cursor-repo`.
+
 > **For agentic workers:** Use superpowers:executing-plans to implement this plan task by task. Checkboxes track execution, not approval to deploy.
 
 **Goal:** Coordinate catalog and documentation changes while keeping this repository an index.

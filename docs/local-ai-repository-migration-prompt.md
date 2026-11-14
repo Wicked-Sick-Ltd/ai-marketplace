@@ -1,5 +1,7 @@
 # Local AI repository migration — broadcast prompt
 
+> **Status, 2026-11-14:** This is the 24 September 2026 broadcast. [ai-claude-repo #38](https://github.com/Wicked-Sick-Ltd/ai-claude-repo/pull/38) merged that day (`merged_at` 2026-09-24T07:39:04Z). Do not keep waiting for it. The prompt text below is the historical instruction that was sent; it still says to wait, because that is what the broadcast said.
+
 Verified 24 September 2026: all three GitHub renames preserve their original
 repository IDs and private visibility. This prompt authorises per-machine
 remotes and eligible folder moves; it is not a fleet deployment or central
