@@ -10,9 +10,9 @@ This copy attributes recorded token usage for Claude Code, Cowork, Codex, Cursor
 
 This copy does **not** include the unreleased `cursor-cloud` runtime on upstream `main` (`7638fb1b07751f1bfd2d4d6cc535aad71280f905`). It cannot call the Cursor Admin API.
 
-What it can do:
+What it can do, from this directory (or from the catalogue root, with the `plugins/token-usage/` prefix on the script path):
 
-- Report a Cloud Agent export you already have:
+- Report a Cloud Agent export you already have. `TOKEN_USAGE_TRANSCRIPT` is not read for Cursor; the path has to be the argument.
 
   ```bash
   python3 scripts/token_usage.py report --runtime cursor /path/to/cloud-export.json
@@ -20,7 +20,7 @@ What it can do:
 
   The file must be a `.json` object. Token counts are taken from `usage` or `tokenUsage` when those fields exist. A file with none is `activity_only` (turns, not a bill). Message length is not turned into tokens.
 
-- If the cloud VM has this plugin, or the repository under analysis has a `.cursor/hooks.json` that runs `scripts/token_usage.py cursor-hook`, the hook ledger on that VM (`~/.cache/token-usage/cursor/`, or `TOKEN_USAGE_LEDGER_DIR`) is the higher-confidence source. A developer's laptop ledger does not contain the cloud run. Cloud Agents do not inherit `~/.cursor` plugins or `~/.cursor/mcp.json`.
+- If the cloud VM has this plugin, or the repository under analysis has a `.cursor/hooks.json` that runs `scripts/token_usage.py cursor-hook`, the hook ledger on that VM is the higher-confidence source. Files are `$TOKEN_USAGE_LEDGER_DIR/cursor/*.jsonl`. The variable defaults to `~/.cache/token-usage`, so the default directory is `~/.cache/token-usage/cursor/`. Setting the variable to that `cursor` directory makes discovery look one level too deep. A developer's laptop ledger does not contain the cloud run. Cloud Agents do not inherit `~/.cursor` plugins or `~/.cursor/mcp.json`.
 
 The Cursor hook always prints `{}` and exits 0. `TOKEN_USAGE_BUDGET_USD` does not nudge Cursor.
 

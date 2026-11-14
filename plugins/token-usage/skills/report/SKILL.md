@@ -132,7 +132,7 @@ Use session mode (no `--since`) when the user asks about the current or a specif
 - "transcript not found: <path>": the path passed does not exist (typo, stale path, wrong machine) — check it before looking anywhere else.
 - "no transcript found": nothing was passed and discovery found no transcripts at all — not under `~/.claude/projects` (Claude Code), nor a Cowork mount. Ask the user for the transcript path, or list `~/.claude/projects/` / `/sessions/*/mnt/.claude/projects/` to locate the right transcript.
 - "no transcript found under … (project dir …)" from an MCP tool: the projects tree exists but *that* project has no sessions yet. An explicit project dir never falls back to another project's session — pass `transcript` or `session_id` for a session elsewhere.
-- "TOKEN_USAGE_TRANSCRIPT is set to <path> but that file does not exist": the environment override points at a missing file; unset it or fix the path.
+- "TOKEN_USAGE_TRANSCRIPT is set to <path> but that file does not exist": Claude was asked to read that path and the file is missing. Cursor does not read this variable; pass the Cloud Agent export as the CLI path or MCP `transcript`. Codex, Gemini, and Copilot do read it.
 - Zero rows / empty table: the session has no assistant turns yet.
 - Costs look ~2.5× too high vs `/cost`: the dedup-by-requestId logic failed — verify the transcript entries carry `requestId` fields and report the issue.
 - `history` shows fewer sessions than expected: `--since` filters by the first timestamp in each transcript; sessions with no timestamps are skipped.

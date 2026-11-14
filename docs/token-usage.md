@@ -25,8 +25,8 @@ Python 3.9+ is required. macOS and Linux need `python3` on `PATH`. The Cursor MC
 | --- | --- |
 | `TOKEN_USAGE_RUNTIME` | Default runtime for the CLI and MCP process (`claude` if unset). The Cursor plugin sets `cursor`. |
 | `TOKEN_USAGE_CURSOR_DIR` | Cursor user directory. Unset: `~/Library/Application Support/Cursor/User` on macOS, `~/.config/Cursor/User` on Linux, `%APPDATA%\Cursor\User` on Windows. |
-| `TOKEN_USAGE_LEDGER_DIR` | Cursor hook-ledger directory. Unset: `~/.cache/token-usage/cursor`. Created owner-only (`0700`) when the filesystem allows it. |
-| `TOKEN_USAGE_TRANSCRIPT` | Force one recording path. A missing file is an error, not a silent fallback. |
+| `TOKEN_USAGE_LEDGER_DIR` | Shared ledger root. Unset: `~/.cache/token-usage`. Cursor hook files live in `$TOKEN_USAGE_LEDGER_DIR/cursor/` (default `~/.cache/token-usage/cursor/`). Pointing this variable at the `cursor` directory itself makes discovery look one level too deep. The `cursor` directory is created owner-only (`0700`) when the filesystem allows it. |
+| `TOKEN_USAGE_TRANSCRIPT` | Claude, Codex, Gemini, and Copilot only. Claude exits if the path is missing. Cursor ignores it: pass the export path as the CLI argument or the MCP `transcript`. |
 | `TOKEN_USAGE_PROJECTS_DIR` | Claude projects directory used by history and insights. |
 | `TOKEN_USAGE_GEMINI_HOME` | Antigravity / Gemini home. Unset: `~/.gemini`. |
 | `TOKEN_USAGE_CODEX_HOME` or `CODEX_HOME` | Codex home. |
@@ -44,11 +44,11 @@ Two different mechanisms exist. Only the first is in the catalogue pin.
 
 Cursor Cloud Agents do not inherit a developer's local plugin, `~/.cursor` hooks, or `~/.cursor/mcp.json`. A cloud VM runs repository hooks from `.cursor/hooks.json`. This marketplace does not ship that file, so a cloud run does not load token-usage unless the VM image or the repository under analysis adds it.
 
-From a machine that has the export:
+From a checkout of this catalogue, the script is `plugins/token-usage/scripts/token_usage.py`. Inside a token-usage checkout the same file is `scripts/token_usage.py`.
 
 ```bash
-python3 scripts/token_usage.py report --runtime cursor /path/to/cloud-export.json
-python3 scripts/token_usage.py json --runtime cursor /path/to/cloud-export.json
+python3 plugins/token-usage/scripts/token_usage.py report --runtime cursor /path/to/cloud-export.json
+python3 plugins/token-usage/scripts/token_usage.py json --runtime cursor /path/to/cloud-export.json
 ```
 
 The same path is the MCP `transcript` argument with `runtime: "cursor"`. The selector must be an existing `.json` object. A `.jsonl` path is rejected. Composer ids are accepted as MCP `session_id`, not as a CLI positional argument.
@@ -58,7 +58,7 @@ Limits, from `plugins/token-usage/scripts/token_usage.py`:
 - The adapter reads `messages[]` with `role`, text, optional `model`, and optional `usage` / `tokenUsage`.
 - A file with token fields on at least one turn is `partial` (the caller treats `saw_tokens` as partial, not exact).
 - A file with no token fields is `activity_only`: a count of turns, not a token bill. Nothing is inferred from message length.
-- The developer's laptop ledger does not contain the cloud run. If the VM has the plugin, or a `.cursor/hooks.json` that runs `token_usage.py cursor-hook`, the ledger on that VM is the higher-confidence source. Read it there, or copy it, and pass `--runtime cursor`.
+- The developer's laptop ledger does not contain the cloud run. If the VM has the plugin, or a `.cursor/hooks.json` that runs `plugins/token-usage/scripts/token_usage.py cursor-hook`, the ledger on that VM is the higher-confidence source. Read it there. To read a copy elsewhere, copy the `cursor` directory into the ledger root (`~/.cache/token-usage/cursor/`, or `$TOKEN_USAGE_LEDGER_DIR/cursor/`) and pass `--runtime cursor`. Do not set `TOKEN_USAGE_LEDGER_DIR` to the `cursor` directory itself.
 
 Ask the agent, once the MCP server is on that VM, to call `session_cost` with `runtime: "cursor"` and to include `measurement` and `warnings`.
 
@@ -67,6 +67,8 @@ Ask the agent, once the MCP server is on that VM, to call `session_cost` with `r
 Cloud Agent runs (`bc-…` ids) leave nothing in the local Cursor database, and their transcripts often carry no token counts, so the `cursor` runtime cannot price them. Upstream `main` (`7638fb1b07751f1bfd2d4d6cc535aad71280f905`, token-usage #34, unreleased) adds an opt-in runtime that syncs Cursor's Admin API.
 
 That code is **not** in `plugins/token-usage/` and **not** in the SHA pins. Installing `token-usage@wickedsick` from this marketplace does not provide `cursor-cloud-sync` or `--runtime cursor-cloud`. The notes below are the upstream contract, so a later pin bump has a written target. They were taken from the upstream README and changelog on 2026-11-14.
+
+These commands are for a checkout of upstream token-usage, where the script is `scripts/token_usage.py`. They are not paths in this catalogue.
 
 ```bash
 export CURSOR_ADMIN_API_KEY=…            # Team Admin API key, read scope
