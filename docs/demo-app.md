@@ -6,15 +6,18 @@ environment (`.cursor/environment.json`) has something to install and run. It is
 are the JSON indexes described in the [README](../README.md) and validated by
 `python3 scripts/validate.py`.
 
-CI (`.github/workflows/validate.yml`) runs the Python catalog checks only. The
+CI (`.github/workflows/validate.yml`) runs `scripts/validate.py`,
+`scripts/test_validate.py`, and `scripts/test_dependabot_alerts.py`. The
 demo app's lint, typecheck, and build are unenforced; run them locally.
 
 ## Tech stack
 
-- **Next.js 15** (App Router) + **React 18** + **TypeScript**
-- **Tailwind CSS** for styling
-- **Prisma ORM** backed by **SQLite** (file-based, zero external dependencies)
-- **Zod** for request validation
+- **Next.js 15.5.28** (App Router) + **React 18.3** + **TypeScript 5.5**
+- **Tailwind CSS 4** for styling
+- **Prisma ORM 5.22** backed by **SQLite** (file-based, zero external dependencies)
+- **Zod 4.6** for request validation
+
+`package.json` pins `next` at `15.5.28`. `eslint-config-next` in the same file is `15.5.25`.
 
 ## Getting started
 

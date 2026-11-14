@@ -4,9 +4,12 @@
 guidance, review skills and host-specific activation. We reuse its upstream
 runtimes. No plugin source lives in this index.
 
-Reviewed version: **4.10.0**, commit
+Reviewed version in this index: **4.10.0**, commit
 `e3ba2aa6f1e6f0bc4d69eb09c9f0d0a93af56156`.
-Claude, Codex and Copilot entries pin that commit.
+Claude, Codex and Copilot entries pin that commit. Upstream `main` has
+since released **v5.3.3** (`7801d061243d7b753bad0e0b3c057cd250b11755`,
+2026-10-29) and moved on to `96608e078b2d5ea607c5c3b8b5a54d1c1fba6846`.
+This catalogue has not adopted that release.
 
 | Host | Configuration home | Runtime |
 | --- | --- | --- |

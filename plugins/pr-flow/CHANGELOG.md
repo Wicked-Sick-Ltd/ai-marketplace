@@ -11,8 +11,8 @@
 
 ### Added
 
-- Catalogue copy of `pr-flow` from `Wicked-Sick-Ltd/ai-grok-repo` `plugins/pr-flow` at `62272ec3ec8eba9059fd43ce9a9d1f913e317fbb`, so Cursor, Claude, Codex and Copilot can install `landing-prs` from this marketplace.
-- Cursor, Claude, Codex and portable plugin manifests for that package.
+- Catalogue copy of `pr-flow` from `Wicked-Sick-Ltd/ai-grok-repo` `plugins/pr-flow` at `62272ec3ec8eba9059fd43ce9a9d1f913e317fbb`, so Cursor can install `landing-prs` from this marketplace. Claude, Codex and Copilot entries pin that same commit and therefore install 1.0.0, not this directory.
+- Cursor, Claude, Codex and portable plugin manifests for the catalogue copy. The remote hosts do not read the manifests in this directory.
 
 ### Changed
 

@@ -1,6 +1,6 @@
 ---
 name: pr
-description: "Pull-request lifecycle \u2014 create | watch | merge | land | status | sweep. Waits for CI and every reviewer bot, triages and fixes findings, merges by the repo's rules."
+description: "Pull-request lifecycle \u2014 create | watch | merge | land | status | sweep. Opens a finished pull request ready for review (no --draft), waits for CI and every reviewer bot, triages and fixes findings, and merges by the repo's rules."
 ---
 
 You are running the pull-request lifecycle. **REQUIRED SKILL:** read and follow

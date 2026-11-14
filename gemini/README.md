@@ -24,7 +24,7 @@ Start a new session and use `/ponytail-help` or `/ponytail-review`. It does not 
 
 ## Token usage
 
-`token-usage` supplies an Antigravity plugin bundle (`plugin.json`, `mcp_config.json`, `skills/report/SKILL.md`), an Antigravity `transcript.jsonl` + legacy Gemini JSON/JSONL session adapter (`--runtime gemini`), and a legacy `gemini-extension.json`.
+`token-usage` **0.9.0** at `39cbb737084bf4f8aaa0c17b8cd1c560f6a0a47c` supplies an Antigravity plugin bundle (`plugin.json`, `mcp_config.json`, `skills/report/SKILL.md`), an Antigravity `transcript.jsonl` + legacy Gemini JSON/JSONL session adapter (`--runtime gemini`), and a legacy `gemini-extension.json`. That commit does not include the unreleased `cursor-cloud` runtime on upstream `main`. See [token-usage](../docs/token-usage.md).
 
 ### Antigravity (`~/.gemini/config/plugins/token-usage` or `agy plugin install`)
 
@@ -40,21 +40,23 @@ gemini mcp list
 
 It reads local recordings and nested agents; unknown model prices stay unknown. It does not add Claude-style budget nudges. See [verification and limitations](../docs/token-usage.md) before rolling it out.
 
-## Public Universe (rollout pending)
+## Public Universe
 
-The astronomy plugin (`publicuniverse` 0.4.1) ships `plugin.json`, `gemini-extension.json`, one public HTTP MCP server (`publicuniverse`) and seven shared skills. The source repository is being renamed from `solar-plugin` to `Wicked-Sick-Ltd/public-universe` and made public. Live MCP acceptance is blocked until the `/mcp` route is deployed on the API origin. See [rollout evidence](../docs/publicuniverse.md).
+The astronomy plugin ships `plugin.json`, `gemini-extension.json`, one public HTTP MCP server (`publicuniverse`) and seven shared skills. The source repository is `Wicked-Sick-Ltd/public-universe`. See [catalogue notes](../docs/publicuniverse.md).
+
+The command below matches the Claude, Codex and Copilot pin: **0.4.1** at `bb5919e47e8c8e1eb66c2fc5dcdba9bbc51b2f56`. That tree's `mcp.json` still says `https://api.sol.wickedsick.com/mcp`. The alias answers. Cursor's vendored copy is 0.4.2 and advertises `https://api.publicuniverse.net/mcp`. Upstream `main` (`4d7fee039221247817b6ee7251a0a2970b6d66aa`) also advertises the new host. This command is not that commit.
 
 ```bash
-# Legacy Gemini CLI
+# Legacy Gemini CLI — same SHA as the Claude/Codex/Copilot catalogs
 gemini extensions install https://github.com/Wicked-Sick-Ltd/public-universe --ref bb5919e47e8c8e1eb66c2fc5dcdba9bbc51b2f56
 gemini extensions list
 gemini skills list
 ```
 
-Re-pin `--ref` to the merged 0.4.1 commit before announcing. Windows local installation and discovery of 0.3.0 passed with Gemini CLI 0.62.0 on Node 24.21.0. There are no extension hooks or credentials.
+Windows local installation and discovery of 0.3.0 passed with Gemini CLI 0.62.0 on Node 24.21.0. That check is not a 0.4.2 acceptance pass. There are no extension hooks or credentials.
 
 ## Fleet presence & workflow plugins (`ai-gemini-repo`)
 
 Unlike standalone Gemini CLI (which had no session lifecycle hooks), **Google Antigravity natively supports `<plugin_dir>/hooks.json`** with `SessionStart`, `PreInvocation`, `PostInvocation`, `PreToolUse`, `PostToolUse`, and `Stop` events. Antigravity fleet-presence hooks bind `SessionStart`, `PreInvocation`, and `Stop` to `coordctl.py --vendor gemini`. Standalone Gemini CLI remains unsupported for `wizzo-fleet-presence`.
 
-The private [ai-gemini-repo](https://github.com/Wicked-Sick-Ltd/ai-gemini-repo) (`ecae8ed7404c5b9029c8b97744fd18bb8f5ad455`) ships the compiled Antigravity workflow plugins (`session-lifecycle`, `pr-flow`, `product-lifecycle`, `estate-maintenance`, `onboarding`, `wizzo-fleet-presence`, `amiga-decoding`) under `plugins/<name>/`. The Ponytail runtime remains in upstream Ponytail; this repository does not provide a Gemini JSON catalog.
+The private [ai-gemini-repo](https://github.com/Wicked-Sick-Ltd/ai-gemini-repo) ships the compiled Antigravity workflow plugins (`session-lifecycle`, `pr-flow`, `product-lifecycle`, `estate-maintenance`, `onboarding`, `wizzo-fleet-presence`, `amiga-decoding`) under `plugins/<name>/`. An earlier note in this file cited checkout `ecae8ed7404c5b9029c8b97744fd18bb8f5ad455`. On 2026-11-14 `main` was `58a0ff0f20caead17107d8a0ecd0c1413c7b1c7e` (ready-for-review rule, #8). This repository does not pin that repo in a JSON catalog. The Ponytail runtime remains in upstream Ponytail.

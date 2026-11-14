@@ -65,4 +65,4 @@ The gallery indexes public GitHub repositories that contain `gemini-extension.js
 
 ## 7. Wicked Sick catalogue (`Wicked-Sick-Ltd/ai-marketplace`)
 
-Update the Claude, Codex and Copilot entries to the renamed repository and the merged 0.4.0 commit SHA, refresh the Gemini command, and add the Cursor entry (a vendored copy of this package at `plugins/publicuniverse/`, because Cursor team marketplaces resolve sources inside the catalogue repository).
+As of the catalogue docs refresh, Cursor vendors 0.4.2 (this package's MCP URL, `https://api.publicuniverse.net/mcp`). Claude, Codex and Copilot still pin 0.4.1 at `bb5919e47e8c8e1eb66c2fc5dcdba9bbc51b2f56`, whose `mcp.json` advertises `https://api.sol.wickedsick.com/mcp`. Both hosts answer. Do not move those pins back to a 0.4.0 SHA. The live split is [docs/publicuniverse.md](https://github.com/Wicked-Sick-Ltd/ai-marketplace/blob/main/docs/publicuniverse.md) in the catalogue repository.

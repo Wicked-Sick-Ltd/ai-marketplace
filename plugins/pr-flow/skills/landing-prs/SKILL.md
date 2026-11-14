@@ -1,6 +1,6 @@
 ---
 name: landing-prs
-description: Use when a change is finished and needs to reach a default branch, or when asked to open/raise/create a PR, push and PR, watch/monitor/keep an eye on CI, wait for CI or reviewer/bot comments, check or deal with PR comments, fix review findings, merge (or "merge once green"), check whether a PR merged or anything was missed, ship/land it, or sweep outstanding PRs. Also use before pushing to main/master/develop for any reason.
+description: Use when a change is finished and needs to reach a default branch, or when asked to open/raise/create a PR, push and PR, watch/monitor/keep an eye on CI, wait for CI or reviewer/bot comments, check or deal with PR comments, fix review findings, merge (or "merge once green"), check whether a PR merged or anything was missed, ship/land it, or sweep outstanding PRs. Also use before pushing to main/master/develop for any reason. When the work is finished, open the pull request ready for review (no --draft), including Critical-tier changes, or mark an existing draft ready with gh pr ready.
 ---
 
 # Landing PRs

@@ -12,11 +12,11 @@ This repo is a catalog. Plugin behaviour changes belong in the plugin's own repo
    - Copilot: `.github/plugin/marketplace.json`
    - Antigravity / Gemini: a section in `gemini/README.md` (no shared remote JSON catalog)
 3. For Claude, Codex and Copilot remotes: set `source.sha` to a full 40-character commit. Prefer a release tag as `ref` when one exists; SHA still wins. Codex uses `url` for a root package and `git-subdir` with `path` for a native package inside a vendor repository. Verify installation with the actual Codex CLI in a temporary `CODEX_HOME`.
-4. For Cursor: `source` must be a relative directory in this repository (string, or `{ "path": "…" }`). Cursor does not clone a GitHub SHA from this file. Plugin shims (`.cursor-plugin/plugin.json`, root `mcp.json`) belong in the plugin's own repo. Team Marketplace import of `ai-claude-repo` is documented in `docs/cursor-integration.md`.
-5. Run `python3 scripts/validate.py`.
+4. For Cursor: `source` must be a relative directory in this repository (string, or `{ "path": "…" }`). Cursor does not clone a GitHub SHA from this file. Featured packages are the vendored trees under `plugins/`, recorded in each `VENDORED.md`. Team Marketplace import of this repository is documented in `docs/cursor-integration.md`.
+5. Run `python3 scripts/validate.py` and `python3 scripts/test_validate.py`.
 
-Do not copy plugin files into this repository.
+Do not add a plugin directory except as a Cursor vendored package with a `VENDORED.md`. Do not edit vendored runtime files in place.
 
 ## The in-tree demo app
 
-The Next.js + Prisma demo app in this tree exists so the Cursor Cloud Agent environment has something to install and run ([`docs/demo-app.md`](docs/demo-app.md)). Its listings UI is not a catalog and editing it never changes what a host installs; catalog changes are edits to the index files above plus `python3 scripts/validate.py`. CI validates the catalogs only, so demo-app changes are unenforced there — run `npm run lint` / `npm run typecheck` yourself.
+The Next.js 15.5.28 + Prisma demo app in this tree exists so the Cursor Cloud Agent environment has something to install and run ([`docs/demo-app.md`](docs/demo-app.md)). Its listings UI is not a catalog and editing it never changes what a host installs; catalog changes are edits to the index files above plus `python3 scripts/validate.py`. CI runs that validator and the two Python smoke tests, so demo-app changes are unenforced there — run `npm run lint` / `npm run typecheck` yourself.

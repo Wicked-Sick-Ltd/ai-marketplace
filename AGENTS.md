@@ -1,15 +1,15 @@
 # Agent instructions
 
-This repository is an **index**. It lists plugins; it does not contain plugin code.
+This repository is an **index**, plus the Cursor team-marketplace copies of the featured plugins.
 
-- Do not vendor plugin sources here.
+- Featured Cursor packages are vendored under `plugins/` (`token-usage`, `publicuniverse`, `pr-flow`). Each `VENDORED.md` names the upstream repository and commit. Do not edit those runtime files here. Replace a directory from a reviewed upstream commit and record that commit in `VENDORED.md`.
 - Claude, Codex and Copilot remote entries are pinned to full 40-character commit SHAs. Codex supports `url` and `git-subdir` sources with `sha` and optional `ref`; subdirectory paths select the actual native plugin package.
-- Cursor's `.cursor-plugin/marketplace.json` uses **in-repo paths** only (`source` is a directory in this git tree, optionally under `metadata.pluginRoot`). Do not copy Claude `github`/`sha` source objects there. Cursor Team Marketplace should import the repo that contains the plugin directories (`ai-claude-repo`), not vendor those plugins here.
+- Cursor's `.cursor-plugin/marketplace.json` uses **in-repo paths** only (`source` is a directory in this git tree, optionally under `metadata.pluginRoot`). Do not copy Claude `github`/`sha` source objects there. Import `Wicked-Sick-Ltd/ai-marketplace` as the Cursor Team Marketplace.
 - List a plugin only on the catalogs where it has a real runtime.
-- `token-usage` has native Claude, Codex and Cursor runtimes (its Cursor package lives in the token-usage repo and cannot go in this repo's path-based Cursor index). Only list another host after verifying its parser and package.
-- After catalog edits, run `python3 scripts/validate.py`.
+- `token-usage` is listed for Claude, Codex, Copilot, Cursor, and Antigravity/Gemini. The Cursor package in this tree is `plugins/token-usage/` at the commit in `plugins/token-usage/VENDORED.md`. That copy reads an explicit Cloud Agent export `.json`. Upstream `main` also has an unreleased `cursor-cloud` runtime; it is not in this pin. See [`docs/token-usage.md`](docs/token-usage.md).
+- After catalog edits, run `python3 scripts/validate.py` and `python3 scripts/test_validate.py`.
 
-A Next.js + Prisma demo app also lives in this tree, in-tree so the Cursor Cloud Agent environment has something to install and run ([`docs/demo-app.md`](docs/demo-app.md)). Do not treat its listings UI as plugin source or as a catalog — catalog edits are still edits to the index files above, followed by `python3 scripts/validate.py`. CI runs that Python validation only, so the demo app is unenforced there.
+A Next.js 15.5.28 + Prisma demo app also lives in this tree, in-tree so the Cursor Cloud Agent environment has something to install and run ([`docs/demo-app.md`](docs/demo-app.md)). Do not treat its listings UI as plugin source or as a catalog. Catalog edits are still edits to the index files above, followed by `python3 scripts/validate.py`. CI runs that validator and `scripts/test_validate.py` plus `scripts/test_dependabot_alerts.py`. The demo app is unenforced there.
 
 Product-repo agent rules (Forge, Yaegi, Traefik) live in those repos, not here.
 

@@ -18,6 +18,8 @@ Free astronomy tools and seven reusable workflows for **Claude Code, Cursor, Cod
 
 The advertised public MCP endpoint is `https://api.publicuniverse.net/mcp`. `https://api.sol.wickedsick.com/mcp` keeps working: the two hosts serve in parallel, with no redirect. The upstream service still reports its legacy name `solar-system-db` in MCP `serverInfo`; the client connection name in this package remains `publicuniverse`. The 2026-10-16 check (initialize, 33 read-only tools, and sample catalogue calls) was recorded against the alias host; see [validation](docs/validation.md).
 
+This directory is the Cursor catalogue copy at 0.4.2. Claude, Codex and Copilot in `ai-marketplace` still pin 0.4.1 (`bb5919e47e8c8e1eb66c2fc5dcdba9bbc51b2f56`), whose `mcp.json` advertises the alias URL. See [VENDORED.md](VENDORED.md).
+
 Interactive MCP use stays open, with no API key. Bulk or automated use of the REST catalogue must send a key in the `X-PU-Api-Key` header. A missing, invalid, or revoked key is anonymous per-IP traffic. The policy is [fair use](docs/fair-use.md).
 
 ## Install

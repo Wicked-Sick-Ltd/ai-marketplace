@@ -7,6 +7,12 @@ Canonical source: [`plugins/pr-flow`](https://github.com/Wicked-Sick-Ltd/ai-grok
 in `Wicked-Sick-Ltd/ai-grok-repo`. This directory is the catalogue copy.
 See [VENDORED.md](VENDORED.md) for the upstream commit.
 
+## What each host installs
+
+Cursor installs **this directory** (catalogue version 1.1.0), including the ready-for-review rule.
+
+Claude, Codex and Copilot install `plugins/pr-flow` from `ai-grok-repo` at `62272ec3ec8eba9059fd43ce9a9d1f913e317fbb`. That pin's manifests are 1.0.0 and its skills do not contain the 5 Nov 2026 rule. Upstream `main` has a later `landing-prs` skill. This marketplace has not moved those pins. Details: [VENDORED.md](VENDORED.md).
+
 ## Install
 
 From the Wicked Sick marketplace (`Wicked-Sick-Ltd/ai-marketplace`):
@@ -44,7 +50,9 @@ Two skills and the Bash helper implement the PR lifecycle:
   points remain.
 
 `watch` stops after triage; `land` includes merging when authorized. Preserve
-repository branch rules. When the work is finished, open the PR ready for
+repository branch rules. The ready-for-review rule in the next paragraph is in
+**this directory** (what Cursor installs). The Claude, Codex and Copilot pin
+does not contain it. When the work is finished, open the PR ready for
 review (no `--draft`) or run `gh pr ready <PR> --repo <OWNER/REPO>` on an
 existing draft, including Critical-tier repositories, so reviewers and CI start
 straight away. A draft is only for work still in progress (Craig, 5 Nov 2026).
