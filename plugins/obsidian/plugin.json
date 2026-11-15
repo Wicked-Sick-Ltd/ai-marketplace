@@ -1,0 +1,60 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "obsidian",
+  "version": "1.2.0",
+  "description": "Create and edit Obsidian Flavored Markdown, Bases, and JSON Canvas files.",
+  "author": {
+    "name": "Obsidian",
+    "url": "https://obsidian.md/"
+  },
+  "homepage": "https://obsidian.md/",
+  "repository": "https://github.com/obsidianmd/obsidian-skills",
+  "license": "MIT",
+  "keywords": [
+    "obsidian",
+    "markdown",
+    "bases",
+    "canvas",
+    "pkm",
+    "notes"
+  ],
+  "extensions": {
+    "com.openai": {
+      "requires_local_executor": true,
+      "interface": {
+        "displayName": "Obsidian",
+        "shortDescription": "Write Obsidian notes, Bases, and Canvas",
+        "longDescription": "Create and edit Obsidian Flavored Markdown, Bases views, and JSON Canvas files. The skills describe file formats. They do not run the Obsidian CLI, fetch web pages, render templates, or sync and publish a vault.",
+        "category": "Productivity",
+        "developerName": "Obsidian",
+        "defaultPrompt": [
+          "Create a project note with wikilinks, a status property, and a warning callout.",
+          "Create a reading list Base with table and card views.",
+          "Make a Canvas connecting three ideas with labeled edges."
+        ],
+        "websiteURL": "https://obsidian.md/",
+        "supportURL": "https://obsidian.md/help/",
+        "privacyPolicyURL": "https://obsidian.md/privacy",
+        "termsOfServiceURL": "https://obsidian.md/terms",
+        "logo": "./assets/icon.png",
+        "composerIcon": "./assets/icon.png",
+        "logoDark": "./assets/icon.png",
+        "composerIconDark": "./assets/icon.png",
+        "brandColor": "#6C31E3",
+        "brandColorDark": "#A882FF"
+      },
+      "review": {
+        "commerce": false,
+        "prompts": [
+          "Create a note with a summary, related-note wikilinks, and a status property.",
+          "Create a reading list Base with table and card views.",
+          "Create a Canvas with three idea cards and labeled connections."
+        ]
+      },
+      "publication": {
+        "countries": [],
+        "release_notes": "Wicked Sick fork of upstream 1.2.0. Installs Obsidian Flavored Markdown, Bases, and JSON Canvas. The CLI, Headless, Defuddle, and Knap skills are kept in held/ and are not installed."
+      }
+    }
+  }
+}

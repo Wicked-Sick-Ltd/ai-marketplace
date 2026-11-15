@@ -11,7 +11,7 @@ Official Cursor docs: [Plugins](https://cursor.com/docs/plugins) and [Plugins re
 For marketplace review, the headline install path is:
 
 1. Import **`Wicked-Sick-Ltd/ai-marketplace`** as a Cursor Team Marketplace.
-2. Install plugins from the catalog — today **token-usage**, **publicuniverse** and **amiga-decoding**. Install **pr-flow** by importing `Wicked-Sick-Ltd/pr-flow`.
+2. Install plugins from the catalog — today **token-usage**, **publicuniverse**, **amiga-decoding** and **obsidian**. Install **pr-flow** by importing `Wicked-Sick-Ltd/pr-flow`.
 
 Upstream source code and releases remain in each plugin's own GitHub repository; vendored trees record the exact commit in `plugins/<name>/VENDORED.md`.
 
@@ -50,7 +50,7 @@ Cursor's published team-marketplace importer still resolves `source` as a direct
 ### 3. Install on a developer machine
 
 1. **Cursor Settings → Plugins** → open the Wicked Sick marketplace.
-2. Install **token-usage**, **publicuniverse** and/or **amiga-decoding**.
+2. Install **token-usage**, **publicuniverse**, **amiga-decoding** and/or **obsidian**.
 3. For **pr-flow**, import `https://github.com/Wicked-Sick-Ltd/pr-flow` (commit `54de23f8d48f1c5c706046b068db139867eea474`). The repository root is the Cursor plugin.
 4. Approve bundled MCP servers when Cursor prompts.
 5. For **token-usage**, ensure `python3` is on the PATH (hooks and stdio MCP). Cloud Agents do not pick up this install automatically; see the token-usage section below.
@@ -100,6 +100,15 @@ Requires authenticated `gh`, Bash and `jq`. Review comments from Claude, Bugbot,
 - **Manifest:** `plugins/amiga-decoding/.cursor-plugin/plugin.json` (version 1.0.0)
 - **Provenance:** `plugins/amiga-decoding/VENDORED.md` (`5ba30a22df385e75135101e3f886471ee0e9ee9d`). Claude, Codex, Copilot and Gemini install this same directory. No icon.
 - **Category:** developer-tools
+
+### obsidian (1.2.0)
+
+- **Purpose:** Vetted Obsidian format skills: Obsidian Flavored Markdown, Bases (`.base`) and JSON Canvas. Skills: `obsidian-markdown`, `obsidian-bases`, `json-canvas`. Instruction-only; no shell, network or credentials.
+- **Vendored path:** `plugins/obsidian/`
+- **Manifest:** `plugins/obsidian/.cursor-plugin/plugin.json` (version 1.2.0)
+- **Provenance:** `plugins/obsidian/VENDORED.md` (`cd51b7076a1207c805cf1d95da4c56cb96bbe859`, `wicked-main` `plugins/obsidian`). Upstream [obsidianmd/obsidian-skills](https://github.com/obsidianmd/obsidian-skills) (MIT, Copyright (c) 2026 Steph Ango). Claude, Codex and Copilot pin that same commit. Gemini installs it from the repository root. No shell tools.
+- **Logo:** `plugins/obsidian/assets/icon.png`
+- **Category:** productivity
 
 ## Catalog file
 
