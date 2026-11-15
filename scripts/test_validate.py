@@ -403,11 +403,16 @@ def obsidian_pin_is_the_merge_commit() -> None:
             raise SystemExit(f"{key} obsidian path is {source.get('path')!r}")
         if source.get("ref") != "wicked-main":
             raise SystemExit(f"{key} obsidian ref is {source.get('ref')!r}")
-        if source.get("url") != "https://github.com/Wicked-Sick-Ltd/obsidian-skills.git":
-            raise SystemExit(f"{key} obsidian url is {source.get('url')!r}")
-        expected_type = "url" if key == "copilot" else "git-subdir"
-        if source.get("source") != expected_type:
-            raise SystemExit(f"{key} obsidian source type is {source.get('source')!r}")
+        if key == "copilot":
+            if source.get("source") != "github":
+                raise SystemExit(f"{key} obsidian source type is {source.get('source')!r}")
+            if source.get("repo") != "Wicked-Sick-Ltd/obsidian-skills":
+                raise SystemExit(f"{key} obsidian repo is {source.get('repo')!r}")
+        else:
+            if source.get("url") != "https://github.com/Wicked-Sick-Ltd/obsidian-skills.git":
+                raise SystemExit(f"{key} obsidian url is {source.get('url')!r}")
+            if source.get("source") != "git-subdir":
+                raise SystemExit(f"{key} obsidian source type is {source.get('source')!r}")
         if key != "codex" and plugin.get("version") != "1.2.0":
             raise SystemExit(f"{key} obsidian version is {plugin.get('version')!r}")
         if key == "codex" and "version" in plugin:
