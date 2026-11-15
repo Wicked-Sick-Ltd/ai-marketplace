@@ -144,6 +144,22 @@
         "authentication": "ON_INSTALL"
       },
       "category": "Education"
+    },
+    {
+      "name": "obsidian",
+      "description": "Vetted Obsidian format skills: Obsidian Flavored Markdown, Bases (.base) and JSON Canvas. Instruction-only; no shell, network or credentials.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/Wicked-Sick-Ltd/obsidian-skills.git",
+        "path": "plugins/obsidian",
+        "ref": "wicked-main",
+        "sha": "cd51b7076a1207c805cf1d95da4c56cb96bbe859"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
     }
   ]
 }

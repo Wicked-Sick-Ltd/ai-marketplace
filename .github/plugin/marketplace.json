@@ -81,6 +81,26 @@
         "email": "craig@wickedsick.com"
       },
       "source": "./plugins/amiga-decoding"
+    },
+    {
+      "name": "obsidian",
+      "version": "1.2.0",
+      "description": "Vetted Obsidian format skills: Obsidian Flavored Markdown, Bases (.base) and JSON Canvas. Instruction-only; no shell, network or credentials.",
+      "repository": "https://github.com/Wicked-Sick-Ltd/obsidian-skills",
+      "license": "MIT",
+      "category": "productivity",
+      "homepage": "https://github.com/Wicked-Sick-Ltd/obsidian-skills/tree/wicked-main/plugins/obsidian",
+      "author": {
+        "name": "Obsidian",
+        "url": "https://obsidian.md/"
+      },
+      "source": {
+        "source": "url",
+        "url": "https://github.com/Wicked-Sick-Ltd/obsidian-skills.git",
+        "path": "plugins/obsidian",
+        "ref": "wicked-main",
+        "sha": "cd51b7076a1207c805cf1d95da4c56cb96bbe859"
+      }
     }
   ]
 }

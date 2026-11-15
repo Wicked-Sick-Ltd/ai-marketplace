@@ -74,6 +74,24 @@ From a checkout of that commit, copy or link the repository into `~/.gemini/conf
 
 Unlike standalone Gemini CLI (which had no session lifecycle hooks), **Google Antigravity natively supports `<plugin_dir>/hooks.json`** with `SessionStart`, `PreInvocation`, `PostInvocation`, `PreToolUse`, `PostToolUse`, and `Stop` events. Antigravity fleet-presence hooks bind `SessionStart`, `PreInvocation`, and `Stop` to `coordctl.py --vendor gemini`. Standalone Gemini CLI remains unsupported for `wizzo-fleet-presence`.
 
+## Obsidian
+
+`obsidian` **1.2.0** at `cd51b7076a1207c805cf1d95da4c56cb96bbe859` is the Wicked Sick review of [obsidianmd/obsidian-skills](https://github.com/obsidianmd/obsidian-skills) (MIT, Copyright (c) 2026 Steph Ango). The pin is `Wicked-Sick-Ltd/obsidian-skills` on `wicked-main`, path `plugins/obsidian`. That commit is the merge of pull request #1. It installs three instruction-only skills: `obsidian-markdown`, `obsidian-bases`, and `json-canvas`. No shell, network, or credentials.
+
+`gemini-extension.json` is at the repository root. The `skills` symlink there points at `plugins/obsidian/skills/`. Use this commit. The repository default branch is not this review.
+
+### Antigravity (`~/.gemini/config/plugins/obsidian` or `agy plugin install`)
+
+From a checkout of that commit, install `plugins/obsidian` (it has `plugin.json` and `skills/`). Copy or link it to `~/.gemini/config/plugins/obsidian`, or run `agy plugin install <path-to-plugins/obsidian>` and `agy plugin list`.
+
+### Legacy Gemini CLI
+
+```bash
+gemini extensions install https://github.com/Wicked-Sick-Ltd/obsidian-skills --ref cd51b7076a1207c805cf1d95da4c56cb96bbe859
+gemini extensions list
+gemini skills list
+```
+
 ## Amiga decoding
 
 `amiga-decoding` 1.0.0 is the vendored directory `plugins/amiga-decoding/` in this repository (skill `amiga-adf-decompile`). `gemini-extension.json` is at the root of that directory. It is instructions only. Python disk utilities are not part of the plugin.

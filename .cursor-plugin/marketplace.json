@@ -5,7 +5,7 @@
     "email": "hello@wickedsick.com"
   },
   "metadata": {
-    "description": "Wicked Sick team marketplace for Cursor: featured plugins for token attribution, public astronomy data, pull-request landing, and Amiga disk decompilation. Import this repository as a Team Marketplace. token-usage, publicuniverse and amiga-decoding are paths under plugins/. pr-flow is pinned to Wicked-Sick-Ltd/pr-flow.",
+    "description": "Wicked Sick team marketplace for Cursor: featured plugins for token attribution, public astronomy data, pull-request landing, Amiga disk decompilation, and Obsidian format skills. Import this repository as a Team Marketplace. token-usage, publicuniverse, amiga-decoding and obsidian are paths under plugins/. pr-flow is pinned to Wicked-Sick-Ltd/pr-flow.",
     "version": "0.4.0"
   },
   "plugins": [
@@ -100,6 +100,28 @@
         "m68k"
       ],
       "category": "developer-tools"
+    },
+    {
+      "name": "obsidian",
+      "source": "plugins/obsidian",
+      "description": "Vetted Obsidian format skills: Obsidian Flavored Markdown, Bases (.base) and JSON Canvas. Instruction-only; no shell, network or credentials.",
+      "version": "1.2.0",
+      "author": {
+        "name": "Obsidian",
+        "url": "https://obsidian.md/"
+      },
+      "homepage": "https://github.com/Wicked-Sick-Ltd/obsidian-skills/tree/wicked-main/plugins/obsidian",
+      "repository": "https://github.com/Wicked-Sick-Ltd/obsidian-skills",
+      "license": "MIT",
+      "keywords": [
+        "obsidian",
+        "markdown",
+        "bases",
+        "canvas",
+        "notes"
+      ],
+      "logo": "plugins/obsidian/assets/icon.png",
+      "category": "productivity"
     }
   ]
 }

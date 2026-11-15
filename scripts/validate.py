@@ -245,7 +245,7 @@ def check_gemini_readme() -> None:
     if not path.is_file():
         fail("missing gemini/README.md")
     text = path.read_text()
-    for name in ("token-usage",):
+    for name in ("token-usage", "obsidian"):
         if name not in text:
             fail(f"gemini/README.md must document the {name!r} extension")
 

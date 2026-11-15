@@ -363,12 +363,79 @@ def amiga_decoding_is_public() -> None:
             raise SystemExit("vendored amiga-decoding contains a forbidden token")
 
 
+OBSIDIAN_SHA = "cd51b7076a1207c805cf1d95da4c56cb96bbe859"
+OBSIDIAN_DESCRIPTION = (
+    "Vetted Obsidian format skills: Obsidian Flavored Markdown, Bases (.base) "
+    "and JSON Canvas. Instruction-only; no shell, network or credentials."
+)
+OBSIDIAN_SKILLS = ("json-canvas", "obsidian-bases", "obsidian-markdown")
+OBSIDIAN_HELD = ("defuddle", "knap", "obsidian-cli", "obsidian-headless")
+
+
+def obsidian_pin_is_the_merge_commit() -> None:
+    """Catalogs pin wicked-main's merge, and the Cursor copy is that same tree."""
+    for key, path in validate.INDEXES.items():
+        data = json.loads(path.read_text())
+        matches = [plugin for plugin in data["plugins"] if plugin.get("name") == "obsidian"]
+        if len(matches) != 1:
+            raise SystemExit(f"{key} should list obsidian once, found {len(matches)}")
+        plugin = matches[0]
+        if plugin.get("description") != OBSIDIAN_DESCRIPTION:
+            raise SystemExit(f"{key} obsidian description drifted: {plugin.get('description')!r}")
+        if not plugin.get("category"):
+            raise SystemExit(f"{key} obsidian is missing category")
+        blob = json.dumps(plugin)
+        for held in OBSIDIAN_HELD:
+            if held in blob:
+                raise SystemExit(f"{key} obsidian entry names held skill {held}")
+        source = plugin.get("source")
+        if key == "cursor":
+            if source != "plugins/obsidian":
+                raise SystemExit(f"cursor obsidian source is {source!r}")
+            if plugin.get("version") != "1.2.0":
+                raise SystemExit(f"cursor obsidian version is {plugin.get('version')!r}")
+            continue
+        if not isinstance(source, dict):
+            raise SystemExit(f"{key} obsidian source must be an object")
+        if source.get("sha") != OBSIDIAN_SHA:
+            raise SystemExit(f"{key} obsidian sha is {source.get('sha')!r}")
+        if source.get("path") != "plugins/obsidian":
+            raise SystemExit(f"{key} obsidian path is {source.get('path')!r}")
+        if source.get("ref") != "wicked-main":
+            raise SystemExit(f"{key} obsidian ref is {source.get('ref')!r}")
+        if source.get("url") != "https://github.com/Wicked-Sick-Ltd/obsidian-skills.git":
+            raise SystemExit(f"{key} obsidian url is {source.get('url')!r}")
+        expected_type = "url" if key == "copilot" else "git-subdir"
+        if source.get("source") != expected_type:
+            raise SystemExit(f"{key} obsidian source type is {source.get('source')!r}")
+        if key != "codex" and plugin.get("version") != "1.2.0":
+            raise SystemExit(f"{key} obsidian version is {plugin.get('version')!r}")
+        if key == "codex" and "version" in plugin:
+            raise SystemExit("codex obsidian must not set version")
+    skills_dir = ROOT / "plugins" / "obsidian" / "skills"
+    found = tuple(sorted(path.name for path in skills_dir.iterdir() if path.is_dir()))
+    if found != OBSIDIAN_SKILLS:
+        raise SystemExit(f"vendored obsidian skills are {found}")
+    vendored = (ROOT / "plugins" / "obsidian" / "VENDORED.md").read_text()
+    if OBSIDIAN_SHA not in vendored:
+        raise SystemExit("VENDORED.md is missing the obsidian pin")
+    if (ROOT / "plugins" / "obsidian" / "held").exists():
+        raise SystemExit("vendored obsidian contains held/")
+    for held in OBSIDIAN_HELD:
+        if (skills_dir / held).exists():
+            raise SystemExit(f"vendored obsidian skills contain {held}")
+    gemini = (ROOT / "gemini" / "README.md").read_text()
+    if OBSIDIAN_SHA not in gemini or "obsidian" not in gemini:
+        raise SystemExit("gemini/README.md must pin obsidian")
+
+
 def main() -> None:
     run_validate()
     vendored_relative_source_is_allowed()
     amiga_decoding_is_public()
     pr_flow_pins_dedicated_repo()
     cursor_accepts_pr_flow_github_pin()
+    obsidian_pin_is_the_merge_commit()
     cursor_rejects_github_source()
     codex_shape_validates()
     codex_native_sources()

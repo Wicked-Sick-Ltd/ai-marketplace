@@ -14,22 +14,23 @@ Other hosts (Claude Code, Codex, Copilot, Gemini) use commit-pinned remote sourc
 | **publicuniverse** | 0.4.2 at `8b1e7b348067194d5a400f6bf16a0144a51d74aa` | Astronomy skills and a public MCP server: tonight's sky, lessons, fact-checking, and catalogue exploration. This copy calls `https://api.publicuniverse.net/mcp`. No API key for interactive MCP. | [public-universe](https://github.com/Wicked-Sick-Ltd/public-universe) |
 | **pr-flow** | 1.1.0 at `54de23f8d48f1c5c706046b068db139867eea474` (not vendored) | Pull-request lifecycle skills (`landing-prs`, `pr`) and `pr-wait.sh`. A finished PR is opened ready for review. Waits for CI and reviewer bots, then fixes or answers every finding. | [pr-flow](https://github.com/Wicked-Sick-Ltd/pr-flow) |
 | **amiga-decoding** | 1.0.0 | Evidence-led Amiga ADF extraction and decompilation to exhaustion, with separate disk, content and semantic coverage. Instructions only. | This repository, `plugins/amiga-decoding/` |
+| **obsidian** | 1.2.0 at `cd51b7076a1207c805cf1d95da4c56cb96bbe859` | Vetted Obsidian format skills: Obsidian Flavored Markdown, Bases (`.base`) and JSON Canvas. Instruction-only; no shell, network or credentials. | [obsidianmd/obsidian-skills](https://github.com/obsidianmd/obsidian-skills) (MIT, Copyright (c) 2026 Steph Ango). This catalog pins the reviewed fork [Wicked-Sick-Ltd/obsidian-skills](https://github.com/Wicked-Sick-Ltd/obsidian-skills) `plugins/obsidian` on `wicked-main`. |
 
-Vendored paths: `plugins/token-usage/`, `plugins/publicuniverse/`, `plugins/amiga-decoding/`.
+Vendored paths: `plugins/token-usage/`, `plugins/publicuniverse/`, `plugins/amiga-decoding/`, `plugins/obsidian/`.
 
-Claude, Codex and Copilot do not install the token-usage or publicuniverse directories. They install the SHAs in the inventory below. `pr-flow` is the same SHA on every host, `54de23f8d48f1c5c706046b068db139867eea474` (manifests 1.1.0). For `publicuniverse` that pin is 0.4.1, whose MCP URL is still `https://api.sol.wickedsick.com/mcp`. Both Public Universe hosts answer; there is no redirect. **amiga-decoding** is the other way around: every host installs `plugins/amiga-decoding/` from this public repository.
+Claude, Codex and Copilot do not install the token-usage or publicuniverse directories. They install the SHAs in the inventory below. `pr-flow` is the same SHA on every host, `54de23f8d48f1c5c706046b068db139867eea474` (manifests 1.1.0). For `publicuniverse` that pin is 0.4.1, whose MCP URL is still `https://api.sol.wickedsick.com/mcp`. Both Public Universe hosts answer; there is no redirect. **amiga-decoding** is the other way around: every host installs `plugins/amiga-decoding/` from this public repository. **obsidian** is pinned at `cd51b7076a1207c805cf1d95da4c56cb96bbe859` on `wicked-main`, path `plugins/obsidian`. Claude, Codex and Copilot install that remote subdirectory. Cursor installs the vendored copy of the same commit. Upstream is [obsidianmd/obsidian-skills](https://github.com/obsidianmd/obsidian-skills) (MIT, Copyright (c) 2026 Steph Ango).
 
 ## Install in Cursor (team marketplace)
 
 1. **Admin:** In the Cursor dashboard, open **Plugins → Team Marketplaces → Import from Repo** and import `https://github.com/Wicked-Sick-Ltd/ai-marketplace`.
 2. Turn on **Auto Refresh** if you want the catalog to track new commits on this repo.
 3. Grant your team access to the marketplace.
-4. **Developers:** **Cursor Settings → Plugins**, open the Wicked Sick marketplace, and install **token-usage**, **publicuniverse**, and/or **amiga-decoding**. Enable the bundled MCP servers when prompted.
+4. **Developers:** **Cursor Settings → Plugins**, open the Wicked Sick marketplace, and install **token-usage**, **publicuniverse**, **amiga-decoding**, and/or **obsidian**. Enable the bundled MCP servers when prompted.
 5. **pr-flow:** import `https://github.com/Wicked-Sick-Ltd/pr-flow` as well. The catalog entry records that commit, and Cursor's importer still loads plugin files from the imported repository. GitHub access to that private repository is required until it is published.
 
 Detailed Cursor notes (formats, vendoring rationale, Cloud Agents, verification): [`docs/cursor-integration.md`](docs/cursor-integration.md).
 
-**Requirements:** Python 3.9+ on the PATH for **token-usage** (stdio MCP and hooks). **publicuniverse** uses the remote HTTP MCP server in the plugin README. **pr-flow** needs authenticated `gh`, Bash, `jq`, and GitHub access to `Wicked-Sick-Ltd/pr-flow`. **amiga-decoding** is instructions only.
+**Requirements:** Python 3.9+ on the PATH for **token-usage** (stdio MCP and hooks). **publicuniverse** uses the remote HTTP MCP server in the plugin README. **pr-flow** needs authenticated `gh`, Bash, `jq`, and GitHub access to `Wicked-Sick-Ltd/pr-flow`. **amiga-decoding** and **obsidian** are instructions only.
 
 Cloud Agents do not inherit a laptop's Cursor plugins. See [Token usage and Cloud Agents](docs/token-usage.md#cursor-cloud-agents).
 
@@ -65,6 +66,7 @@ Versions and SHAs are the values in the index files and `VENDORED.md` files on t
 | publicuniverse | 0.4.1 `bb5919e47e8c8e1eb66c2fc5dcdba9bbc51b2f56` | same SHA | 0.4.1, same SHA | 0.4.2 vendored at `8b1e7b348067194d5a400f6bf16a0144a51d74aa` | `--ref` the 0.4.1 SHA |
 | pr-flow | 1.1.0 `54de23f8d48f1c5c706046b068db139867eea474` | same SHA, no version field | 1.1.0, same SHA | 1.1.0, same SHA | `--ref` that SHA |
 | amiga-decoding | 1.0.0, `./plugins/amiga-decoding` | same directory, no version field | 1.0.0, same directory | 1.0.0, this directory | this directory (`gemini/README.md`) |
+| obsidian | 1.2.0 `cd51b7076a1207c805cf1d95da4c56cb96bbe859` (`wicked-main` `plugins/obsidian`) | same SHA, no version field | 1.2.0, same SHA | 1.2.0 vendored at that SHA | `--ref` that SHA (`gemini/README.md`) |
 | ponytail | 4.10.0 `e3ba2aa6f1e6f0bc4d69eb09c9f0d0a93af56156` | same SHA | 4.10.0, same SHA | not listed | install guide only |
 | wizzo-fleet-presence | 0.1.0 `a41deeb46c1bb016676ec55821dc3fb985586b0f` (`ai-claude-repo` `plugins/wizzo-fleet-presence`) | `06f5c0a19808e91ccc53bba9111346fdbb86ee23` (`ai-codex-repo` `plugins/wizzo-fleet-presence`) | not listed | not listed | not in this index |
 | estate-maintenance, onboarding, product-lifecycle, session-lifecycle | not listed | each `git-subdir` of `ai-codex-repo` at `06f5c0a19808e91ccc53bba9111346fdbb86ee23` | not listed | not listed | not in this index |
@@ -77,6 +79,7 @@ Codex descriptions, from `.agents/plugins/marketplace.json`:
 - **session-lifecycle** — startup and shutdown skills, a portable handoff log, and native lifecycle hooks.
 - **wizzo-fleet-presence** — optional fleet-presence hooks. Presence is self-reported; install and trust on each machine.
 - **amiga-decoding** — evidence-led Amiga ADF extraction and decompilation to exhaustion, with separate disk, content and semantic coverage. Installed from `plugins/amiga-decoding/` in this repository.
+- **obsidian** — vetted Obsidian format skills: Obsidian Flavored Markdown, Bases (`.base`) and JSON Canvas. Instruction-only. Upstream [obsidianmd/obsidian-skills](https://github.com/obsidianmd/obsidian-skills) (MIT, Copyright (c) 2026 Steph Ango). Codex installs `plugins/obsidian` from [Wicked-Sick-Ltd/obsidian-skills](https://github.com/Wicked-Sick-Ltd/obsidian-skills) at `cd51b7076a1207c805cf1d95da4c56cb96bbe859` (`wicked-main`).
 
 `wizzo-fleet-presence` on Claude is the same idea for Claude Code hooks. It is fail-open. The hub credential stays in the operator's local config and is not in this repository.
 
