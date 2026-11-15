@@ -55,6 +55,21 @@ gemini skills list
 
 Windows local installation and discovery of 0.3.0 passed with Gemini CLI 0.62.0 on Node 24.21.0. That check is not a 0.4.2 acceptance pass. There are no extension hooks or credentials.
 
+## PR Flow
+
+Canonical package: [Wicked-Sick-Ltd/pr-flow](https://github.com/Wicked-Sick-Ltd/pr-flow) **1.1.0** at `54de23f8d48f1c5c706046b068db139867eea474`, the same commit Claude, Codex, Copilot and Cursor pin. This repository does not vendor that tree and does not add a Gemini JSON catalog. GitHub access to the private repository is required until it is published.
+
+### Legacy Gemini CLI
+
+```bash
+gemini extensions install https://github.com/Wicked-Sick-Ltd/pr-flow --ref 54de23f8d48f1c5c706046b068db139867eea474
+gemini extensions list
+```
+
+### Antigravity
+
+From a checkout of that commit, copy or link the repository into `~/.gemini/config/plugins/pr-flow`, or run `agy plugin install <path-to-pr-flow>` and `agy plugin list`. The tree ships `plugin.json` and `skills/`.
+
 ## Fleet presence & workflow plugins (`ai-gemini-repo`)
 
 Unlike standalone Gemini CLI (which had no session lifecycle hooks), **Google Antigravity natively supports `<plugin_dir>/hooks.json`** with `SessionStart`, `PreInvocation`, `PostInvocation`, `PreToolUse`, `PostToolUse`, and `Stop` events. Antigravity fleet-presence hooks bind `SessionStart`, `PreInvocation`, and `Stop` to `coordctl.py --vendor gemini`. Standalone Gemini CLI remains unsupported for `wizzo-fleet-presence`.
@@ -70,4 +85,4 @@ gemini extensions install /path/to/ai-marketplace/plugins/amiga-decoding
 gemini extensions list
 ```
 
-The private [ai-gemini-repo](https://github.com/Wicked-Sick-Ltd/ai-gemini-repo) ships the compiled Antigravity workflow plugins (`session-lifecycle`, `pr-flow`, `product-lifecycle`, `estate-maintenance`, `onboarding`, `wizzo-fleet-presence`) under `plugins/<name>/`. An earlier note in this file cited checkout `ecae8ed7404c5b9029c8b97744fd18bb8f5ad455`. On 2026-11-14 `main` was `58a0ff0f20caead17107d8a0ecd0c1413c7b1c7e` (ready-for-review rule, #8). This repository does not pin that repo in a JSON catalog. The Ponytail runtime remains in upstream Ponytail.
+The private [ai-gemini-repo](https://github.com/Wicked-Sick-Ltd/ai-gemini-repo) ships the compiled Antigravity workflow plugins (`session-lifecycle`, `product-lifecycle`, `estate-maintenance`, `onboarding`, `wizzo-fleet-presence`) under `plugins/<name>/`. An earlier note in this file cited checkout `ecae8ed7404c5b9029c8b97744fd18bb8f5ad455`. On 2026-11-14 `main` was `58a0ff0f20caead17107d8a0ecd0c1413c7b1c7e` (ready-for-review rule, #8). This repository does not pin that repo in a JSON catalog. `pr-flow` installs from `Wicked-Sick-Ltd/pr-flow` at the commit in the section above. The Ponytail runtime remains in upstream Ponytail.

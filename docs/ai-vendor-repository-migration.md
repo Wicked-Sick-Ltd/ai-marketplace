@@ -1,6 +1,6 @@
 # AI vendor repository migration implementation plan
 
-> **Status, 2026-11-14:** The index on `main` already uses the renamed repositories (`ai-claude-repo`, `ai-codex-repo`, `ai-cursor-repo`, `ai-gemini-repo`, `ai-copilot-repo`, `ai-grok-repo`). [ai-claude-repo #38](https://github.com/Wicked-Sick-Ltd/ai-claude-repo/pull/38) merged on 2026-09-24. Cursor has since vendored `token-usage`, `publicuniverse` and `pr-flow` under `plugins/`; the "do not vendor" checkbox below is the original plan, not the current Cursor rule (see `AGENTS.md`). The open checkboxes are unfinished operational items (per-machine rollout, inventory reconciliation, live verification). They are not a claim that the catalogues still point at `claude-repo`, `codex-repo` or `cursor-repo`.
+> **Status, 2026-11-14:** The index on `main` already uses the renamed repositories (`ai-claude-repo`, `ai-codex-repo`, `ai-cursor-repo`, `ai-gemini-repo`, `ai-copilot-repo`, `ai-grok-repo`). [ai-claude-repo #38](https://github.com/Wicked-Sick-Ltd/ai-claude-repo/pull/38) merged on 2026-09-24. Cursor has since vendored `token-usage`, `publicuniverse` and `amiga-decoding` under `plugins/`. `pr-flow` is pinned to `Wicked-Sick-Ltd/pr-flow` at `54de23f8d48f1c5c706046b068db139867eea474` and is not a directory in this repository. The "do not vendor" checkbox below is the original plan, not the current Cursor rule for the packages that remain vendored (see `AGENTS.md`). The open checkboxes are unfinished operational items (per-machine rollout, inventory reconciliation, live verification). They are not a claim that the catalogues still point at `claude-repo`, `codex-repo` or `cursor-repo`.
 
 > **For agentic workers:** Use superpowers:executing-plans to implement this plan task by task. Checkboxes track execution, not approval to deploy.
 
@@ -66,7 +66,7 @@ Files: .claude-plugin/marketplace.json, .agents/plugins/marketplace.json, .githu
 - [ ] Change references to renamed first-party source repositories without changing plugin names or marketplace IDs.
 - [ ] Keep Claude and Copilot remote entries pinned to full 40-character commits. Verify each pinned commit remains reachable at the new URL.
 - [x] Codex schema correction (2026-10-01): native `url` and `git-subdir` sources accept `sha` and `ref`. Pin the reviewed packages in the index; verify with the installed CLI.
-- [ ] Keep Cursor entries as in-repo paths only. Point Team Marketplace setup at the repository actually containing the plugin directories; a repository rename does not relocate those directories.
+- [ ] Keep Cursor entries as in-repo paths, except `pr-flow`, which is the whole-repo pin of `Wicked-Sick-Ltd/pr-flow`. Point Team Marketplace setup at the repository actually containing the plugin directories; a repository rename does not relocate those directories.
 - [ ] Keep Gemini installation instructions in gemini/README.md; do not invent a Gemini JSON catalog.
 - [ ] Preserve upstream Ponytail source references unless an independently reviewed upstream update is intended. Do not vendor plugin source here.
 - [x] Align CONTRIBUTING.md and AGENTS.md with current Codex revision support.

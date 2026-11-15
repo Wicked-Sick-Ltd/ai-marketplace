@@ -158,8 +158,25 @@ def check_claude_vendored_versions(data: dict) -> None:
             )
 
 
-def _cursor_source_path(name: str, source: object) -> Path:
-    """Cursor catalogs resolve source as a directory inside this git repo."""
+def _cursor_pr_flow_pin(source: dict) -> bool:
+    """pr-flow is the whole Wicked-Sick-Ltd/pr-flow repo, not a directory here."""
+    if source.get("source") != "github" or "path" in source:
+        return False
+    if source.get("repo") != "Wicked-Sick-Ltd/pr-flow":
+        fail("Cursor plugin 'pr-flow' github source repo must be Wicked-Sick-Ltd/pr-flow")
+    sha = source.get("sha")
+    if not isinstance(sha, str) or not SHA_RE.fullmatch(sha):
+        fail("Cursor plugin 'pr-flow' sha must be 40 lowercase hex chars")
+    return True
+
+
+def _cursor_source_path(name: str, source: object) -> Path | None:
+    """Cursor catalogs resolve source as a directory inside this git repo.
+
+    pr-flow is the exception: a whole-repo github pin. None means that pin.
+    """
+    if name == "pr-flow" and isinstance(source, dict) and _cursor_pr_flow_pin(source):
+        return None
     if isinstance(source, str):
         rel = source
     elif isinstance(source, dict):
@@ -196,6 +213,8 @@ def cursor_plugin_names(data: dict) -> list[str]:
         if source is None:
             fail(f"Cursor plugin {name!r} missing source")
         plugin_dir = _cursor_source_path(name, source)
+        if plugin_dir is None:
+            continue
         if plugin_root:
             plugin_dir = ROOT / plugin_root / plugin_dir.relative_to(ROOT)
         if not plugin_dir.is_dir():
