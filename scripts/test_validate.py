@@ -44,6 +44,101 @@ def run_validate() -> None:
         raise SystemExit(f"unexpected validate.py output:\n{proc.stdout}")
 
 
+PR_FLOW_SHA = "54de23f8d48f1c5c706046b068db139867eea474"
+
+
+def cursor_accepts_pr_flow_github_pin() -> None:
+    source = {
+        "source": "github",
+        "repo": "Wicked-Sick-Ltd/pr-flow",
+        "sha": PR_FLOW_SHA,
+    }
+    if validate._cursor_source_path("pr-flow", source) is not None:
+        raise SystemExit("pr-flow github pin should not resolve to a local directory")
+    expect_fail(
+        "pr-flow pointed at another repository",
+        "Wicked-Sick-Ltd/pr-flow",
+        lambda: validate._cursor_source_path(
+            "pr-flow",
+            {
+                "source": "github",
+                "repo": "Wicked-Sick-Ltd/ai-grok-repo",
+                "sha": "a" * 40,
+            },
+        ),
+    )
+    expect_fail(
+        "pr-flow with a short sha",
+        "40 lowercase hex chars",
+        lambda: validate._cursor_source_path(
+            "pr-flow",
+            {"source": "github", "repo": "Wicked-Sick-Ltd/pr-flow", "sha": "abc"},
+        ),
+    )
+
+
+def pr_flow_pins_dedicated_repo() -> None:
+    expected = {
+        "claude": {
+            "source": "github",
+            "repo": "Wicked-Sick-Ltd/pr-flow",
+            "sha": PR_FLOW_SHA,
+        },
+        "cursor": {
+            "source": "github",
+            "repo": "Wicked-Sick-Ltd/pr-flow",
+            "sha": PR_FLOW_SHA,
+        },
+        "codex": {
+            "source": "url",
+            "url": "https://github.com/Wicked-Sick-Ltd/pr-flow.git",
+            "sha": PR_FLOW_SHA,
+        },
+        "copilot": {
+            "source": "url",
+            "url": "https://github.com/Wicked-Sick-Ltd/pr-flow.git",
+            "sha": PR_FLOW_SHA,
+        },
+    }
+    descriptions = {
+        "claude": "Skills and a Bash/gh/jq helper for creating pull requests, waiting for checks, addressing reviews and landing changes.",
+        "codex": "Skills and a Bash/gh/jq helper for creating pull requests, waiting for checks, addressing reviews and landing changes.",
+        "copilot": "Skills and a Bash/gh/jq helper for creating pull requests, waiting for checks, addressing reviews and landing changes.",
+        "cursor": "Skills and a Bash/gh/jq helper for opening a finished pull request ready for review, waiting for checks, addressing reviews and landing changes.",
+    }
+    categories = {
+        "claude": "productivity",
+        "cursor": "developer-tools",
+        "codex": "Developer Tools",
+        "copilot": "productivity",
+    }
+    for key, source in expected.items():
+        data = json.loads(validate.INDEXES[key].read_text())
+        matches = [plugin for plugin in data["plugins"] if plugin.get("name") == "pr-flow"]
+        if len(matches) != 1:
+            raise SystemExit(f"{key} should list pr-flow once, found {len(matches)}")
+        plugin = matches[0]
+        if plugin.get("source") != source:
+            raise SystemExit(f"{key} pr-flow source is {plugin.get('source')!r}")
+        if plugin.get("description") != descriptions[key]:
+            raise SystemExit(f"{key} pr-flow description drifted")
+        if plugin.get("category") != categories[key]:
+            raise SystemExit(f"{key} pr-flow category is {plugin.get('category')!r}")
+        if key == "codex":
+            policy = plugin.get("policy")
+            if policy != {"installation": "AVAILABLE", "authentication": "ON_INSTALL"}:
+                raise SystemExit(f"codex pr-flow policy is {policy!r}")
+            if "version" in plugin:
+                raise SystemExit("codex pr-flow must not grow a version field")
+        elif plugin.get("version") != "1.1.0":
+            raise SystemExit(f"{key} pr-flow version is {plugin.get('version')!r}")
+        blob = json.dumps(plugin)
+        if "ai-grok-repo" in blob or "plugins/pr-flow" in blob:
+            raise SystemExit(f"{key} pr-flow still points at the old tree")
+    if (ROOT / "plugins" / "pr-flow").exists():
+        raise SystemExit("plugins/pr-flow must not be vendored")
+
+
 def cursor_rejects_github_source() -> None:
     expect_fail(
         "a Cursor GitHub SHA source",
@@ -146,7 +241,7 @@ def duplicate_names_fail_on_every_catalog() -> None:
 
 def codex_native_sources():
     source = {"source": "git-subdir", "url": "https://github.com/Wicked-Sick-Ltd/ai-codex-repo.git",
-              "path": "plugins/pr-flow", "sha": "a" * 40, "ref": "main"}
+              "path": "plugins/example", "sha": "a" * 40, "ref": "main"}
     entry = {"name": "pr-flow", "source": source,
              "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"},
              "category": "Developer Tools"}
@@ -166,24 +261,24 @@ def codex_native_sources():
 
 def vendored_relative_source_is_allowed() -> None:
     names = validate.plugin_names(
-        {"plugins": [{"name": "pr-flow", "source": "./plugins/pr-flow"}]},
+        {"plugins": [{"name": "amiga-decoding", "source": "./plugins/amiga-decoding"}]},
         require_sha=True,
     )
-    if names != ["pr-flow"]:
+    if names != ["amiga-decoding"]:
         raise SystemExit(f"relative Claude source was rejected: {names}")
     codex_names = validate.codex_plugin_names(
         {
             "plugins": [
                 {
-                    "name": "pr-flow",
-                    "source": "./plugins/pr-flow",
+                    "name": "amiga-decoding",
+                    "source": "./plugins/amiga-decoding",
                     "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"},
                     "category": "Developer Tools",
                 }
             ]
         }
     )
-    if codex_names != ["pr-flow"]:
+    if codex_names != ["amiga-decoding"]:
         raise SystemExit(f"relative Codex source was rejected: {codex_names}")
     expect_fail(
         "a missing vendored directory",
@@ -272,6 +367,8 @@ def main() -> None:
     run_validate()
     vendored_relative_source_is_allowed()
     amiga_decoding_is_public()
+    pr_flow_pins_dedicated_repo()
+    cursor_accepts_pr_flow_github_pin()
     cursor_rejects_github_source()
     codex_shape_validates()
     codex_native_sources()

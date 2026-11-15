@@ -6,25 +6,33 @@ Official Cursor docs: [Plugins](https://cursor.com/docs/plugins) and [Plugins re
 
 ## What this repo is
 
-`Wicked-Sick-Ltd/ai-marketplace` is a **catalogue repository**. It lists plugins per host (Claude, Codex, Copilot, Gemini, Cursor) and, for Cursor, contains **vendored copies** of the featured plugins under `plugins/`.
+`Wicked-Sick-Ltd/ai-marketplace` is a **catalogue repository**. It lists plugins per host (Claude, Codex, Copilot, Gemini, Cursor) and, for Cursor, contains **vendored copies** of `token-usage`, `publicuniverse`, and `amiga-decoding` under `plugins/`. `pr-flow` is pinned to its own repository.
 
 For marketplace review, the headline install path is:
 
 1. Import **`Wicked-Sick-Ltd/ai-marketplace`** as a Cursor Team Marketplace.
-2. Install plugins from the catalog — today **token-usage**, **publicuniverse**, **pr-flow** and **amiga-decoding**.
+2. Install plugins from the catalog — today **token-usage**, **publicuniverse** and **amiga-decoding**. Install **pr-flow** by importing `Wicked-Sick-Ltd/pr-flow`.
 
 Upstream source code and releases remain in each plugin's own GitHub repository; vendored trees record the exact commit in `plugins/<name>/VENDORED.md`.
 
 ## Why plugins are vendored for Cursor
 
-Claude-style catalogs in this repo pin plugins with a GitHub `repo` + 40-character `sha`. **Cursor's** `.cursor-plugin/marketplace.json` does not support that shape: each `plugins[].source` must be a **relative path inside the imported git repo**. Cursor then loads:
+Claude-style catalogs in this repo pin plugins with a GitHub `repo` + 40-character `sha`. Cursor's published importer does not resolve that shape: each `plugins[].source` it loads must be a **relative path inside the imported git repo**. Cursor then loads:
 
 - `<source>/.cursor-plugin/plugin.json` (Cursor plugin), or
 - `<source>/plugin.json` (Agent Plugins 1.0)
 
-So featured plugins are copied into `plugins/` here (same approach as `plugins/publicuniverse/`). `scripts/validate.py` rejects GitHub SHA pins in the Cursor index.
+So those featured plugins are copied into `plugins/` here (same approach as `plugins/publicuniverse/`). `scripts/validate.py` rejects GitHub SHA pins in the Cursor index except `pr-flow`.
 
-**Alternative:** Import a plugin's upstream repository directly with **Add to Marketplace** (repo URL). That avoids vendoring but splits installs across multiple marketplace imports. This catalog keeps a **single** import for reviewers and teams.
+`pr-flow`'s canonical repository is the plugin root. The Cursor entry uses the same whole-repo shape as Claude:
+
+```json
+{"source":"github","repo":"Wicked-Sick-Ltd/pr-flow","sha":"54de23f8d48f1c5c706046b068db139867eea474"}
+```
+
+Cursor's published team-marketplace importer still resolves `source` as a directory inside the imported repository ([Plugins reference](https://cursor.com/docs/reference/plugins)). Import `https://github.com/Wicked-Sick-Ltd/pr-flow` when the team marketplace must serve that plugin. GitHub access to the private repository is required until it is published.
+
+**Alternative:** Import a plugin's upstream repository directly with **Add to Marketplace** (repo URL). That avoids vendoring but splits installs across multiple marketplace imports. This catalog keeps a **single** import for the vendored plugins.
 
 ## Install steps (humans)
 
@@ -42,9 +50,10 @@ So featured plugins are copied into `plugins/` here (same approach as `plugins/p
 ### 3. Install on a developer machine
 
 1. **Cursor Settings → Plugins** → open the Wicked Sick marketplace.
-2. Install **token-usage**, **publicuniverse**, **pr-flow** and/or **amiga-decoding**.
-3. Approve bundled MCP servers when Cursor prompts.
-4. For **token-usage**, ensure `python3` is on the PATH (hooks and stdio MCP). Cloud Agents do not pick up this install automatically; see the token-usage section below.
+2. Install **token-usage**, **publicuniverse** and/or **amiga-decoding**.
+3. For **pr-flow**, import `https://github.com/Wicked-Sick-Ltd/pr-flow` (commit `54de23f8d48f1c5c706046b068db139867eea474`). The repository root is the Cursor plugin.
+4. Approve bundled MCP servers when Cursor prompts.
+5. For **token-usage**, ensure `python3` is on the PATH (hooks and stdio MCP). Cloud Agents do not pick up this install automatically; see the token-usage section below.
 
 Skills are available under the plugin's skill entries; MCP tools appear when the server is connected.
 
@@ -78,9 +87,8 @@ Costs shown are API list-price **estimates**, not subscription charges.
 ### pr-flow (1.1.0)
 
 - **Purpose:** Open a finished pull request ready for review, wait until CI and reviewer bots finish, fix or answer every finding, and land the change. Skills: `landing-prs` and `pr`. Helper: `pr-wait.sh`. A draft is only for work still in progress, Critical-tier PRs included (Craig, 5 Nov 2026). A finished PR left as draft is a red flag.
-- **Vendored path:** `plugins/pr-flow/`
-- **Manifest:** `plugins/pr-flow/.cursor-plugin/plugin.json` (version 1.1.0)
-- **Upstream:** https://github.com/Wicked-Sick-Ltd/ai-grok-repo (`plugins/pr-flow`). Claude, Codex and Copilot still pin `62272ec3ec8eba9059fd43ce9a9d1f913e317fbb` (manifests 1.0.0, without the ready-for-review rule). Cursor installs this directory. See `plugins/pr-flow/VENDORED.md`.
+- **Source:** `Wicked-Sick-Ltd/pr-flow` at `54de23f8d48f1c5c706046b068db139867eea474`. Claude, Codex, Copilot and Cursor pin that same commit. Manifests in that tree, including `.cursor-plugin/plugin.json`, are 1.1.0. This repository does not vendor the tree.
+- **Cursor install:** import `https://github.com/Wicked-Sick-Ltd/pr-flow`. GitHub access is required while the repository is private.
 - **Category:** developer-tools
 
 Requires authenticated `gh`, Bash and `jq`. Review comments from Claude, Bugbot, Copilot, CodeQL and Semgrep are in scope.
