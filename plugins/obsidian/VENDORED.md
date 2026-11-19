@@ -10,3 +10,7 @@ Cursor team marketplaces resolve plugin sources as directories inside this catal
 - Claude, Codex, and Copilot do not install this directory. They pin the same commit with `path` `plugins/obsidian` and `ref` `wicked-main`. Gemini installs that same commit from the repository root, where `gemini-extension.json` lives.
 
 Do not edit these files here. To update: check out the reviewed commit, replace this directory's contents (except this file), and update the commit above.
+
+## Catalogue-added files
+
+`NOTICE` and `SUBMISSION.md` are added in this repository and are not part of the pinned commit. Nothing else in this directory is changed. Grok Bot installs from this directory (see `SUBMISSION.md`). The `README.md` install steps are the fork's Claude and Codex steps and are unchanged.

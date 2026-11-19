@@ -1,0 +1,9 @@
+obsidian
+This plugin is a reviewed fork of obsidianmd/obsidian-skills
+(https://github.com/obsidianmd/obsidian-skills), MIT License,
+Copyright (c) 2026 Steph Ango (@kepano). See LICENSE.
+
+The fork (https://github.com/Wicked-Sick-Ltd/obsidian-skills, branch wicked-main)
+is maintained by Wicked Sick Ltd. It keeps the obsidian-markdown, obsidian-bases and
+json-canvas skills unchanged and removes obsidian-cli, obsidian-headless, defuddle
+and knap. It is not an official Obsidian release and is not endorsed by Obsidian.

@@ -138,7 +138,7 @@
     },
     {
       "name": "amiga-decoding",
-      "description": "Evidence-led Amiga ADF extraction and decompilation to exhaustion, with separate disk, content and semantic coverage.",
+      "description": "AI agent plugin that works with any AI agent. Evidence-led Amiga ADF extraction and decompilation to exhaustion, with separate disk, content and semantic coverage.",
       "version": "1.0.0",
       "author": {
         "name": "Wicked Sick Ltd",

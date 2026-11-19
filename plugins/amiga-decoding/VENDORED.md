@@ -10,3 +10,7 @@ here. They do not clone a private repository.
 - `.codex-plugin/plugin.json` keeps the Codex interface block from the Codex sibling package. `.plugin/plugin.json` is the manifest Copilot CLI reads first. `.github/plugin/plugin.json` is the same manifest. `.cursor-plugin/plugin.json` is the Cursor manifest. `plugin.json` and `gemini-extension.json` are the Antigravity / Gemini manifests.
 
 The installable README does not link the private upstream. Provenance for this copy is this file.
+
+## Catalogue-added files
+
+Added in this repository, not present in the private upstream: `LICENSE`, `NOTICE`, `SUBMISSION.md`, `assets/logo.svg`, the `logo` field in `.cursor-plugin/plugin.json`, the "AI agent plugin that works with any AI agent." description prefix on every manifest, and the Grok Bot lines in `README.md`. The skill tree is unchanged.
