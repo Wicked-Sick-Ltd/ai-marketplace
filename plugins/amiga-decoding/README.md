@@ -33,6 +33,10 @@ codex plugin add amiga-decoding@wickedsick
 copilot plugin marketplace add Wicked-Sick-Ltd/ai-marketplace
 copilot plugin install amiga-decoding@wickedsick
 
+# Grok Bot
+# Install from the Grok Bot plugin marketplace or Grok Bot Directory once listed. Until then, add this
+# repository's plugins/amiga-decoding directory as a local plugin and ask Grok Bot to use amiga-adf-decompile.
+
 # Gemini CLI, after cloning this repository
 gemini extensions install /path/to/ai-marketplace/plugins/amiga-decoding
 ```
