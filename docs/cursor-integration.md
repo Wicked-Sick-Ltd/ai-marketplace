@@ -125,3 +125,5 @@ Public listing at [cursor.com/marketplace/publish](https://cursor.com/marketplac
 ## Not in this Cursor catalog
 
 Workflow plugins that live only in private org repos, hook-only fleet templates, and plugins without a Cursor runtime are intentionally omitted from `.cursor-plugin/marketplace.json`. Other hosts may still list them with SHA pins in their index files in this repository.
+
+`agent-workflows` 1.0.0 is one of those private workflow plugins. Skills: `ultracode` (a planned parallel-agent fan-out with scope, understand, change and verify stages) and `ultrareview` (an adversarial review council with a rebuttal round and a judge, read-only by default). Source: `Wicked-Sick-Ltd/ai-cursor-repo` `plugins/agent-workflows` at `9e38413cdd81bd5491dedebc99991910447d66ad`, the head of [pull request #10](https://github.com/Wicked-Sick-Ltd/ai-cursor-repo/pull/10) (`feat/agent-workflows-ultracode-ultrareview`), not `main`. Install it from that repository's `wicked-sick-cursor` marketplace. This catalogue does not vendor the directory. `ai-claude-repo` is excluded because Claude Code has ultracode built in.

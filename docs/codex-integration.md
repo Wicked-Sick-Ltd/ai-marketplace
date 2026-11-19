@@ -96,3 +96,18 @@ These checks did not launch a live agent thread, grant hook trust or contact
 production MCP/mesh services. Review hooks through `/hooks` and complete service
 sign-in on each target machine. The existing config-based presence block must
 be removed before enabling the native fleet plugin to avoid duplicate events.
+
+## Agent workflows
+
+`agent-workflows` (`ultracode`, `ultrareview`) is not in the table above. On
+2026-11-19 `ai-codex-repo` `main` was `08aed9053b480bc7d9c54be5d9c0195874d04114`
+and had no `plugins/agent-workflows`, so this index does not add a `git-subdir`
+pin. A pin on that commit would resolve to a missing directory. When the
+directory is on a commit, append an entry in the same shape as
+`estate-maintenance`: `source` `git-subdir`, `url`
+`https://github.com/Wicked-Sick-Ltd/ai-codex-repo.git`, `path`
+`plugins/agent-workflows`, a 40-character `sha`, `policy` and `category`
+`Developer Tools`, and no `version` field. `ultracode` is a planned
+parallel-agent fan-out with scope, understand, change and verify stages.
+`ultrareview` is an adversarial review council with a rebuttal round and a
+judge. `ai-claude-repo` is excluded because Claude Code has ultracode built in.

@@ -434,6 +434,65 @@ def obsidian_pin_is_the_merge_commit() -> None:
         raise SystemExit("gemini/README.md must pin obsidian")
 
 
+AGENT_WORKFLOWS_CURSOR_SHA = "9e38413cdd81bd5491dedebc99991910447d66ad"
+AGENT_WORKFLOWS_HOST_REPOS = {
+    "claude": "ai-claude-repo",
+    "cursor": "ai-cursor-repo",
+    "codex": "ai-codex-repo",
+    "copilot": "ai-copilot-repo",
+}
+
+
+def agent_workflows_points_at_source_repos() -> None:
+    """Pins name the host repo path. Claude is excluded. Cursor JSON stays an in-repo catalog."""
+    readme = (ROOT / "README.md").read_text()
+    gemini = (ROOT / "gemini" / "README.md").read_text()
+    cursor_doc = (ROOT / "docs" / "cursor-integration.md").read_text()
+    codex_doc = (ROOT / "docs" / "codex-integration.md").read_text()
+    for label, text in (
+        ("README.md", readme),
+        ("gemini/README.md", gemini),
+        ("docs/cursor-integration.md", cursor_doc),
+        ("docs/codex-integration.md", codex_doc),
+    ):
+        for needle in ("agent-workflows", "ultracode", "ultrareview", "plugins/agent-workflows"):
+            if needle not in text:
+                raise SystemExit(f"{label} is missing {needle}")
+        if "Claude Code has ultracode built in" not in text:
+            raise SystemExit(f"{label} must record the ai-claude-repo exclusion")
+    if AGENT_WORKFLOWS_CURSOR_SHA not in readme or AGENT_WORKFLOWS_CURSOR_SHA not in cursor_doc:
+        raise SystemExit("catalogue must cite the ai-cursor-repo agent-workflows commit")
+    inventory = next(
+        (line for line in readme.splitlines() if line.startswith("| agent-workflows")),
+        "",
+    )
+    if "ai-claude-repo" not in inventory or "ai-cursor-repo" not in inventory:
+        raise SystemExit("README agent-workflows row must name ai-claude-repo and ai-cursor-repo")
+    for key, path in validate.INDEXES.items():
+        data = json.loads(path.read_text())
+        matches = [plugin for plugin in data["plugins"] if plugin.get("name") == "agent-workflows"]
+        if key in ("claude", "cursor") and matches:
+            raise SystemExit(f"{key} catalog must not list agent-workflows")
+        if len(matches) > 1:
+            raise SystemExit(f"{key} lists agent-workflows more than once")
+        for plugin in matches:
+            blob = json.dumps(plugin)
+            if "ai-claude-repo" in blob:
+                raise SystemExit(f"{key} agent-workflows points at ai-claude-repo")
+            source = plugin.get("source")
+            if not isinstance(source, dict):
+                raise SystemExit(f"{key} agent-workflows source must point at a repository")
+            if source.get("path") != "plugins/agent-workflows":
+                raise SystemExit(f"{key} agent-workflows path is {source.get('path')!r}")
+            sha = source.get("sha")
+            if not isinstance(sha, str) or not re.fullmatch(r"[0-9a-f]{40}", sha):
+                raise SystemExit(f"{key} agent-workflows sha is {sha!r}")
+            host_repo = AGENT_WORKFLOWS_HOST_REPOS[key]
+            pointer = json.dumps(source)
+            if host_repo not in pointer:
+                raise SystemExit(f"{key} agent-workflows source must name {host_repo}")
+
+
 def main() -> None:
     run_validate()
     vendored_relative_source_is_allowed()
@@ -446,6 +505,7 @@ def main() -> None:
     codex_native_sources()
     sha_pin_is_enforced()
     duplicate_names_fail_on_every_catalog()
+    agent_workflows_points_at_source_repos()
     print("ok: validate tests passed")
 
 
