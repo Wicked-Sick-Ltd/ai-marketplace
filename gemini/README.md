@@ -104,3 +104,11 @@ gemini extensions list
 ```
 
 The private [ai-gemini-repo](https://github.com/Wicked-Sick-Ltd/ai-gemini-repo) ships the compiled Antigravity workflow plugins (`session-lifecycle`, `product-lifecycle`, `estate-maintenance`, `onboarding`, `wizzo-fleet-presence`) under `plugins/<name>/`. An earlier note in this file cited checkout `ecae8ed7404c5b9029c8b97744fd18bb8f5ad455`. On 2026-11-14 `main` was `58a0ff0f20caead17107d8a0ecd0c1413c7b1c7e` (ready-for-review rule, #8). This repository does not pin that repo in a JSON catalog. `pr-flow` installs from `Wicked-Sick-Ltd/pr-flow` at the commit in the section above. The Ponytail runtime remains in upstream Ponytail.
+
+## Agent workflows
+
+`agent-workflows` 1.0.0 is skills only. `ultracode` is a planned parallel-agent fan-out with scope, understand, change and verify stages. `ultrareview` is an adversarial review council with a rebuttal round and a judge, read-only by default.
+
+The Gemini package path is `plugins/agent-workflows` in [ai-gemini-repo](https://github.com/Wicked-Sick-Ltd/ai-gemini-repo). On 2026-11-19 `main` was `81834fe79dbc8194696d32e712d1ec7e7ef374ad` and that path was absent, so this page does not give a `--ref`. This repository does not copy the skills and does not add a JSON catalog entry. `ai-claude-repo` is excluded because Claude Code has ultracode built in.
+
+The skill text that exists today is the Cursor package in [ai-cursor-repo](https://github.com/Wicked-Sick-Ltd/ai-cursor-repo) `plugins/agent-workflows` at `9e38413cdd81bd5491dedebc99991910447d66ad` (pull request [#10](https://github.com/Wicked-Sick-Ltd/ai-cursor-repo/pull/10)). That tree is a Cursor plugin (`.cursor-plugin/plugin.json` 1.0.0). It is a pointer for readers, and it is not a Gemini install.
