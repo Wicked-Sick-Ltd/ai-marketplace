@@ -300,7 +300,7 @@ def vendored_relative_source_is_allowed() -> None:
 
 def amiga_decoding_is_public() -> None:
     description = (
-        "Evidence-led Amiga ADF extraction and decompilation to exhaustion, "
+        "AI agent plugin that works with any AI agent. Evidence-led Amiga ADF extraction and decompilation to exhaustion, "
         "with separate disk, content and semantic coverage."
     )
     private = (
