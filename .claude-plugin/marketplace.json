@@ -184,6 +184,27 @@
         "ref": "wicked-main",
         "sha": "cd51b7076a1207c805cf1d95da4c56cb96bbe859"
       }
+    },
+    {
+      "name": "red-team-review",
+      "description": "Adversarial fact-check and pre-mortem for a claim, plan, launch or merge. The reviewer did not author the work and does not fix it. Instructions only.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Wicked Sick Ltd",
+        "email": "hello@wickedsick.com"
+      },
+      "category": "developer-tools",
+      "homepage": "https://github.com/Wicked-Sick-Ltd/ai-marketplace/tree/main/plugins/red-team-review",
+      "repository": "https://github.com/Wicked-Sick-Ltd/ai-marketplace",
+      "license": "MIT",
+      "keywords": [
+        "red-team",
+        "fact-check",
+        "pre-mortem",
+        "review",
+        "adversarial"
+      ],
+      "source": "./plugins/red-team-review"
     }
   ]
 }

@@ -4,7 +4,7 @@ Cross-host catalogue for agent plugins published by [Wicked Sick Ltd](https://wi
 
 Plugin behaviour lives in each plugin's own upstream repository. For Cursor, we **vendor** `token-usage`, `publicuniverse`, and `amiga-decoding` under `plugins/` so the Team Marketplace can resolve them as in-repo paths (Cursor's published importer resolves `source` as a directory in this repository). See each plugin's `VENDORED.md` for the upstream repo and commit. Those copies can lag upstream `main`; the `VENDORED.md` files say when they do. **pr-flow** is not vendored: every host pins [Wicked-Sick-Ltd/pr-flow](https://github.com/Wicked-Sick-Ltd/pr-flow) at `54de23f8d48f1c5c706046b068db139867eea474`.
 
-Other hosts (Claude Code, Codex, Copilot, Gemini) use commit-pinned remote sources in their index files in this same repository. **amiga-decoding** is the exception: every host installs the vendored directory in this public repository, because the upstream checkouts are private. A host's version can differ from the Cursor copy when the pins do.
+Other hosts (Claude Code, Codex, Copilot, Gemini) use commit-pinned remote sources in their index files in this same repository. **amiga-decoding** is the exception: every host installs the vendored directory in this public repository, because the upstream checkouts are private. **red-team-review** is published in this repository; every host installs `plugins/red-team-review/`. A host's version can differ from the Cursor copy when the pins do.
 
 ## Featured plugins (Cursor)
 
@@ -15,22 +15,23 @@ Other hosts (Claude Code, Codex, Copilot, Gemini) use commit-pinned remote sourc
 | **pr-flow** | 1.1.0 at `54de23f8d48f1c5c706046b068db139867eea474` (not vendored) | Pull-request lifecycle skills (`landing-prs`, `pr`) and `pr-wait.sh`. A finished PR is opened ready for review. Waits for CI and reviewer bots, then fixes or answers every finding. | [pr-flow](https://github.com/Wicked-Sick-Ltd/pr-flow) |
 | **amiga-decoding** | 1.0.0 | Works with any AI agent. Evidence-led Amiga ADF extraction and decompilation to exhaustion, with separate disk, content and semantic coverage. Instructions only. | This repository, `plugins/amiga-decoding/` |
 | **obsidian** | 1.2.0 at `cd51b7076a1207c805cf1d95da4c56cb96bbe859` | Vetted Obsidian format skills: Obsidian Flavored Markdown, Bases (`.base`) and JSON Canvas. Instruction-only; no shell, network or credentials. | [obsidianmd/obsidian-skills](https://github.com/obsidianmd/obsidian-skills) (MIT, Copyright (c) 2026 Steph Ango). This catalog pins the reviewed fork [Wicked-Sick-Ltd/obsidian-skills](https://github.com/Wicked-Sick-Ltd/obsidian-skills) `plugins/obsidian` on `wicked-main`. |
+| **red-team-review** | 1.0.0 | Adversarial fact-check and pre-mortem for a claim, plan, launch or merge. The reviewer did not author the work and does not fix it. Instructions only. | This repository, `plugins/red-team-review/` |
 
-Vendored paths: `plugins/token-usage/`, `plugins/publicuniverse/`, `plugins/amiga-decoding/`, `plugins/obsidian/`.
+Vendored paths: `plugins/token-usage/`, `plugins/publicuniverse/`, `plugins/amiga-decoding/`, `plugins/obsidian/`, `plugins/red-team-review/`.
 
-Claude, Codex and Copilot do not install the token-usage or publicuniverse directories. They install the SHAs in the inventory below. `pr-flow` is the same SHA on every host, `54de23f8d48f1c5c706046b068db139867eea474` (manifests 1.1.0). For `publicuniverse` that pin is 0.4.1, whose MCP URL is still `https://api.sol.wickedsick.com/mcp`. Both Public Universe hosts answer; there is no redirect. **amiga-decoding** is the other way around: every host installs `plugins/amiga-decoding/` from this public repository. **obsidian** is pinned at `cd51b7076a1207c805cf1d95da4c56cb96bbe859` on `wicked-main`, path `plugins/obsidian`. Claude, Codex and Copilot install that remote subdirectory. Cursor installs the vendored copy of the same commit. Upstream is [obsidianmd/obsidian-skills](https://github.com/obsidianmd/obsidian-skills) (MIT, Copyright (c) 2026 Steph Ango).
+Claude, Codex and Copilot do not install the token-usage or publicuniverse directories. They install the SHAs in the inventory below. `pr-flow` is the same SHA on every host, `54de23f8d48f1c5c706046b068db139867eea474` (manifests 1.1.0). For `publicuniverse` that pin is 0.4.1, whose MCP URL is still `https://api.sol.wickedsick.com/mcp`. Both Public Universe hosts answer; there is no redirect. **amiga-decoding** is the other way around: every host installs `plugins/amiga-decoding/` from this public repository. **red-team-review** is the same shape: every host installs `plugins/red-team-review/` from this public repository. **obsidian** is pinned at `cd51b7076a1207c805cf1d95da4c56cb96bbe859` on `wicked-main`, path `plugins/obsidian`. Claude, Codex and Copilot install that remote subdirectory. Cursor installs the vendored copy of the same commit. Upstream is [obsidianmd/obsidian-skills](https://github.com/obsidianmd/obsidian-skills) (MIT, Copyright (c) 2026 Steph Ango).
 
 ## Install in Cursor (team marketplace)
 
 1. **Admin:** In the Cursor dashboard, open **Plugins → Team Marketplaces → Import from Repo** and import `https://github.com/Wicked-Sick-Ltd/ai-marketplace`.
 2. Turn on **Auto Refresh** if you want the catalog to track new commits on this repo.
 3. Grant your team access to the marketplace.
-4. **Developers:** **Cursor Settings → Plugins**, open the Wicked Sick marketplace, and install **token-usage**, **publicuniverse**, **amiga-decoding**, and/or **obsidian**. Enable the bundled MCP servers when prompted.
+4. **Developers:** **Cursor Settings → Plugins**, open the Wicked Sick marketplace, and install **token-usage**, **publicuniverse**, **amiga-decoding**, **obsidian**, and/or **red-team-review**. Enable the bundled MCP servers when prompted.
 5. **pr-flow:** import `https://github.com/Wicked-Sick-Ltd/pr-flow` as well. The catalog entry records that commit, and Cursor's importer still loads plugin files from the imported repository. GitHub access to that private repository is required until it is published.
 
 Detailed Cursor notes (formats, vendoring rationale, Cloud Agents, verification): [`docs/cursor-integration.md`](docs/cursor-integration.md).
 
-**Requirements:** Python 3.9+ on the PATH for **token-usage** (stdio MCP and hooks). **publicuniverse** uses the remote HTTP MCP server in the plugin README. **pr-flow** needs authenticated `gh`, Bash, `jq`, and GitHub access to `Wicked-Sick-Ltd/pr-flow`. **amiga-decoding** and **obsidian** are instructions only.
+**Requirements:** Python 3.9+ on the PATH for **token-usage** (stdio MCP and hooks). **publicuniverse** uses the remote HTTP MCP server in the plugin README. **pr-flow** needs authenticated `gh`, Bash, `jq`, and GitHub access to `Wicked-Sick-Ltd/pr-flow`. **amiga-decoding**, **obsidian**, and **red-team-review** are instructions only.
 
 Cloud Agents do not inherit a laptop's Cursor plugins. See [Token usage and Cloud Agents](docs/token-usage.md#cursor-cloud-agents).
 
@@ -44,16 +45,16 @@ claude plugin marketplace add Wicked-Sick-Ltd/ai-marketplace
 codex plugin marketplace add Wicked-Sick-Ltd/ai-marketplace --sparse .agents/plugins
 ```
 
-Then install plugins by name from that marketplace (for example `claude plugin install token-usage@wickedsick`, or `/plugin install amiga-decoding@wickedsick`). Copilot CLI, Gemini, and Codex workflow details are in the host-specific index files listed below. **amiga-decoding** is a directory in this checkout. A Codex `--sparse .agents/plugins` add omits `plugins/amiga-decoding`; add the full marketplace before installing that plugin.
+Then install plugins by name from that marketplace (for example `claude plugin install token-usage@wickedsick`, or `/plugin install amiga-decoding@wickedsick`). Copilot CLI, Gemini, and Codex workflow details are in the host-specific index files listed below. **amiga-decoding** and **red-team-review** are directories in this checkout. A Codex `--sparse .agents/plugins` add omits `plugins/amiga-decoding` and `plugins/red-team-review`; add the full marketplace before installing those plugins.
 
 ## Catalog indexes
 
 | Client | File | Notes |
 | --- | --- | --- |
 | Cursor | `.cursor-plugin/marketplace.json` | In-repo paths for vendored plugins. `pr-flow` is a `github` pin of `Wicked-Sick-Ltd/pr-flow`. Marketplace `metadata.version` is `0.4.0`. |
-| Claude Code / Grok | `.claude-plugin/marketplace.json` | GitHub SHA pins, except amiga-decoding at `./plugins/amiga-decoding`. Marketplace name `wickedsick`. |
-| ChatGPT / Codex | `.agents/plugins/marketplace.json` | Native Codex packages, SHA pins, except amiga-decoding at `./plugins/amiga-decoding` |
-| Copilot CLI | `.github/plugin/marketplace.json` | SHA pins, except amiga-decoding at `./plugins/amiga-decoding`. Marketplace `metadata.version` is `0.1.0`. |
+| Claude Code / Grok | `.claude-plugin/marketplace.json` | GitHub SHA pins, except amiga-decoding at `./plugins/amiga-decoding` and red-team-review at `./plugins/red-team-review`. Marketplace name `wickedsick`. |
+| ChatGPT / Codex | `.agents/plugins/marketplace.json` | Native Codex packages, SHA pins, except amiga-decoding at `./plugins/amiga-decoding` and red-team-review at `./plugins/red-team-review` |
+| Copilot CLI | `.github/plugin/marketplace.json` | SHA pins, except amiga-decoding at `./plugins/amiga-decoding` and red-team-review at `./plugins/red-team-review`. Marketplace `metadata.version` is `0.1.0`. |
 | Antigravity / Gemini | [`gemini/README.md`](gemini/README.md) | Antigravity (`~/.gemini/config/plugins/`, `agy plugin`) and legacy Gemini CLI. No JSON catalog. |
 
 ## Catalog inventory
@@ -67,6 +68,7 @@ Versions and SHAs are the values in the index files and `VENDORED.md` files on t
 | pr-flow | 1.1.0 `54de23f8d48f1c5c706046b068db139867eea474` | same SHA, no version field | 1.1.0, same SHA | 1.1.0, same SHA | `--ref` that SHA |
 | amiga-decoding | 1.0.0, `./plugins/amiga-decoding` | same directory, no version field | 1.0.0, same directory | 1.0.0, this directory | this directory (`gemini/README.md`) |
 | obsidian | 1.2.0 `cd51b7076a1207c805cf1d95da4c56cb96bbe859` (`wicked-main` `plugins/obsidian`) | same SHA, no version field | 1.2.0, same SHA | 1.2.0 vendored at that SHA | `--ref` that SHA (`gemini/README.md`) |
+| red-team-review | 1.0.0, `./plugins/red-team-review` | same directory, no version field | 1.0.0, same directory | 1.0.0, this directory | this directory (`gemini/README.md`) |
 | ponytail | 4.10.0 `e3ba2aa6f1e6f0bc4d69eb09c9f0d0a93af56156` | same SHA | 4.10.0, same SHA | not listed | install guide only |
 | wizzo-fleet-presence | 0.1.0 `a41deeb46c1bb016676ec55821dc3fb985586b0f` (`ai-claude-repo` `plugins/wizzo-fleet-presence`) | `06f5c0a19808e91ccc53bba9111346fdbb86ee23` (`ai-codex-repo` `plugins/wizzo-fleet-presence`) | not listed | not listed | not in this index |
 | estate-maintenance, onboarding, product-lifecycle, session-lifecycle | not listed | each `git-subdir` of `ai-codex-repo` at `06f5c0a19808e91ccc53bba9111346fdbb86ee23` | not listed | not listed | not in this index |
@@ -80,6 +82,7 @@ Codex descriptions, from `.agents/plugins/marketplace.json`:
 - **session-lifecycle** — startup and shutdown skills, a portable handoff log, and native lifecycle hooks.
 - **wizzo-fleet-presence** — optional fleet-presence hooks. Presence is self-reported; install and trust on each machine.
 - **amiga-decoding** — evidence-led Amiga ADF extraction and decompilation to exhaustion, with separate disk, content and semantic coverage. Installed from `plugins/amiga-decoding/` in this repository.
+- **red-team-review** — adversarial fact-check and pre-mortem for a claim, plan, launch or merge. The reviewer did not author the work and does not fix it. Installed from `plugins/red-team-review/` in this repository. Instructions only.
 - **obsidian** — vetted Obsidian format skills: Obsidian Flavored Markdown, Bases (`.base`) and JSON Canvas. Instruction-only. Upstream [obsidianmd/obsidian-skills](https://github.com/obsidianmd/obsidian-skills) (MIT, Copyright (c) 2026 Steph Ango). Codex installs `plugins/obsidian` from [Wicked-Sick-Ltd/obsidian-skills](https://github.com/Wicked-Sick-Ltd/obsidian-skills) at `cd51b7076a1207c805cf1d95da4c56cb96bbe859` (`wicked-main`).
 
 `wizzo-fleet-presence` on Claude is the same idea for Claude Code hooks. It is fail-open. The hub credential stays in the operator's local config and is not in this repository.

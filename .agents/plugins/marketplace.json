@@ -160,6 +160,16 @@
         "authentication": "ON_INSTALL"
       },
       "category": "Productivity"
+    },
+    {
+      "name": "red-team-review",
+      "description": "Adversarial fact-check and pre-mortem for a claim, plan, launch or merge. The reviewer did not author the work and does not fix it. Instructions only.",
+      "source": "./plugins/red-team-review",
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
     }
   ]
 }

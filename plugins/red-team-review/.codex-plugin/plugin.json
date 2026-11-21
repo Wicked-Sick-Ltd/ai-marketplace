@@ -1,0 +1,20 @@
+{
+  "name": "red-team-review",
+  "version": "1.0.0",
+  "description": "Adversarial fact-check and pre-mortem for a claim, plan, launch or merge. The reviewer did not author the work and does not fix it. Instructions only.",
+  "author": {
+    "name": "Wicked Sick Ltd",
+    "email": "hello@wickedsick.com"
+  },
+  "license": "MIT",
+  "interface": {
+    "displayName": "Red-team review",
+    "shortDescription": "Adversarial fact-check and pre-mortem",
+    "longDescription": "Prove a claim or plan wrong before it ships. Frame testable statements, run a prosecutor and a defender separately, judge each one, then write a pre-mortem. The reviewer did not author the work and does not fix it.",
+    "developerName": "Wicked Sick Ltd",
+    "category": "Developer Tools",
+    "defaultPrompt": "Use $red-team-review to fact-check this claim before it ships.",
+    "capabilities": []
+  },
+  "skills": "./skills/"
+}

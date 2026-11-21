@@ -1,0 +1,18 @@
+{
+  "name": "red-team-review",
+  "version": "1.0.0",
+  "description": "Adversarial fact-check and pre-mortem for a claim, plan, launch or merge. The reviewer did not author the work and does not fix it. Instructions only.",
+  "author": {
+    "name": "Wicked Sick Ltd",
+    "email": "hello@wickedsick.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "red-team",
+    "fact-check",
+    "pre-mortem",
+    "review",
+    "adversarial"
+  ],
+  "skills": "./skills/"
+}
