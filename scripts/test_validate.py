@@ -493,10 +493,101 @@ def agent_workflows_points_at_source_repos() -> None:
                 raise SystemExit(f"{key} agent-workflows source must name {host_repo}")
 
 
+RED_TEAM_DESCRIPTION = (
+    "Adversarial fact-check and pre-mortem for a claim, plan, launch or merge. "
+    "The reviewer did not author the work and does not fix it. Instructions only."
+)
+
+
+def red_team_review_is_public() -> None:
+    """The public skill is listed on every host and names no private source."""
+    private = (
+        "ultracode",
+        "ultrareview",
+        "ai-grok-repo",
+        "ai-codex-repo",
+        "ai-claude-repo",
+        "ai-copilot-repo",
+        "ai-cursor-repo",
+        "ai-gemini-repo",
+        "skills-port",
+        "code-catalog",
+    )
+    forbidden_sha256 = {
+        "0cf548e7d1b66f356aa4be3ef8884f0ec14158a3c09300fb08ed9651f39ddd25",
+        "6c2a806e0d9ad255834ea0e03f159be06346c0d7718d6e1e31c330243509fdd6",
+    }
+    token_re = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}|[A-Za-z0-9]+")
+    for key, path in validate.INDEXES.items():
+        data = json.loads(path.read_text())
+        matches = [plugin for plugin in data["plugins"] if plugin.get("name") == "red-team-review"]
+        if len(matches) != 1:
+            raise SystemExit(f"{key} should list red-team-review once, found {len(matches)}")
+        plugin = matches[0]
+        if plugin.get("description") != RED_TEAM_DESCRIPTION:
+            raise SystemExit(f"{key} red-team-review description drifted: {plugin.get('description')!r}")
+        blob = json.dumps(plugin)
+        for token in private:
+            if token in blob:
+                raise SystemExit(f"{key} red-team-review still contains {token}")
+        for token in token_re.findall(blob):
+            digest = hashlib.sha256(token.encode()).hexdigest()
+            if digest in forbidden_sha256:
+                raise SystemExit(f"{key} red-team-review contains a forbidden token")
+        source = plugin.get("source")
+        if key == "cursor":
+            if source != "plugins/red-team-review":
+                raise SystemExit(f"cursor source is {source!r}")
+        elif source != "./plugins/red-team-review":
+            raise SystemExit(f"{key} source is {source!r}")
+        if key == "codex":
+            if "version" in plugin:
+                raise SystemExit("codex red-team-review must not set version")
+            if plugin.get("category") != "Developer Tools":
+                raise SystemExit(f"codex category is {plugin.get('category')!r}")
+        else:
+            if plugin.get("version") != "1.0.0":
+                raise SystemExit(f"{key} version is {plugin.get('version')!r}")
+            if plugin.get("category") != "developer-tools":
+                raise SystemExit(f"{key} category is {plugin.get('category')!r}")
+    manifest = ROOT / "plugins" / "red-team-review" / ".claude-plugin" / "plugin.json"
+    version = json.loads(manifest.read_text())["version"]
+    if version != "1.0.0":
+        raise SystemExit(f"plugin.json version is {version!r}")
+    extension = ROOT / "plugins" / "red-team-review" / "gemini-extension.json"
+    if not extension.is_file():
+        raise SystemExit("gemini-extension.json must sit at the plugin root")
+    if "contextFileName" in extension.read_text():
+        raise SystemExit("gemini-extension.json must not set contextFileName")
+    skill = ROOT / "plugins" / "red-team-review" / "skills" / "red-team-review" / "SKILL.md"
+    skill_text = skill.read_text()
+    if "an independent code review" not in skill_text:
+        raise SystemExit("skill must pair code review with an independent review")
+    if "ultracode" in skill_text or "ultrareview" in skill_text:
+        raise SystemExit("skill must not name unpublished review workflows")
+    plugin_text = "\n".join(
+        path.read_text() for path in (ROOT / "plugins" / "red-team-review").rglob("*") if path.is_file()
+    )
+    for token in private:
+        if token in plugin_text:
+            raise SystemExit(f"red-team-review plugin contains {token}")
+    for token in token_re.findall(plugin_text):
+        digest = hashlib.sha256(token.encode()).hexdigest()
+        if digest in forbidden_sha256:
+            raise SystemExit("red-team-review plugin contains a forbidden token")
+    readme = (ROOT / "README.md").read_text()
+    if not any(line.startswith("| red-team-review |") for line in readme.splitlines()):
+        raise SystemExit("README inventory is missing red-team-review")
+    gemini = (ROOT / "gemini" / "README.md").read_text()
+    if "plugins/red-team-review" not in gemini:
+        raise SystemExit("gemini/README.md must document red-team-review")
+
+
 def main() -> None:
     run_validate()
     vendored_relative_source_is_allowed()
     amiga_decoding_is_public()
+    red_team_review_is_public()
     pr_flow_pins_dedicated_repo()
     cursor_accepts_pr_flow_github_pin()
     obsidian_pin_is_the_merge_commit()

@@ -105,6 +105,17 @@ gemini extensions list
 
 The private [ai-gemini-repo](https://github.com/Wicked-Sick-Ltd/ai-gemini-repo) ships the compiled Antigravity workflow plugins (`session-lifecycle`, `product-lifecycle`, `estate-maintenance`, `onboarding`, `wizzo-fleet-presence`) under `plugins/<name>/`. An earlier note in this file cited checkout `ecae8ed7404c5b9029c8b97744fd18bb8f5ad455`. On 2026-11-14 `main` was `58a0ff0f20caead17107d8a0ecd0c1413c7b1c7e` (ready-for-review rule, #8). This repository does not pin that repo in a JSON catalog. `pr-flow` installs from `Wicked-Sick-Ltd/pr-flow` at the commit in the section above. The Ponytail runtime remains in upstream Ponytail.
 
+## Red-team review
+
+`red-team-review` 1.0.0 is the directory `plugins/red-team-review/` in this repository (skill `red-team-review`). `gemini-extension.json` is at the root of that directory. It is instructions only: an adversarial fact-check and a pre-mortem. The reviewer did not author the work and does not fix it. For code, pair it with an independent code review.
+
+Clone this repository, then install that directory:
+
+```bash
+gemini extensions install /path/to/ai-marketplace/plugins/red-team-review
+gemini extensions list
+```
+
 ## Agent workflows
 
 `agent-workflows` 1.0.0 is skills only. `ultracode` is a planned parallel-agent fan-out with scope, understand, change and verify stages. `ultrareview` is an adversarial review council with a rebuttal round and a judge, read-only by default.
