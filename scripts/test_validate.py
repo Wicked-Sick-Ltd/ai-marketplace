@@ -10,6 +10,7 @@ import json
 import re
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -259,10 +260,27 @@ def codex_native_sources():
     validate.check_names("Codex", ["token-usage"])
 
 
+TREE_HASH_ONLY = (
+    "- Skill tree at that commit: `cef77bef9a6706476bd5fdae6cb42d534fac676e`.\n"
+)
+UPSTREAM_SHA = "5ba30a22df385e75135101e3f886471ee0e9ee9d"
+
+
 def relative_source_records_provenance() -> None:
-    """A directory source names an upstream commit or the first-party form."""
-    if not validate.provenance_recorded("5ba30a22df385e75135101e3f886471ee0e9ee9d"):
-        raise SystemExit("an upstream commit must count as provenance")
+    """A directory source names a labeled upstream commit or the first-party form."""
+    if validate.provenance_recorded(UPSTREAM_SHA):
+        raise SystemExit("a bare hash must not count as an upstream commit")
+    if validate.provenance_recorded(TREE_HASH_ONLY):
+        raise SystemExit("a tree hash must not count as an upstream commit")
+    if validate.upstream_commit_recorded(TREE_HASH_ONLY):
+        raise SystemExit("a tree-hash line must not match an upstream-commit label")
+    for labeled in (
+        f"- Source commit: `{UPSTREAM_SHA}`\n",
+        f"- Content source: `Wicked-Sick-Ltd/example` `plugins/name` at `{UPSTREAM_SHA}` (`main`).\n",
+        f"- Pinned checkout: `Wicked-Sick-Ltd/example` `plugins/name` at `{UPSTREAM_SHA}`.\n",
+    ):
+        if not validate.provenance_recorded(labeled):
+            raise SystemExit(f"labeled upstream commit was rejected: {labeled}")
     if not validate.provenance_recorded(
         "Provenance: first-party. There is no separate upstream pin."
     ):
@@ -272,13 +290,102 @@ def relative_source_records_provenance() -> None:
     if validate.provenance_recorded("short sha 5ba30a22 is not a pin"):
         raise SystemExit("a short hex string must not count as an upstream commit")
     amiga = (ROOT / "plugins" / "amiga-decoding" / "VENDORED.md").read_text()
-    if not validate.PROVENANCE_SHA_RE.search(amiga):
+    if not validate.upstream_commit_recorded(amiga):
         raise SystemExit("amiga-decoding VENDORED.md must record an upstream commit")
+    without_source = "\n".join(
+        line for line in amiga.splitlines() if "Content source:" not in line
+    )
+    if validate.provenance_recorded(without_source):
+        raise SystemExit("amiga-decoding provenance must not survive on its skill-tree hash")
+    for name in ("token-usage", "publicuniverse", "obsidian"):
+        text = (ROOT / "plugins" / name / "VENDORED.md").read_text()
+        if not validate.upstream_commit_recorded(text):
+            raise SystemExit(f"{name} VENDORED.md must identify an upstream commit")
     red_team = (ROOT / "plugins" / "red-team-review" / "VENDORED.md").read_text()
     if validate.NO_UPSTREAM_PIN not in red_team.lower():
         raise SystemExit("red-team-review VENDORED.md must state there is no separate upstream pin")
-    if validate.PROVENANCE_SHA_RE.search(red_team):
+    if validate.upstream_commit_recorded(red_team):
         raise SystemExit("red-team-review VENDORED.md must not invent an upstream commit")
+
+
+def _cursor_package(plugin_dir: Path, vendored: str | None) -> None:
+    manifest_dir = plugin_dir / ".cursor-plugin"
+    manifest_dir.mkdir(parents=True, exist_ok=True)
+    (manifest_dir / "plugin.json").write_text("{}\n")
+    if vendored is not None:
+        (plugin_dir / "VENDORED.md").write_text(vendored)
+
+
+def provenance_is_required_for_cursor_and_relative_sources() -> None:
+    """Missing and unlabeled provenance fail on Claude, Codex, and Cursor."""
+    saved = validate.ROOT
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            validate.ROOT = root
+            bare = root / "plugins" / "bare"
+            _cursor_package(bare, None)
+            claude = {"plugins": [{"name": "bare", "source": "./plugins/bare"}]}
+            expect_fail(
+                "a relative source with no VENDORED.md",
+                "needs",
+                lambda: validate.plugin_names(claude, require_sha=True),
+            )
+            expect_fail(
+                "a Cursor package with no VENDORED.md",
+                "needs",
+                lambda: validate.cursor_plugin_names(
+                    {"plugins": [{"name": "bare", "source": "plugins/bare"}]}
+                ),
+            )
+            _cursor_package(bare, TREE_HASH_ONLY)
+            expect_fail(
+                "a relative source whose only hash is a tree hash",
+                "must identify an upstream commit",
+                lambda: validate.plugin_names(claude, require_sha=True),
+            )
+            expect_fail(
+                "a Cursor package whose only hash is a tree hash",
+                "must identify an upstream commit",
+                lambda: validate.cursor_plugin_names(
+                    {"plugins": [{"name": "bare", "source": "plugins/bare"}]}
+                ),
+            )
+            (bare / "VENDORED.md").write_text("")
+            expect_fail(
+                "a Cursor package with an empty VENDORED.md",
+                "must identify an upstream commit",
+                lambda: validate.cursor_plugin_names(
+                    {"plugins": [{"name": "bare", "source": "plugins/bare"}]}
+                ),
+            )
+            resolved = root / "vendor" / "plugins" / "bare"
+            _cursor_package(resolved, "There is no separate upstream pin.\n")
+            (bare / "VENDORED.md").write_text(TREE_HASH_ONLY)
+            names = validate.cursor_plugin_names(
+                {
+                    "metadata": {"pluginRoot": "vendor"},
+                    "plugins": [{"name": "bare", "source": "plugins/bare"}],
+                }
+            )
+            if names != ["bare"]:
+                raise SystemExit(f"Cursor provenance ignored pluginRoot: {names}")
+            (resolved / "VENDORED.md").write_text(TREE_HASH_ONLY)
+            (bare / "VENDORED.md").write_text(
+                f"- Source commit: `{UPSTREAM_SHA}`\n"
+            )
+            expect_fail(
+                "a Cursor package whose resolved directory has only a tree hash",
+                "must identify an upstream commit",
+                lambda: validate.cursor_plugin_names(
+                    {
+                        "metadata": {"pluginRoot": "vendor"},
+                        "plugins": [{"name": "bare", "source": "plugins/bare"}],
+                    }
+                ),
+            )
+    finally:
+        validate.ROOT = saved
 
 
 def vendored_relative_source_is_allowed() -> None:
@@ -628,6 +735,7 @@ def red_team_review_is_public() -> None:
 def main() -> None:
     run_validate()
     relative_source_records_provenance()
+    provenance_is_required_for_cursor_and_relative_sources()
     vendored_relative_source_is_allowed()
     amiga_decoding_is_public()
     red_team_review_is_public()

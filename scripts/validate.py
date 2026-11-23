@@ -10,8 +10,13 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
-PROVENANCE_SHA_RE = re.compile(r"(?<![0-9a-f])[0-9a-f]{40}(?![0-9a-f])")
 NO_UPSTREAM_PIN = "no separate upstream pin"
+# The pin is the sha on one of these lines. A hash elsewhere, including a
+# skill-tree hash, is not an upstream commit.
+UPSTREAM_COMMIT_LINE = re.compile(
+    r"(?i)^[ \t]*[-*]?\s*(?:content source|source commit|pinned checkout)\b"
+)
+BACKTICK_SHA = re.compile(r"`[0-9a-f]{40}`")
 
 INDEXES = {
     "claude": ROOT / ".claude-plugin" / "marketplace.json",
@@ -123,13 +128,48 @@ def codex_plugin_names(data: dict) -> list[str]:
     return names
 
 
-def provenance_recorded(text: str) -> bool:
-    """A relative source names an upstream commit, or states there is none.
+def upstream_commit_recorded(text: str) -> bool:
+    """True when a labeled line names the upstream commit in backticks.
 
-    Vendored copies record a 40-character commit. A first-party package
-    published in this repository states that there is no separate upstream pin.
+    Accepted labels are Content source, Source commit, and Pinned checkout.
+    The first backtick sha on that line is the pin. A sha on any other line
+    does not count.
     """
-    return PROVENANCE_SHA_RE.search(text) is not None or NO_UPSTREAM_PIN in text.lower()
+    return any(
+        UPSTREAM_COMMIT_LINE.match(line) and BACKTICK_SHA.search(line)
+        for line in text.splitlines()
+    )
+
+
+def provenance_recorded(text: str) -> bool:
+    """A package names an upstream commit, or states there is none.
+
+    Vendored copies identify the commit on a Content source, Source commit,
+    or Pinned checkout line. A first-party package published in this
+    repository states that there is no separate upstream pin.
+    """
+    return upstream_commit_recorded(text) or NO_UPSTREAM_PIN in text.lower()
+
+
+def _require_provenance(name: str, plugin_dir: Path) -> None:
+    """The resolved plugin directory must record provenance in VENDORED.md."""
+    vendored = plugin_dir / "VENDORED.md"
+    try:
+        display = vendored.relative_to(ROOT)
+    except ValueError:
+        display = vendored
+    if not vendored.is_file():
+        fail(
+            f"plugin {name!r} needs {display} with an upstream commit "
+            "(Content source, Source commit, or Pinned checkout) "
+            "or a statement that there is no separate upstream pin"
+        )
+    if not provenance_recorded(vendored.read_text()):
+        fail(
+            f"plugin {name!r} {display} must identify an upstream commit "
+            "on a Content source, Source commit, or Pinned checkout line, "
+            "or state that there is no separate upstream pin"
+        )
 
 
 def _require_vendored_dir(name: str, source: str) -> None:
@@ -146,14 +186,7 @@ def _require_vendored_dir(name: str, source: str) -> None:
         or not (ROOT / rel).is_dir()
     ):
         fail(f"plugin {name!r} vendored source is not a directory under ./plugins/: {source}")
-    vendored = ROOT / rel / "VENDORED.md"
-    if not vendored.is_file():
-        fail(f"plugin {name!r} relative source needs {vendored.relative_to(ROOT)}")
-    if not provenance_recorded(vendored.read_text()):
-        fail(
-            f"plugin {name!r} VENDORED.md must record an upstream commit "
-            "or state that there is no separate upstream pin"
-        )
+    _require_provenance(name, ROOT / rel)
 
 
 def check_claude_vendored_versions(data: dict) -> None:
@@ -245,6 +278,7 @@ def cursor_plugin_names(data: dict) -> list[str]:
                 f"Cursor plugin {name!r} needs {cursor_manifest.relative_to(ROOT)} "
                 f"or {agent_manifest.relative_to(ROOT)}"
             )
+        _require_provenance(name, plugin_dir)
     return names
 
 
