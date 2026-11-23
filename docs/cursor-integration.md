@@ -110,6 +110,15 @@ Requires authenticated `gh`, Bash and `jq`. Review comments from Claude, Bugbot,
 - **Logo:** `plugins/obsidian/assets/icon.png`
 - **Category:** productivity
 
+### red-team-review (1.0.0)
+
+- **Purpose:** Adversarial fact-check and pre-mortem for a claim, plan, launch or merge. Skill: `red-team-review`. The reviewer did not author the work and does not fix it. The package ships no tool, network client or credential file. Carrying out the review may use the host's tools and the network.
+- **Path:** `plugins/red-team-review/`
+- **Manifest:** `plugins/red-team-review/.cursor-plugin/plugin.json` (version 1.0.0)
+- **Provenance:** `plugins/red-team-review/VENDORED.md`. First-party package published in this repository. There is no separate upstream pin. Claude, Codex, Copilot and Gemini install this same directory.
+- **Logo:** `plugins/red-team-review/assets/logo.svg`
+- **Category:** developer-tools
+
 ## Catalog file
 
 The Cursor index is `.cursor-plugin/marketplace.json` (`name: wickedsick`). Marketplace owner contact: **hello@wickedsick.com**.

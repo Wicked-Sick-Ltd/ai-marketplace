@@ -259,6 +259,28 @@ def codex_native_sources():
     validate.check_names("Codex", ["token-usage"])
 
 
+def relative_source_records_provenance() -> None:
+    """A directory source names an upstream commit or the first-party form."""
+    if not validate.provenance_recorded("5ba30a22df385e75135101e3f886471ee0e9ee9d"):
+        raise SystemExit("an upstream commit must count as provenance")
+    if not validate.provenance_recorded(
+        "Provenance: first-party. There is no separate upstream pin."
+    ):
+        raise SystemExit("the first-party statement must count as provenance")
+    if validate.provenance_recorded("This package declares nothing about provenance."):
+        raise SystemExit("a VENDORED.md without a commit or the statement must fail")
+    if validate.provenance_recorded("short sha 5ba30a22 is not a pin"):
+        raise SystemExit("a short hex string must not count as an upstream commit")
+    amiga = (ROOT / "plugins" / "amiga-decoding" / "VENDORED.md").read_text()
+    if not validate.PROVENANCE_SHA_RE.search(amiga):
+        raise SystemExit("amiga-decoding VENDORED.md must record an upstream commit")
+    red_team = (ROOT / "plugins" / "red-team-review" / "VENDORED.md").read_text()
+    if validate.NO_UPSTREAM_PIN not in red_team.lower():
+        raise SystemExit("red-team-review VENDORED.md must state there is no separate upstream pin")
+    if validate.PROVENANCE_SHA_RE.search(red_team):
+        raise SystemExit("red-team-review VENDORED.md must not invent an upstream commit")
+
+
 def vendored_relative_source_is_allowed() -> None:
     names = validate.plugin_names(
         {"plugins": [{"name": "amiga-decoding", "source": "./plugins/amiga-decoding"}]},
@@ -563,8 +585,25 @@ def red_team_review_is_public() -> None:
     skill_text = skill.read_text()
     if "an independent code review" not in skill_text:
         raise SystemExit("skill must pair code review with an independent review")
+    if "fresh, isolated contexts" not in skill_text or "same conversation" not in skill_text:
+        raise SystemExit("skill must require fresh isolated prosecutor and defender contexts")
+    if "independent session" not in skill_text:
+        raise SystemExit("skill must ask for independent sessions when the host cannot isolate contexts")
+    if "or passes" in skill_text:
+        raise SystemExit("skill must not offer a same-conversation pass as isolation")
+    if "the fallback when neither HOLDS nor FAILS is established" not in skill_text:
+        raise SystemExit("UNPROVEN must be the fallback when neither HOLDS nor FAILS is established")
+    if "material objection" not in skill_text:
+        raise SystemExit("UNPROVEN must cover an unanswered material objection")
     if "ultracode" in skill_text or "ultrareview" in skill_text:
         raise SystemExit("skill must not name unpublished review workflows")
+    package_readme = (ROOT / "plugins" / "red-team-review" / "README.md").read_text()
+    if "does not run tools" in package_readme or "call a network" in package_readme:
+        raise SystemExit("package README must not guarantee the review avoids tools or the network")
+    if "Carrying out the review may" not in package_readme:
+        raise SystemExit("package README must distinguish the package from the review")
+    if "agy plugin install" not in package_readme:
+        raise SystemExit("package README must include the Antigravity install")
     plugin_text = "\n".join(
         path.read_text() for path in (ROOT / "plugins" / "red-team-review").rglob("*") if path.is_file()
     )
@@ -581,10 +620,14 @@ def red_team_review_is_public() -> None:
     gemini = (ROOT / "gemini" / "README.md").read_text()
     if "plugins/red-team-review" not in gemini:
         raise SystemExit("gemini/README.md must document red-team-review")
+    section = gemini.split("## Red-team review", 1)[-1].split("\n## ", 1)[0]
+    if "agy plugin install" not in section or "gemini extensions install" not in section:
+        raise SystemExit("gemini/README.md must give Antigravity and Gemini CLI install steps")
 
 
 def main() -> None:
     run_validate()
+    relative_source_records_provenance()
     vendored_relative_source_is_allowed()
     amiga_decoding_is_public()
     red_team_review_is_public()

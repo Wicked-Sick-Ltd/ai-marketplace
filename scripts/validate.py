@@ -10,6 +10,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
+PROVENANCE_SHA_RE = re.compile(r"(?<![0-9a-f])[0-9a-f]{40}(?![0-9a-f])")
+NO_UPSTREAM_PIN = "no separate upstream pin"
 
 INDEXES = {
     "claude": ROOT / ".claude-plugin" / "marketplace.json",
@@ -121,6 +123,15 @@ def codex_plugin_names(data: dict) -> list[str]:
     return names
 
 
+def provenance_recorded(text: str) -> bool:
+    """A relative source names an upstream commit, or states there is none.
+
+    Vendored copies record a 40-character commit. A first-party package
+    published in this repository states that there is no separate upstream pin.
+    """
+    return PROVENANCE_SHA_RE.search(text) is not None or NO_UPSTREAM_PIN in text.lower()
+
+
 def _require_vendored_dir(name: str, source: str) -> None:
     """A public plugin in this repo is a directory under ./plugins/<name>."""
     prefix = "./plugins/"
@@ -135,6 +146,14 @@ def _require_vendored_dir(name: str, source: str) -> None:
         or not (ROOT / rel).is_dir()
     ):
         fail(f"plugin {name!r} vendored source is not a directory under ./plugins/: {source}")
+    vendored = ROOT / rel / "VENDORED.md"
+    if not vendored.is_file():
+        fail(f"plugin {name!r} relative source needs {vendored.relative_to(ROOT)}")
+    if not provenance_recorded(vendored.read_text()):
+        fail(
+            f"plugin {name!r} VENDORED.md must record an upstream commit "
+            "or state that there is no separate upstream pin"
+        )
 
 
 def check_claude_vendored_versions(data: dict) -> None:
