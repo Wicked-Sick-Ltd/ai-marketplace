@@ -257,6 +257,19 @@ def codex_native_sources():
     missing_pin = dict(entry, source={k: v for k, v in source.items() if k != "sha"})
     expect_fail("unversioned Codex source", "pinned to a sha",
                 lambda: validate.codex_plugin_names({"plugins": [missing_pin]}))
+    local_base = {
+        "name": "bare",
+        "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"},
+        "category": "Developer Tools",
+    }
+    for path in ("", "   ", None, 1):
+        expect_fail(
+            f"a Codex local source with path {path!r}",
+            "missing path",
+            lambda path=path: validate.codex_plugin_names(
+                {"plugins": [dict(local_base, source={"source": "local", "path": path})]}
+            ),
+        )
     validate.check_names("Codex", ["token-usage"])
 
 
@@ -326,6 +339,16 @@ def provenance_is_required_for_cursor_and_relative_sources() -> None:
             bare = root / "plugins" / "bare"
             _cursor_package(bare, None)
             claude = {"plugins": [{"name": "bare", "source": "./plugins/bare"}]}
+            codex_local = {
+                "plugins": [
+                    {
+                        "name": "bare",
+                        "source": {"source": "local", "path": "./plugins/bare"},
+                        "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"},
+                        "category": "Developer Tools",
+                    }
+                ]
+            }
             expect_fail(
                 "a relative source with no VENDORED.md",
                 "needs",
@@ -337,6 +360,11 @@ def provenance_is_required_for_cursor_and_relative_sources() -> None:
                 lambda: validate.cursor_plugin_names(
                     {"plugins": [{"name": "bare", "source": "plugins/bare"}]}
                 ),
+            )
+            expect_fail(
+                "a Codex local source with no VENDORED.md",
+                "needs",
+                lambda: validate.codex_plugin_names(codex_local),
             )
             _cursor_package(bare, TREE_HASH_ONLY)
             expect_fail(
@@ -350,6 +378,11 @@ def provenance_is_required_for_cursor_and_relative_sources() -> None:
                 lambda: validate.cursor_plugin_names(
                     {"plugins": [{"name": "bare", "source": "plugins/bare"}]}
                 ),
+            )
+            expect_fail(
+                "a Codex local source whose only hash is a tree hash",
+                "must identify an upstream commit",
+                lambda: validate.codex_plugin_names(codex_local),
             )
             (bare / "VENDORED.md").write_text("")
             expect_fail(
@@ -409,6 +442,20 @@ def vendored_relative_source_is_allowed() -> None:
     )
     if codex_names != ["amiga-decoding"]:
         raise SystemExit(f"relative Codex source was rejected: {codex_names}")
+    local_names = validate.codex_plugin_names(
+        {
+            "plugins": [
+                {
+                    "name": "amiga-decoding",
+                    "source": {"source": "local", "path": "./plugins/amiga-decoding"},
+                    "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"},
+                    "category": "Developer Tools",
+                }
+            ]
+        }
+    )
+    if local_names != ["amiga-decoding"]:
+        raise SystemExit(f"Codex local source was rejected: {local_names}")
     expect_fail(
         "a missing vendored directory",
         "not a directory",

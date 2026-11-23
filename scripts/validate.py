@@ -108,8 +108,11 @@ def codex_plugin_names(data: dict) -> list[str]:
                 fail(f"Codex plugin {name!r} needs a source pinned to a sha (40 lowercase hex chars)")
             if source_type in ("url", "git-subdir") and not source.get("url"):
                 fail(f"Codex plugin {name!r} source is missing url")
-            if source_type == "local" and not source.get("path"):
-                fail(f"Codex plugin {name!r} local source is missing path")
+            if source_type == "local":
+                path = source.get("path")
+                if not isinstance(path, str) or not path.strip():
+                    fail(f"Codex plugin {name!r} local source is missing path")
+                _require_vendored_dir(name, path)
             if source_type == "git-subdir":
                 path = source.get("path")
                 if not isinstance(path, str) or not path.strip():
