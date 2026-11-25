@@ -4,7 +4,7 @@ Cross-host catalogue for agent plugins published by [Wicked Sick Ltd](https://wi
 
 Plugin behaviour lives in each plugin's own upstream repository. For Cursor, we **vendor** `token-usage`, `publicuniverse`, and `amiga-decoding` under `plugins/` so the Team Marketplace can resolve them as in-repo paths (Cursor's published importer resolves `source` as a directory in this repository). See each plugin's `VENDORED.md` for the upstream repo and commit. Those copies can lag upstream `main`; the `VENDORED.md` files say when they do. **pr-flow** is not vendored: every host pins [Wicked-Sick-Ltd/pr-flow](https://github.com/Wicked-Sick-Ltd/pr-flow) at `54de23f8d48f1c5c706046b068db139867eea474`.
 
-Other hosts (Claude Code, Codex, Copilot, Gemini) use commit-pinned remote sources in their index files in this same repository. **amiga-decoding** is the exception: every host installs the vendored directory in this public repository, because the upstream checkouts are private. **red-team-review** is published in this repository; every host installs `plugins/red-team-review/`. A host's version can differ from the Cursor copy when the pins do.
+Other hosts (Claude Code, Codex, Copilot, Gemini) use commit-pinned remote sources in their index files in this same repository. **amiga-decoding** is the exception: every host installs the vendored directory in this public repository, because the upstream checkouts are private. **red-team-review** is first-party and published in this repository; every host installs `plugins/red-team-review/`. Its `VENDORED.md` records that there is no separate upstream pin. A host's version can differ from the Cursor copy when the pins do.
 
 ## Featured plugins (Cursor)
 

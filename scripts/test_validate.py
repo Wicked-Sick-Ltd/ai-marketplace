@@ -10,6 +10,7 @@ import json
 import re
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -256,7 +257,168 @@ def codex_native_sources():
     missing_pin = dict(entry, source={k: v for k, v in source.items() if k != "sha"})
     expect_fail("unversioned Codex source", "pinned to a sha",
                 lambda: validate.codex_plugin_names({"plugins": [missing_pin]}))
+    local_base = {
+        "name": "bare",
+        "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"},
+        "category": "Developer Tools",
+    }
+    for path in ("", "   ", None, 1):
+        expect_fail(
+            f"a Codex local source with path {path!r}",
+            "missing path",
+            lambda path=path: validate.codex_plugin_names(
+                {"plugins": [dict(local_base, source={"source": "local", "path": path})]}
+            ),
+        )
     validate.check_names("Codex", ["token-usage"])
+
+
+TREE_HASH_ONLY = (
+    "- Skill tree at that commit: `cef77bef9a6706476bd5fdae6cb42d534fac676e`.\n"
+)
+UPSTREAM_SHA = "5ba30a22df385e75135101e3f886471ee0e9ee9d"
+
+
+def relative_source_records_provenance() -> None:
+    """A directory source names a labeled upstream commit or the first-party form."""
+    if validate.provenance_recorded(UPSTREAM_SHA):
+        raise SystemExit("a bare hash must not count as an upstream commit")
+    if validate.provenance_recorded(TREE_HASH_ONLY):
+        raise SystemExit("a tree hash must not count as an upstream commit")
+    if validate.upstream_commit_recorded(TREE_HASH_ONLY):
+        raise SystemExit("a tree-hash line must not match an upstream-commit label")
+    for labeled in (
+        f"- Source commit: `{UPSTREAM_SHA}`\n",
+        f"- Content source: `Wicked-Sick-Ltd/example` `plugins/name` at `{UPSTREAM_SHA}` (`main`).\n",
+        f"- Pinned checkout: `Wicked-Sick-Ltd/example` `plugins/name` at `{UPSTREAM_SHA}`.\n",
+    ):
+        if not validate.provenance_recorded(labeled):
+            raise SystemExit(f"labeled upstream commit was rejected: {labeled}")
+    if not validate.provenance_recorded(
+        "Provenance: first-party. There is no separate upstream pin."
+    ):
+        raise SystemExit("the first-party statement must count as provenance")
+    if validate.provenance_recorded("This package declares nothing about provenance."):
+        raise SystemExit("a VENDORED.md without a commit or the statement must fail")
+    if validate.provenance_recorded("short sha 5ba30a22 is not a pin"):
+        raise SystemExit("a short hex string must not count as an upstream commit")
+    amiga = (ROOT / "plugins" / "amiga-decoding" / "VENDORED.md").read_text()
+    if not validate.upstream_commit_recorded(amiga):
+        raise SystemExit("amiga-decoding VENDORED.md must record an upstream commit")
+    without_source = "\n".join(
+        line for line in amiga.splitlines() if "Content source:" not in line
+    )
+    if validate.provenance_recorded(without_source):
+        raise SystemExit("amiga-decoding provenance must not survive on its skill-tree hash")
+    for name in ("token-usage", "publicuniverse", "obsidian"):
+        text = (ROOT / "plugins" / name / "VENDORED.md").read_text()
+        if not validate.upstream_commit_recorded(text):
+            raise SystemExit(f"{name} VENDORED.md must identify an upstream commit")
+    red_team = (ROOT / "plugins" / "red-team-review" / "VENDORED.md").read_text()
+    if validate.NO_UPSTREAM_PIN not in red_team.lower():
+        raise SystemExit("red-team-review VENDORED.md must state there is no separate upstream pin")
+    if validate.upstream_commit_recorded(red_team):
+        raise SystemExit("red-team-review VENDORED.md must not invent an upstream commit")
+
+
+def _cursor_package(plugin_dir: Path, vendored: str | None) -> None:
+    manifest_dir = plugin_dir / ".cursor-plugin"
+    manifest_dir.mkdir(parents=True, exist_ok=True)
+    (manifest_dir / "plugin.json").write_text("{}\n")
+    if vendored is not None:
+        (plugin_dir / "VENDORED.md").write_text(vendored)
+
+
+def provenance_is_required_for_cursor_and_relative_sources() -> None:
+    """Missing and unlabeled provenance fail on Claude, Codex, and Cursor."""
+    saved = validate.ROOT
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            validate.ROOT = root
+            bare = root / "plugins" / "bare"
+            _cursor_package(bare, None)
+            claude = {"plugins": [{"name": "bare", "source": "./plugins/bare"}]}
+            codex_local = {
+                "plugins": [
+                    {
+                        "name": "bare",
+                        "source": {"source": "local", "path": "./plugins/bare"},
+                        "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"},
+                        "category": "Developer Tools",
+                    }
+                ]
+            }
+            expect_fail(
+                "a relative source with no VENDORED.md",
+                "needs",
+                lambda: validate.plugin_names(claude, require_sha=True),
+            )
+            expect_fail(
+                "a Cursor package with no VENDORED.md",
+                "needs",
+                lambda: validate.cursor_plugin_names(
+                    {"plugins": [{"name": "bare", "source": "plugins/bare"}]}
+                ),
+            )
+            expect_fail(
+                "a Codex local source with no VENDORED.md",
+                "needs",
+                lambda: validate.codex_plugin_names(codex_local),
+            )
+            _cursor_package(bare, TREE_HASH_ONLY)
+            expect_fail(
+                "a relative source whose only hash is a tree hash",
+                "must identify an upstream commit",
+                lambda: validate.plugin_names(claude, require_sha=True),
+            )
+            expect_fail(
+                "a Cursor package whose only hash is a tree hash",
+                "must identify an upstream commit",
+                lambda: validate.cursor_plugin_names(
+                    {"plugins": [{"name": "bare", "source": "plugins/bare"}]}
+                ),
+            )
+            expect_fail(
+                "a Codex local source whose only hash is a tree hash",
+                "must identify an upstream commit",
+                lambda: validate.codex_plugin_names(codex_local),
+            )
+            (bare / "VENDORED.md").write_text("")
+            expect_fail(
+                "a Cursor package with an empty VENDORED.md",
+                "must identify an upstream commit",
+                lambda: validate.cursor_plugin_names(
+                    {"plugins": [{"name": "bare", "source": "plugins/bare"}]}
+                ),
+            )
+            resolved = root / "vendor" / "plugins" / "bare"
+            _cursor_package(resolved, "There is no separate upstream pin.\n")
+            (bare / "VENDORED.md").write_text(TREE_HASH_ONLY)
+            names = validate.cursor_plugin_names(
+                {
+                    "metadata": {"pluginRoot": "vendor"},
+                    "plugins": [{"name": "bare", "source": "plugins/bare"}],
+                }
+            )
+            if names != ["bare"]:
+                raise SystemExit(f"Cursor provenance ignored pluginRoot: {names}")
+            (resolved / "VENDORED.md").write_text(TREE_HASH_ONLY)
+            (bare / "VENDORED.md").write_text(
+                f"- Source commit: `{UPSTREAM_SHA}`\n"
+            )
+            expect_fail(
+                "a Cursor package whose resolved directory has only a tree hash",
+                "must identify an upstream commit",
+                lambda: validate.cursor_plugin_names(
+                    {
+                        "metadata": {"pluginRoot": "vendor"},
+                        "plugins": [{"name": "bare", "source": "plugins/bare"}],
+                    }
+                ),
+            )
+    finally:
+        validate.ROOT = saved
 
 
 def vendored_relative_source_is_allowed() -> None:
@@ -280,6 +442,20 @@ def vendored_relative_source_is_allowed() -> None:
     )
     if codex_names != ["amiga-decoding"]:
         raise SystemExit(f"relative Codex source was rejected: {codex_names}")
+    local_names = validate.codex_plugin_names(
+        {
+            "plugins": [
+                {
+                    "name": "amiga-decoding",
+                    "source": {"source": "local", "path": "./plugins/amiga-decoding"},
+                    "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"},
+                    "category": "Developer Tools",
+                }
+            ]
+        }
+    )
+    if local_names != ["amiga-decoding"]:
+        raise SystemExit(f"Codex local source was rejected: {local_names}")
     expect_fail(
         "a missing vendored directory",
         "not a directory",
@@ -563,8 +739,25 @@ def red_team_review_is_public() -> None:
     skill_text = skill.read_text()
     if "an independent code review" not in skill_text:
         raise SystemExit("skill must pair code review with an independent review")
+    if "fresh, isolated contexts" not in skill_text or "same conversation" not in skill_text:
+        raise SystemExit("skill must require fresh isolated prosecutor and defender contexts")
+    if "independent session" not in skill_text:
+        raise SystemExit("skill must ask for independent sessions when the host cannot isolate contexts")
+    if "or passes" in skill_text:
+        raise SystemExit("skill must not offer a same-conversation pass as isolation")
+    if "the fallback when neither HOLDS nor FAILS is established" not in skill_text:
+        raise SystemExit("UNPROVEN must be the fallback when neither HOLDS nor FAILS is established")
+    if "material objection" not in skill_text:
+        raise SystemExit("UNPROVEN must cover an unanswered material objection")
     if "ultracode" in skill_text or "ultrareview" in skill_text:
         raise SystemExit("skill must not name unpublished review workflows")
+    package_readme = (ROOT / "plugins" / "red-team-review" / "README.md").read_text()
+    if "does not run tools" in package_readme or "call a network" in package_readme:
+        raise SystemExit("package README must not guarantee the review avoids tools or the network")
+    if "Carrying out the review may" not in package_readme:
+        raise SystemExit("package README must distinguish the package from the review")
+    if "agy plugin install" not in package_readme:
+        raise SystemExit("package README must include the Antigravity install")
     plugin_text = "\n".join(
         path.read_text() for path in (ROOT / "plugins" / "red-team-review").rglob("*") if path.is_file()
     )
@@ -581,10 +774,15 @@ def red_team_review_is_public() -> None:
     gemini = (ROOT / "gemini" / "README.md").read_text()
     if "plugins/red-team-review" not in gemini:
         raise SystemExit("gemini/README.md must document red-team-review")
+    section = gemini.split("## Red-team review", 1)[-1].split("\n## ", 1)[0]
+    if "agy plugin install" not in section or "gemini extensions install" not in section:
+        raise SystemExit("gemini/README.md must give Antigravity and Gemini CLI install steps")
 
 
 def main() -> None:
     run_validate()
+    relative_source_records_provenance()
+    provenance_is_required_for_cursor_and_relative_sources()
     vendored_relative_source_is_allowed()
     amiga_decoding_is_public()
     red_team_review_is_public()

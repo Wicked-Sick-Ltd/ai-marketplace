@@ -13,14 +13,14 @@ Goal: prove a claim or plan wrong before the world does. The reviewer never wrot
 - Write the claim(s) or plan as numbered, testable statements. Vague claims get rewritten until they can be checked, or flagged as unfalsifiable.
 - Note the stakes: who sees it, what breaks if it's wrong, and whether it's reversible.
 
-## 2. Adversarial debate (two independent agents or passes)
+## 2. Adversarial debate (two independent agents)
 - **Prosecutor:** assume each statement is FALSE. Build the strongest case: counter-evidence, edge cases, stale data, wrong assumptions, misread sources, overpromising wording.
 - **Defender:** assume it is TRUE and gather primary evidence (code, live behaviour, official docs, first-party data). Opinion and our own earlier docs don't count as proof.
-- Run them separately so neither anchors on the other. Use agents that didn't author the work.
+- Run the prosecutor and the defender in fresh, isolated contexts so neither sees the other's work. A later pass in the same conversation is not a fresh context. If the host cannot open a separate context, ask for an independent session for each role and wait for it. Use agents that didn't author the work.
 - **Judge:** for each statement, give one verdict:
   - HOLDS: primary evidence supports it and the prosecutor's best point is answered.
   - FAILS: there's counter-evidence. Give the correction.
-  - UNPROVEN: no primary evidence either way. Soften it, remove it, or get the evidence.
+  - UNPROVEN: the fallback when neither HOLDS nor FAILS is established. That includes missing, incomplete or inconclusive primary evidence, and a statement that has some support while a material objection is still unanswered. Soften it, remove it, or get the evidence.
 
 ## 3. Pre-mortem
 - Assume it's 30 days later and this went badly wrong. List the 5-10 most plausible failure stories (technical, factual, legal, brand, customer, cost).

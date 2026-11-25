@@ -107,9 +107,15 @@ The private [ai-gemini-repo](https://github.com/Wicked-Sick-Ltd/ai-gemini-repo) 
 
 ## Red-team review
 
-`red-team-review` 1.0.0 is the directory `plugins/red-team-review/` in this repository (skill `red-team-review`). `gemini-extension.json` is at the root of that directory. It is instructions only: an adversarial fact-check and a pre-mortem. The reviewer did not author the work and does not fix it. For code, pair it with an independent code review.
+`red-team-review` 1.0.0 is the directory `plugins/red-team-review/` in this repository (skill `red-team-review`). `plugin.json` and `gemini-extension.json` are at the root of that directory. The package ships no tool, network client or credential file. Carrying out the review may use the host's tools and the network to read code, live behaviour and official documentation. It is an adversarial fact-check and a pre-mortem. The reviewer did not author the work and does not fix it. For code, pair it with an independent code review.
 
-Clone this repository, then install that directory:
+Clone this repository, then install that directory on the host you use.
+
+### Antigravity (`~/.gemini/config/plugins/red-team-review` or `agy plugin install`)
+
+From a checkout of this repository, install `plugins/red-team-review` (it has `plugin.json` and `skills/`). Copy or link it to `~/.gemini/config/plugins/red-team-review`, or run `agy plugin install <path-to-plugins/red-team-review>` and `agy plugin list`.
+
+### Legacy Gemini CLI
 
 ```bash
 gemini extensions install /path/to/ai-marketplace/plugins/red-team-review

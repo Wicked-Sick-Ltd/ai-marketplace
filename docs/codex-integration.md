@@ -1,12 +1,13 @@
 # Codex integration and troubleshooting
 
 `ai-marketplace` is the entry point; `ai-codex-repo` owns the first-party
-Codex packages, setup and private configuration. The public index contains **eleven**
-native packages. Organisation access is required for the first-party sources.
+Codex packages, setup and private configuration. The public index contains **twelve**
+native packages. Organisation access is required for the private first-party sources.
+`red-team-review` is the first-party package published in this repository.
 
 ## Current Codex entries
 
-From `.agents/plugins/marketplace.json`. None of these entries set a `version` field. The SHA is the pin.
+From `.agents/plugins/marketplace.json`. None of these entries set a `version` field. Remote entries are pinned by SHA. `amiga-decoding` and `red-team-review` are directories in this repository.
 
 | Plugin | Source | SHA |
 | --- | --- | --- |
@@ -15,14 +16,15 @@ From `.agents/plugins/marketplace.json`. None of these entries set a `version` f
 | product-lifecycle | `ai-codex-repo` `plugins/product-lifecycle` | `06f5c0a19808e91ccc53bba9111346fdbb86ee23` |
 | session-lifecycle | `ai-codex-repo` `plugins/session-lifecycle` | `06f5c0a19808e91ccc53bba9111346fdbb86ee23` |
 | wizzo-fleet-presence | `ai-codex-repo` `plugins/wizzo-fleet-presence` | `06f5c0a19808e91ccc53bba9111346fdbb86ee23` |
-| amiga-decoding | this repo `./plugins/amiga-decoding` | none (vendored directory) |
+| amiga-decoding | this repo `./plugins/amiga-decoding` | none (vendored directory; upstream commit in `VENDORED.md`) |
+| red-team-review | this repo `./plugins/red-team-review` | none (first-party; no separate upstream pin) |
 | pr-flow | `Wicked-Sick-Ltd/pr-flow` root | `54de23f8d48f1c5c706046b068db139867eea474` |
 | token-usage | `Wicked-Sick-Ltd/token-usage` root | `39cbb737084bf4f8aaa0c17b8cd1c560f6a0a47c` |
 | ponytail | `DietrichGebert/ponytail` root | `e3ba2aa6f1e6f0bc4d69eb09c9f0d0a93af56156` |
 | publicuniverse | `Wicked-Sick-Ltd/public-universe` root | `bb5919e47e8c8e1eb66c2fc5dcdba9bbc51b2f56` |
 | obsidian | `Wicked-Sick-Ltd/obsidian-skills` `plugins/obsidian` (`ref` `wicked-main`) | `cd51b7076a1207c805cf1d95da4c56cb96bbe859` |
 
-`ai-codex-repo` `main` was `e4e911ab30ecbb179c318c60681210d9f25de2d5` on 2026-11-05 (ready-for-review rule in that repo's own landing-prs). This index still pins five first-party packages at `06f5c0a`. **amiga-decoding** is not one of them: Codex installs `./plugins/amiga-decoding` from this public repository, the same directory Cursor installs. That entry has no SHA and no `version` field, matching the other Codex entries. `pr-flow` is the root of `Wicked-Sick-Ltd/pr-flow` at `54de23f8d48f1c5c706046b068db139867eea474` (manifests 1.1.0), the same pin as Claude, Copilot and Cursor. `publicuniverse` 0.4.1 still configures `https://api.sol.wickedsick.com/mcp`. `token-usage` does not include the unreleased `cursor-cloud` runtime. This page does not move those publicuniverse or token-usage pins. **obsidian** is the additional public package: `git-subdir` `plugins/obsidian` at `cd51b7076a1207c805cf1d95da4c56cb96bbe859` on `wicked-main`. It has no `version` field. Upstream is [obsidianmd/obsidian-skills](https://github.com/obsidianmd/obsidian-skills) (MIT, Copyright (c) 2026 Steph Ango). The skills are `obsidian-markdown`, `obsidian-bases`, and `json-canvas`.
+`ai-codex-repo` `main` was `e4e911ab30ecbb179c318c60681210d9f25de2d5` on 2026-11-05 (ready-for-review rule in that repo's own landing-prs). This index still pins five first-party packages at `06f5c0a`. **amiga-decoding** is not one of them: Codex installs `./plugins/amiga-decoding` from this public repository, the same directory Cursor installs. That entry has no SHA and no `version` field, matching the other Codex entries. **red-team-review** is the other directory source: Codex installs `./plugins/red-team-review` from this public repository. `plugins/red-team-review/VENDORED.md` records that there is no separate upstream pin. That entry also has no SHA and no `version` field. `pr-flow` is the root of `Wicked-Sick-Ltd/pr-flow` at `54de23f8d48f1c5c706046b068db139867eea474` (manifests 1.1.0), the same pin as Claude, Copilot and Cursor. `publicuniverse` 0.4.1 still configures `https://api.sol.wickedsick.com/mcp`. `token-usage` does not include the unreleased `cursor-cloud` runtime. This page does not move those publicuniverse or token-usage pins. **obsidian** is the additional public package: `git-subdir` `plugins/obsidian` at `cd51b7076a1207c805cf1d95da4c56cb96bbe859` on `wicked-main`. It has no `version` field. Upstream is [obsidianmd/obsidian-skills](https://github.com/obsidianmd/obsidian-skills) (MIT, Copyright (c) 2026 Steph Ango). The skills are `obsidian-markdown`, `obsidian-bases`, and `json-canvas`.
 
 ## Packaging correction
 
@@ -49,8 +51,9 @@ Check `codex --version`, then retry the exact command in the
 [README](../README.md). Distinguish marketplace registration from individual
 plugin installation: registration reads this public index; first-party installs
 also need authenticated Git access to `Wicked-Sick-Ltd/ai-codex-repo`, except
-**amiga-decoding**, whose source is `./plugins/amiga-decoding` in this checkout.
-A `--sparse .agents/plugins` marketplace add does not include that directory.
+**amiga-decoding** and **red-team-review**, whose sources are
+`./plugins/amiga-decoding` and `./plugins/red-team-review` in this checkout.
+A `--sparse .agents/plugins` marketplace add does not include those directories.
 
 On Windows, `Filename too long` or `cannot write keep file` during a plugin
 clone can come from Git's staging path. Reproduced with a deeply nested temporary
