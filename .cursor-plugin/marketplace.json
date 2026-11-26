@@ -59,10 +59,10 @@
       "source": {
         "source": "github",
         "repo": "Wicked-Sick-Ltd/pr-flow",
-        "sha": "54de23f8d48f1c5c706046b068db139867eea474"
+        "sha": "be43fc21936ba2054ef084d0193e75a5770b97de"
       },
       "description": "Skills and a Bash/gh/jq helper for opening a finished pull request ready for review, waiting for checks, addressing reviews and landing changes.",
-      "version": "1.1.0",
+      "version": "1.1.2",
       "author": {
         "name": "Wicked Sick Ltd",
         "email": "hello@wickedsick.com"

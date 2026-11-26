@@ -40,7 +40,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Wicked-Sick-Ltd/pr-flow.git",
-        "sha": "54de23f8d48f1c5c706046b068db139867eea474"
+        "sha": "be43fc21936ba2054ef084d0193e75a5770b97de"
       },
       "policy": {
         "installation": "AVAILABLE",

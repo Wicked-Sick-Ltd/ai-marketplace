@@ -45,7 +45,7 @@ def run_validate() -> None:
         raise SystemExit(f"unexpected validate.py output:\n{proc.stdout}")
 
 
-PR_FLOW_SHA = "54de23f8d48f1c5c706046b068db139867eea474"
+PR_FLOW_SHA = "be43fc21936ba2054ef084d0193e75a5770b97de"
 
 
 def cursor_accepts_pr_flow_github_pin() -> None:
@@ -131,7 +131,7 @@ def pr_flow_pins_dedicated_repo() -> None:
                 raise SystemExit(f"codex pr-flow policy is {policy!r}")
             if "version" in plugin:
                 raise SystemExit("codex pr-flow must not grow a version field")
-        elif plugin.get("version") != "1.1.0":
+        elif plugin.get("version") != "1.1.2":
             raise SystemExit(f"{key} pr-flow version is {plugin.get('version')!r}")
         blob = json.dumps(plugin)
         if "ai-grok-repo" in blob or "plugins/pr-flow" in blob:
