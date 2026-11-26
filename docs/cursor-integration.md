@@ -27,7 +27,7 @@ So those featured plugins are copied into `plugins/` here (same approach as `plu
 `pr-flow`'s canonical repository is the plugin root. The Cursor entry uses the same whole-repo shape as Claude:
 
 ```json
-{"source":"github","repo":"Wicked-Sick-Ltd/pr-flow","sha":"be43fc21936ba2054ef084d0193e75a5770b97de"}
+{"source":"github","repo":"Wicked-Sick-Ltd/pr-flow","sha":"c73608143e9fcf1dd5a916d02957dc91ffe9c1e4"}
 ```
 
 Cursor's published team-marketplace importer still resolves `source` as a directory inside the imported repository ([Plugins reference](https://cursor.com/docs/reference/plugins)). Import `https://github.com/Wicked-Sick-Ltd/pr-flow` when the team marketplace must serve that plugin. GitHub access to the private repository is required until it is published.
@@ -51,7 +51,7 @@ Cursor's published team-marketplace importer still resolves `source` as a direct
 
 1. **Cursor Settings → Plugins** → open the Wicked Sick marketplace.
 2. Install **token-usage**, **publicuniverse**, **amiga-decoding** and/or **obsidian**.
-3. For **pr-flow**, import `https://github.com/Wicked-Sick-Ltd/pr-flow` (commit `be43fc21936ba2054ef084d0193e75a5770b97de`). The repository root is the Cursor plugin.
+3. For **pr-flow**, import `https://github.com/Wicked-Sick-Ltd/pr-flow` (commit `c73608143e9fcf1dd5a916d02957dc91ffe9c1e4`). The repository root is the Cursor plugin.
 4. Approve bundled MCP servers when Cursor prompts.
 5. For **token-usage**, ensure `python3` is on the PATH (hooks and stdio MCP). Cloud Agents do not pick up this install automatically; see the token-usage section below.
 
@@ -84,10 +84,10 @@ Costs shown are API list-price **estimates**, not subscription charges.
 
 `https://api.sol.wickedsick.com/mcp` still answers. Claude, Codex and Copilot pins are 0.4.1 and still configure that alias. Positions and catalogue data are approximate and not for telescope pointing.
 
-### pr-flow (1.1.2)
+### pr-flow (1.1.3)
 
 - **Purpose:** Open a finished pull request ready for review, wait until CI and reviewer bots finish, fix or answer every finding, and land the change. Skills: `landing-prs` and `pr`. Helper: `pr-wait.sh`. A draft is only for work still in progress, Critical-tier PRs included (Craig, 5 Nov 2026). A finished PR left as draft is a red flag.
-- **Source:** `Wicked-Sick-Ltd/pr-flow` at `be43fc21936ba2054ef084d0193e75a5770b97de`. Claude, Codex, Copilot and Cursor pin that same commit. Manifests in that tree, including `.cursor-plugin/plugin.json`, are 1.1.2. This repository does not vendor the tree.
+- **Source:** `Wicked-Sick-Ltd/pr-flow` at `c73608143e9fcf1dd5a916d02957dc91ffe9c1e4`. Claude, Codex, Copilot and Cursor pin that same commit. Manifests in that tree, including `.cursor-plugin/plugin.json`, are 1.1.3. This repository does not vendor the tree.
 - **Cursor install:** import `https://github.com/Wicked-Sick-Ltd/pr-flow`. GitHub access is required while the repository is private.
 - **Category:** developer-tools
 
