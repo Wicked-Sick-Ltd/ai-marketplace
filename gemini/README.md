@@ -57,12 +57,12 @@ Windows local installation and discovery of 0.3.0 passed with Gemini CLI 0.62.0 
 
 ## PR Flow
 
-Canonical package: [Wicked-Sick-Ltd/pr-flow](https://github.com/Wicked-Sick-Ltd/pr-flow) **1.1.2** at `be43fc21936ba2054ef084d0193e75a5770b97de`, the same commit Claude, Codex, Copilot and Cursor pin. This repository does not vendor that tree and does not add a Gemini JSON catalog. GitHub access to the private repository is required until it is published.
+Canonical package: [Wicked-Sick-Ltd/pr-flow](https://github.com/Wicked-Sick-Ltd/pr-flow) **1.1.3** at `c73608143e9fcf1dd5a916d02957dc91ffe9c1e4`, the same commit Claude, Codex, Copilot and Cursor pin. This repository does not vendor that tree and does not add a Gemini JSON catalog. GitHub access to the private repository is required until it is published.
 
 ### Legacy Gemini CLI
 
 ```bash
-gemini extensions install https://github.com/Wicked-Sick-Ltd/pr-flow --ref be43fc21936ba2054ef084d0193e75a5770b97de
+gemini extensions install https://github.com/Wicked-Sick-Ltd/pr-flow --ref c73608143e9fcf1dd5a916d02957dc91ffe9c1e4
 gemini extensions list
 ```
 

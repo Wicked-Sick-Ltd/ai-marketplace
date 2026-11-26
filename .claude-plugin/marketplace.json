@@ -114,7 +114,7 @@
     {
       "name": "pr-flow",
       "description": "Skills and a Bash/gh/jq helper for creating pull requests, waiting for checks, addressing reviews and landing changes.",
-      "version": "1.1.2",
+      "version": "1.1.3",
       "author": {
         "name": "Wicked Sick Ltd",
         "email": "hello@wickedsick.com"
@@ -133,7 +133,7 @@
       "source": {
         "source": "github",
         "repo": "Wicked-Sick-Ltd/pr-flow",
-        "sha": "be43fc21936ba2054ef084d0193e75a5770b97de"
+        "sha": "c73608143e9fcf1dd5a916d02957dc91ffe9c1e4"
       }
     },
     {
