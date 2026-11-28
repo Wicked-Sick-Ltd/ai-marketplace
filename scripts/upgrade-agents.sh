@@ -4,7 +4,8 @@
 # make sure the Wicked Sick marketplaces and essential plugins are in place.
 #
 # Runs on macOS, Linux and Windows (Git Bash). Bash 3.2 compatible, no jq or
-# Python. Idempotent: a CLI that is not installed is skipped, a marketplace or
+# Python. A copy installed with Homebrew or Chocolatey is upgraded through that
+# package manager as well as the CLI's own updater. Idempotent: a CLI that is not installed is skipped, a marketplace or
 # plugin that is already there is updated instead of re-added.
 #
 # Usage:
@@ -49,7 +50,7 @@ while [ $# -gt 0 ]; do
     --dry-run)    DRY=1 ;;
     --no-plugins) PLUGINS=0 ;;
     --install-missing) INSTALL=1 ;;
-    -h|--help)    sed -n '3,28p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    -h|--help)    sed -n '3,29p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
     -*)           echo "Unknown option: $1 (try --help)" >&2; exit 2 ;;
     gemini)       ONLY="$ONLY agy" ;;
     *)            ONLY="$ONLY $1" ;;
@@ -93,6 +94,36 @@ install_cmd() {
   esac
 }
 
+# pkg_upgrade <cli> — upgrade a copy that Homebrew or Chocolatey installed.
+# This runs whether or not that copy is the one on PATH, so a package-manager
+# copy shadowed by a vendor install does not go stale. Package names are the
+# same in both except Copilot; Chocolatey has no Cursor CLI package.
+pkg_upgrade() {
+  local pkg choco_pkg kind
+  case "$1" in
+    claude)       pkg=claude-code ;;
+    codex)        pkg=codex ;;
+    agy)          pkg=antigravity-cli ;;
+    copilot)      pkg=copilot-cli ;;
+    cursor-agent) pkg=cursor-cli ;;
+    *)            return 0 ;;
+  esac
+  if have brew; then
+    # Asked per kind: a name can be both a cask and an older formula (codex).
+    for kind in --cask --formula; do
+      brew list "$kind" "$pkg" >/dev/null 2>&1 && run brew upgrade "$kind" "$pkg"
+    done
+  fi
+  if have choco; then
+    choco_pkg="$pkg"
+    [ "$1" = copilot ] && choco_pkg=github-copilot-cli
+    # Needs an elevated shell; a refusal is recorded like any other failure.
+    if [ "$1" != cursor-agent ] && choco list --limit-output --exact "$choco_pkg" 2>/dev/null | grep -qi "^$choco_pkg|"; then
+      run choco upgrade "$choco_pkg" -y
+    fi
+  fi
+}
+
 # upgrade <cli> <command...> — update an installed CLI. An absent one is
 # skipped, or installed first with --install-missing. Returns non-zero when
 # the CLI is not usable afterwards, so the caller skips its plugin step.
@@ -121,6 +152,7 @@ upgrade() {
   fi
   before="$(ver "$cli")"
   printf '\n==> %s (%s)\n' "$cli" "$before"
+  pkg_upgrade "$cli"
   run "$@" && [ "$DRY" -eq 0 ] && printf '    %s -> %s\n' "$before" "$(ver "$cli")"
   return 0
 }
