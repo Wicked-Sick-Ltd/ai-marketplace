@@ -202,8 +202,19 @@ agy_plugins() {
 upgrade claude claude update && [ "$PLUGINS" -eq 1 ] && claude_plugins
 upgrade codex codex update   && [ "$PLUGINS" -eq 1 ] && codex_plugins
 upgrade agy agy update       && [ "$PLUGINS" -eq 1 ] && agy_plugins
-# Untested here (CLIs not installed): the copilot and cursor-agent update commands.
+# Untested here (CLI not installed): the copilot update command.
 upgrade copilot copilot update && [ "$PLUGINS" -eq 1 ] && copilot_plugins
+# Cursor CLI is the one agent this script installs when missing. Its installer
+# supports macOS and Linux only, so on Windows a missing CLI stays skipped.
+if wanted cursor-agent && ! have cursor-agent; then
+  case "$(uname -s)" in
+    Darwin*|Linux*)
+      printf '\n==> cursor-agent: not installed, installing\n'
+      run bash -c 'curl https://cursor.com/install -fsS | bash'
+      # The installer links into ~/.local/bin, which may not be on PATH yet.
+      have cursor-agent || PATH="$HOME/.local/bin:$PATH" ;;
+  esac
+fi
 upgrade cursor-agent cursor-agent update
 
 if [ -n "$FAILED" ]; then
