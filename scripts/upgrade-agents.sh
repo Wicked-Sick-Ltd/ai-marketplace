@@ -87,48 +87,77 @@ claude_plugins() {
   printf '%s\n' "$mps" | grep -qE '❯ wicked-sick$' || run claude plugin marketplace add "$CLAUDE_MP"
   run claude plugin marketplace update wickedsick
   run claude plugin marketplace update wicked-sick
-  installed="$(claude plugin list --json 2>/dev/null | grep -oE '"id": *"[^"]+"' | cut -d'"' -f4)"
+  # One "id scope" line per installation.
+  installed="$(claude plugin list --json 2>/dev/null | tr -d '",' \
+    | awk '$1 == "id:" { id = $2 } $1 == "scope:" { print id, $2 }')"
   # Install an essential only when no plugin of that name is installed from any
   # marketplace: the same plugin from two marketplaces loads twice.
   for spec in $WS_CLAUDE_PLUGINS; do
     printf '%s\n' "$installed" | grep -q "^${spec%@*}@" || run claude plugin install "$spec"
   done
-  for id in $(printf '%s\n' "$installed" | grep -E '@(wickedsick|wicked-sick)$'); do
-    run claude plugin update "$id"
+  # User scope only, and named explicitly: an unscoped update picks the most
+  # specific scope for the current directory, and project or local installs
+  # belong to their projects, not to a machine-wide upgrade.
+  for id in $(printf '%s\n' "$installed" | awk '$2 == "user" && $1 ~ /@(wickedsick|wicked-sick)$/ { print $1 }'); do
+    run claude plugin update "$id" --scope user
   done
 }
 
 codex_plugins() {
-  local installed spec id src
+  local installed spec id src tab
+  tab="$(printf '\t')"
   # `marketplace add` refuses a marketplace that is already registered.
   codex plugin marketplace list 2>/dev/null | grep -qw wickedsick \
     || run codex plugin marketplace add "$PUBLIC_MP"
   run codex plugin marketplace upgrade
-  # One "id source" line per installed plugin; source is the last column.
-  installed="$(codex plugin list 2>/dev/null | awk '$2 ~ /^installed/ {print $1, $NF}')"
+  # One "id<TAB>local source path" line per installed plugin, from the JSON
+  # listing so a path with spaces or a Windows drive letter survives. The path
+  # is empty for a plugin fetched from Git (a git-subdir source also has a
+  # "path", relative to its repository, which is not a local directory).
+  installed="$(codex plugin list --json 2>/dev/null | awk '
+    function val(s) { sub(/^[^:]*: *"/, "", s); sub(/",?[ \r]*$/, "", s); gsub(/\\\\/, "\\", s); return s }
+    function flush() { if (id != "") print id "\t" path; id = ""; path = ""; loc = 0 }
+    /^  "available"/      { exit }
+    /"pluginId":/         { flush(); id = val($0) }
+    /"source": *"local"/  { loc = 1 }
+    /"path":/ && loc && path == "" { path = val($0) }
+    END                   { flush() }')"
   for spec in $WS_CODEX_PLUGINS; do
     printf '%s\n' "$installed" | grep -q "^${spec%@*}@" || run codex plugin add "$spec"
   done
   # Codex has no `plugin update`; re-adding an installed plugin reinstalls it
   # from the refreshed marketplace snapshot.
   # Here-string, not a pipe: a piped loop would lose run()'s failure record.
-  while read -r id src; do
-    [ -n "$id" ] || continue
+  while IFS="$tab" read -r id src; do
+    case "$id" in *@wickedsick|*@wicked-sick-codex) ;; *) continue ;; esac
     # A marketplace added with --sparse .agents/plugins has no plugins/ tree,
     # so its in-repo plugins cannot be reinstalled from it.
-    case "$src" in
-      /*) [ -d "$src" ] || { printf '    skip %s: %s is missing (marketplace added with --sparse?)\n' "$id" "$src"; continue; } ;;
-    esac
+    if [ -n "$src" ] && [ ! -d "$src" ]; then
+      printf '    skip %s: %s is missing (marketplace added with --sparse?)\n' "$id" "$src"
+      continue
+    fi
     run codex plugin add "$id"
-  done <<<"$(printf '%s\n' "$installed" | grep -E '^[^ ]+@(wickedsick|wicked-sick-codex) ')"
+  done <<<"$installed"
 }
 
-# Untested: no Copilot CLI on the machine this was written on. The
-# commands are the ones docs/ponytail.md documents.
+# Untested: no Copilot CLI on the machine this was written on. The commands and
+# the `plugin list --json` row shape ({ name, marketplace?, ... }) are from
+# GitHub's Copilot CLI plugin reference.
 copilot_plugins() {
-  local spec
-  run copilot plugin marketplace add "$PUBLIC_MP"
-  for spec in $WS_COPILOT_PLUGINS; do run copilot plugin install "$spec"; done
+  local installed spec name
+  copilot plugin marketplace list 2>/dev/null | grep -qw wickedsick \
+    || run copilot plugin marketplace add "$PUBLIC_MP"
+  run copilot plugin marketplace update wickedsick
+  # One JSON object per line, whatever the original layout, then the names of
+  # the plugins installed from this marketplace.
+  installed="$(copilot plugin list --json 2>/dev/null | tr -d '\n' | tr '}' '\n')"
+  for spec in $WS_COPILOT_PLUGINS; do
+    printf '%s\n' "$installed" | grep -qE "\"name\": *\"${spec%@*}\"" || run copilot plugin install "$spec"
+  done
+  for name in $(printf '%s\n' "$installed" | grep -E '"marketplace": *"wickedsick"' \
+      | grep -oE '"name": *"[^"]+"' | cut -d'"' -f4); do
+    run copilot plugin update "$name"
+  done
 }
 
 # fetch_at <dir> <url> <ref> — shallow checkout of one commit or branch into a
