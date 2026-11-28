@@ -134,6 +134,8 @@ copilot_plugins() {
 # fetch_at <dir> <url> <ref> — shallow checkout of one commit or branch into a
 # cache directory, reused on the next run.
 fetch_at() {
+  # git init only creates the leaf directory; parents (e.g. $CACHE) must exist.
+  mkdir -p "$1" || return 1
   [ -d "$1/.git" ] || run git init -q "$1" || return 1
   run git -C "$1" fetch -q --depth 1 "$2" "$3" && run git -C "$1" checkout -q --detach FETCH_HEAD
 }
