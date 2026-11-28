@@ -49,7 +49,7 @@ Then install plugins by name from that marketplace (for example `claude plugin i
 
 ### Upgrade everything on a machine
 
-`scripts/upgrade-agents.sh` upgrades each agent CLI that is installed (Claude Code, Codex, Antigravity `agy`, Copilot CLI, `cursor-agent`, legacy Gemini CLI), then adds these marketplaces where missing, installs the essential plugins and updates the installed ones. It runs on macOS, Linux and Windows under Git Bash. `--dry-run` prints the commands without running them; `--help` lists the options and the plugin sets. Verified on macOS with Claude Code, Codex and `agy`; the Copilot, `cursor-agent` and Gemini steps and the Windows path are untested.
+`scripts/upgrade-agents.sh` upgrades each agent CLI that is installed (Claude Code, Codex, Antigravity `agy`, Copilot CLI, `cursor-agent`), then adds these marketplaces where missing, installs the essential plugins and updates the installed ones. Antigravity has no marketplace command, so its plugins are installed from the `ai-gemini-repo` `plugins.json` catalog at the pinned commits. It runs on macOS, Linux and Windows under Git Bash. `--dry-run` prints the commands without running them; `--help` lists the options and the plugin sets. Verified on macOS with Claude Code, Codex and `agy`; the Copilot and `cursor-agent` steps and the Windows path are untested.
 
 ## Catalog indexes
 

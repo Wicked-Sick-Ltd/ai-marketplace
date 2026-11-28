@@ -13,12 +13,14 @@
 #   scripts/upgrade-agents.sh --dry-run       # print the commands, run nothing
 #   scripts/upgrade-agents.sh --no-plugins    # upgrade the CLIs only
 #
-# Agents: claude codex agy copilot cursor-agent gemini
+# Agents: claude codex agy copilot cursor-agent   (gemini is an alias for agy,
+# Google Antigravity, which replaced the standalone Gemini CLI)
 #
 # The essential plugin sets match the dev profile of the vendor bootstraps
 # (ai-claude-repo scripts/bootstrap.sh, ai-codex-repo scripts/bootstrap.py).
 # Override with a space-separated list of plugin@marketplace:
 #   WS_CLAUDE_PLUGINS, WS_CODEX_PLUGINS, WS_COPILOT_PLUGINS
+# and, as bare names from ai-gemini-repo plugins.json: WS_AGY_PLUGINS
 #
 # pr-flow and the ai-*-repo plugins are private: they need authenticated GitHub
 # access (gh auth login). A plugin that cannot be fetched is reported and the
@@ -28,9 +30,12 @@ set -u
 WS_CLAUDE_PLUGINS="${WS_CLAUDE_PLUGINS:-token-usage@wickedsick ponytail@wickedsick pr-flow@wickedsick session-lifecycle@wicked-sick estate-maintenance@wicked-sick}"
 WS_CODEX_PLUGINS="${WS_CODEX_PLUGINS:-onboarding@wickedsick session-lifecycle@wickedsick pr-flow@wickedsick estate-maintenance@wickedsick product-lifecycle@wickedsick token-usage@wickedsick ponytail@wickedsick}"
 WS_COPILOT_PLUGINS="${WS_COPILOT_PLUGINS:-token-usage@wickedsick ponytail@wickedsick pr-flow@wickedsick}"
+WS_AGY_PLUGINS="${WS_AGY_PLUGINS:-onboarding session-lifecycle pr-flow estate-maintenance product-lifecycle token-usage ponytail}"
 
 PUBLIC_MP="Wicked-Sick-Ltd/ai-marketplace"   # marketplace name: wickedsick
 CLAUDE_MP="Wicked-Sick-Ltd/ai-claude-repo"   # marketplace name: wicked-sick
+GEMINI_REPO="https://github.com/Wicked-Sick-Ltd/ai-gemini-repo.git"
+CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/ws-upgrade-agents"
 
 DRY=0
 PLUGINS=1
@@ -41,8 +46,9 @@ while [ $# -gt 0 ]; do
   case "$1" in
     --dry-run)    DRY=1 ;;
     --no-plugins) PLUGINS=0 ;;
-    -h|--help)    sed -n '3,25p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    -h|--help)    sed -n '3,27p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
     -*)           echo "Unknown option: $1 (try --help)" >&2; exit 2 ;;
+    gemini)       ONLY="$ONLY agy" ;;
     *)            ONLY="$ONLY $1" ;;
   esac
   shift
@@ -125,15 +131,51 @@ copilot_plugins() {
   for spec in $WS_COPILOT_PLUGINS; do run copilot plugin install "$spec"; done
 }
 
+# fetch_at <dir> <url> <ref> — shallow checkout of one commit or branch into a
+# cache directory, reused on the next run.
+fetch_at() {
+  [ -d "$1/.git" ] || run git init -q "$1" || return 1
+  run git -C "$1" fetch -q --depth 1 "$2" "$3" && run git -C "$1" checkout -q --detach FETCH_HEAD
+}
+
+# Antigravity installs a plugin from a local directory, not from a marketplace.
+# The catalog is ai-gemini-repo plugins.json: in-repo plugins live under its
+# plugins/, remote ones are a url pinned to a sha. `agy plugin install`
+# replaces an existing installation, so this also updates.
+agy_plugins() {
+  local catalog="$CACHE/ai-gemini-repo" name src pin
+  fetch_at "$catalog" "$GEMINI_REPO" main || return 0
+  if [ ! -f "$catalog/plugins.json" ]; then
+    printf '    (dry run: the plugin steps need the catalog, which is not cached yet)\n'
+    return 0
+  fi
+  for name in $WS_AGY_PLUGINS; do
+    src="$catalog/plugins/$name"
+    if [ ! -d "$src" ]; then
+      # Remote entry: print "url sha" from the lines that follow its name.
+      pin="$(awk -v n="\"$name\"," '$1 == "\"name\":" { f = ($2 == n) }
+        f && $1 == "\"url\":" { u = $2 } f && $1 == "\"sha\":" { print u, $2; exit }' \
+        "$catalog/plugins.json" | tr -d '",')"
+      if [ -z "$pin" ]; then
+        FAILED="$FAILED
+  agy: $name is not in ai-gemini-repo plugins.json"
+        printf '    %s: not in the catalog\n' "$name"
+        continue
+      fi
+      src="$CACHE/$name"
+      # shellcheck disable=SC2086  # pin is "url sha", split on purpose
+      fetch_at "$src" $pin || continue
+    fi
+    run agy plugin install "$src"
+  done
+}
+
 upgrade claude claude update && [ "$PLUGINS" -eq 1 ] && claude_plugins
 upgrade codex codex update   && [ "$PLUGINS" -eq 1 ] && codex_plugins
-# Antigravity has no JSON catalog: its plugins are installed from pinned local
-# checkouts, see gemini/README.md.
-upgrade agy agy update
-# Untested here (CLIs not installed): the copilot, cursor-agent and gemini update commands.
+upgrade agy agy update       && [ "$PLUGINS" -eq 1 ] && agy_plugins
+# Untested here (CLIs not installed): the copilot and cursor-agent update commands.
 upgrade copilot copilot update && [ "$PLUGINS" -eq 1 ] && copilot_plugins
 upgrade cursor-agent cursor-agent update
-upgrade gemini npm install -g @google/gemini-cli@latest
 
 if [ -n "$FAILED" ]; then
   printf '\nFailed:%s\n' "$FAILED" >&2
