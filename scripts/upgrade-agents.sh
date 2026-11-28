@@ -12,6 +12,7 @@
 #   scripts/upgrade-agents.sh claude codex    # only these agents
 #   scripts/upgrade-agents.sh --dry-run       # print the commands, run nothing
 #   scripts/upgrade-agents.sh --no-plugins    # upgrade the CLIs only
+#   scripts/upgrade-agents.sh --install-missing   # also install absent CLIs
 #
 # Agents: claude codex agy copilot cursor-agent   (gemini is an alias for agy,
 # Google Antigravity, which replaced the standalone Gemini CLI)
@@ -39,6 +40,7 @@ CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/ws-upgrade-agents"
 
 DRY=0
 PLUGINS=1
+INSTALL=0
 ONLY=""
 FAILED=""
 
@@ -46,7 +48,8 @@ while [ $# -gt 0 ]; do
   case "$1" in
     --dry-run)    DRY=1 ;;
     --no-plugins) PLUGINS=0 ;;
-    -h|--help)    sed -n '3,27p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --install-missing) INSTALL=1 ;;
+    -h|--help)    sed -n '3,28p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
     -*)           echo "Unknown option: $1 (try --help)" >&2; exit 2 ;;
     gemini)       ONLY="$ONLY agy" ;;
     *)            ONLY="$ONLY $1" ;;
@@ -66,11 +69,54 @@ run() {
   $*"; return 1; }
 }
 
-# upgrade <cli> <command...> — skip when the CLI is absent or not selected.
+# install_cmd <cli> — the vendor's own installer for this platform, as a shell
+# command line; empty when there is none (Cursor CLI on Windows).
+install_cmd() {
+  local ps='powershell.exe -NoProfile -ExecutionPolicy Bypass -Command'
+  case "$(uname -s)" in
+    MINGW*|MSYS*|CYGWIN*)
+      case "$1" in
+        claude)  printf '%s "irm https://claude.ai/install.ps1 | iex"' "$ps" ;;
+        codex)   printf '%s "irm https://chatgpt.com/codex/install.ps1 | iex"' "$ps" ;;
+        agy)     printf '%s "irm https://antigravity.google/cli/install.ps1 | iex"' "$ps" ;;
+        copilot) printf 'winget install --id GitHub.Copilot -e --accept-source-agreements --accept-package-agreements' ;;
+      esac ;;
+    *)
+      case "$1" in
+        claude)       printf 'curl -fsSL https://claude.ai/install.sh | bash' ;;
+        codex)        printf 'curl -fsSL https://chatgpt.com/codex/install.sh | sh' ;;
+        agy)          printf 'curl -fsSL https://antigravity.google/cli/install.sh | bash' ;;
+        copilot)      printf 'curl -fsSL https://gh.io/copilot-install | bash' ;;
+        cursor-agent) printf 'curl https://cursor.com/install -fsS | bash' ;;
+      esac ;;
+  esac
+}
+
+# upgrade <cli> <command...> — update an installed CLI. An absent one is
+# skipped, or installed first with --install-missing. Returns non-zero when
+# the CLI is not usable afterwards, so the caller skips its plugin step.
 upgrade() {
-  local cli="$1" before; shift
+  local cli="$1" before cmd; shift
   wanted "$cli" || return 1
-  if ! have "$cli"; then printf '\n==> %s: not installed, skipped\n' "$cli"; return 1; fi
+  if ! have "$cli"; then
+    cmd="$(install_cmd "$cli")"
+    if [ "$INSTALL" -eq 0 ]; then
+      printf '\n==> %s: not installed, skipped (--install-missing installs it)\n' "$cli"; return 1
+    elif [ -z "$cmd" ]; then
+      printf '\n==> %s: not installed, and no installer for this platform\n' "$cli"; return 1
+    fi
+    printf '\n==> %s: not installed, installing\n' "$cli"
+    run bash -c "$cmd" || return 1
+    [ "$DRY" -eq 1 ] && return 1
+    # Installers link into ~/.local/bin, which may not be on PATH yet.
+    have "$cli" || PATH="$HOME/.local/bin:$PATH"
+    if ! have "$cli"; then
+      printf '    installed, but %s is not on PATH in this shell: open a new terminal and re-run for its plugins\n' "$cli"
+      return 1
+    fi
+    printf '    installed %s\n' "$(ver "$cli")"
+    return 0
+  fi
   before="$(ver "$cli")"
   printf '\n==> %s (%s)\n' "$cli" "$before"
   run "$@" && [ "$DRY" -eq 0 ] && printf '    %s -> %s\n' "$before" "$(ver "$cli")"
@@ -202,19 +248,7 @@ agy_plugins() {
 upgrade claude claude update && [ "$PLUGINS" -eq 1 ] && claude_plugins
 upgrade codex codex update   && [ "$PLUGINS" -eq 1 ] && codex_plugins
 upgrade agy agy update       && [ "$PLUGINS" -eq 1 ] && agy_plugins
-# Untested here (CLI not installed): the copilot update command.
 upgrade copilot copilot update && [ "$PLUGINS" -eq 1 ] && copilot_plugins
-# Cursor CLI is the one agent this script installs when missing. Its installer
-# supports macOS and Linux only, so on Windows a missing CLI stays skipped.
-if wanted cursor-agent && ! have cursor-agent; then
-  case "$(uname -s)" in
-    Darwin*|Linux*)
-      printf '\n==> cursor-agent: not installed, installing\n'
-      run bash -c 'curl https://cursor.com/install -fsS | bash'
-      # The installer links into ~/.local/bin, which may not be on PATH yet.
-      have cursor-agent || PATH="$HOME/.local/bin:$PATH" ;;
-  esac
-fi
 upgrade cursor-agent cursor-agent update
 
 if [ -n "$FAILED" ]; then
