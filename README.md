@@ -47,6 +47,10 @@ codex plugin marketplace add Wicked-Sick-Ltd/ai-marketplace --sparse .agents/plu
 
 Then install plugins by name from that marketplace (for example `claude plugin install token-usage@wickedsick`, or `/plugin install amiga-decoding@wickedsick`). Copilot CLI, Gemini, and Codex workflow details are in the host-specific index files listed below. **amiga-decoding** and **red-team-review** are directories in this checkout. A Codex `--sparse .agents/plugins` add omits `plugins/amiga-decoding` and `plugins/red-team-review`; add the full marketplace before installing those plugins.
 
+### Upgrade everything on a machine
+
+`scripts/upgrade-agents.sh` upgrades each agent CLI that is installed (Claude Code, Codex, Antigravity `agy`, Copilot CLI, `cursor-agent`), then adds these marketplaces where missing, installs the essential plugins and updates the installed ones. Antigravity has no marketplace command, so its plugins are installed from the `ai-gemini-repo` `plugins.json` catalog at the pinned commits. It runs on macOS, Linux and Windows under Git Bash. `--dry-run` prints the commands without running them; `--help` lists the options and the plugin sets. A copy installed with Homebrew or Chocolatey is also upgraded through that package manager. `--install-missing` also installs any of those CLIs that is absent, with the vendor's own installer (PowerShell or WinGet on Windows). Verified on macOS with Claude Code, Codex, `agy` and `cursor-agent`; the Copilot steps, the Windows path, and `--install-missing` for anything but the Cursor CLI are untested.
+
 ## Catalog indexes
 
 | Client | File | Notes |
