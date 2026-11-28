@@ -70,7 +70,7 @@ run() {
 }
 
 # install_cmd <cli> — the vendor's own installer for this platform, as a shell
-# command line; empty when there is none (Cursor CLI on Windows).
+# command line; empty when there is none.
 install_cmd() {
   local ps='powershell.exe -NoProfile -ExecutionPolicy Bypass -Command'
   case "$(uname -s)" in
@@ -80,6 +80,7 @@ install_cmd() {
         codex)   printf '%s "irm https://chatgpt.com/codex/install.ps1 | iex"' "$ps" ;;
         agy)     printf '%s "irm https://antigravity.google/cli/install.ps1 | iex"' "$ps" ;;
         copilot) printf 'winget install --id GitHub.Copilot -e --accept-source-agreements --accept-package-agreements' ;;
+        cursor-agent) printf "%s \"irm 'https://cursor.com/install?win32=true' | iex\"" "$ps" ;;
       esac ;;
     *)
       case "$1" in
