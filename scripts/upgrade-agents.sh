@@ -107,7 +107,8 @@ upgrade() {
       printf '\n==> %s: not installed, and no installer for this platform\n' "$cli"; return 1
     fi
     printf '\n==> %s: not installed, installing\n' "$cli"
-    run bash -c "$cmd" || return 1
+    # pipefail: without it a failed download piped into a shell exits 0.
+    run bash -o pipefail -c "$cmd" || return 1
     [ "$DRY" -eq 1 ] && return 1
     # Installers link into ~/.local/bin, which may not be on PATH yet.
     have "$cli" || PATH="$HOME/.local/bin:$PATH"
